@@ -2,14 +2,28 @@
   "manifest_version": 3,
   "name": "Taqvim",
   "version": "0.1.0",
-  "description": "Fast Jalali calendar with Gregorian, optional Hijri, holidays, and date conversion.",
+  "description": "Fast Jalali calendar with holidays and today\u2019s Persian date in your browser.",
   "action": {
     "default_title": "Taqvim",
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png"
+    }
   },
   "background": {
-    "service_worker": "background/service-worker.js"
+    "service_worker": "background/service-worker.js",
+    "type": "module"
   },
-  "permissions": ["storage", "alarms"],
-  "options_page": "options/options.html"
+  "permissions": [
+    "storage",
+    "alarms"
+  ],
+  "options_page": "options/options.html",
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
 }

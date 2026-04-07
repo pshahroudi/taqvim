@@ -1,0 +1,102 @@
+[
+  {
+    "id": "nowruz-1",
+    "calendar": "jalali",
+    "month": 1,
+    "day": 1,
+    "title": "نوروز",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "آغاز سال نو خورشیدی و یکی از مهم‌ترین تعطیلات رسمی ایران."
+  },
+  {
+    "id": "nowruz-2",
+    "calendar": "jalali",
+    "month": 1,
+    "day": 2,
+    "title": "نوروز",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "دومین روز تعطیلات رسمی نوروز."
+  },
+  {
+    "id": "nowruz-3",
+    "calendar": "jalali",
+    "month": 1,
+    "day": 3,
+    "title": "نوروز",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "سومین روز تعطیلات رسمی نوروز."
+  },
+  {
+    "id": "nowruz-4",
+    "calendar": "jalali",
+    "month": 1,
+    "day": 4,
+    "title": "نوروز",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "چهارمین روز تعطیلات رسمی نوروز."
+  },
+  {
+    "id": "islamic-republic-day",
+    "calendar": "jalali",
+    "month": 1,
+    "day": 12,
+    "title": "روز جمهوری اسلامی",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "سالروز همه‌پرسی جمهوری اسلامی در ایران."
+  },
+  {
+    "id": "nature-day",
+    "calendar": "jalali",
+    "month": 1,
+    "day": 13,
+    "title": "روز طبیعت",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "سیزدهم فروردین؛ از تعطیلات رسمی پایان دوره نوروز."
+  },
+  {
+    "id": "khomeini-demise",
+    "calendar": "jalali",
+    "month": 3,
+    "day": 14,
+    "title": "رحلت امام خمینی",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "سالروز رحلت روح‌الله خمینی."
+  },
+  {
+    "id": "khordad-uprising",
+    "calendar": "jalali",
+    "month": 3,
+    "day": 15,
+    "title": "قیام ۱۵ خرداد",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "سالروز قیام ۱۵ خرداد ۱۳۴۲."
+  },
+  {
+    "id": "revolution-victory",
+    "calendar": "jalali",
+    "month": 11,
+    "day": 22,
+    "title": "پیروزی انقلاب اسلامی",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "سالروز ۲۲ بهمن و تعطیل رسمی."
+  },
+  {
+    "id": "oil-nationalization",
+    "calendar": "jalali",
+    "month": 12,
+    "day": 29,
+    "title": "ملی شدن صنعت نفت",
+    "category": "officialIran",
+    "isHoliday": true,
+    "description": "سالروز ملی شدن صنعت نفت ایران."
+  }
+]

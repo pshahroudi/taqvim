@@ -1,0 +1,189 @@
+[
+  {
+    "id": "imam-ali-birthday",
+    "calendar": "hijri",
+    "month": 7,
+    "day": 13,
+    "title": "ولادت امام علی",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز ولادت امام علی.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "mabath",
+    "calendar": "hijri",
+    "month": 7,
+    "day": 27,
+    "title": "مبعث پیامبر",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز برانگیخته شدن پیامبر اسلام.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "imam-mahdi-birthday",
+    "calendar": "hijri",
+    "month": 8,
+    "day": 15,
+    "title": "ولادت امام مهدی",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز ولادت امام دوازدهم شیعیان.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "imam-ali-martyrdom",
+    "calendar": "hijri",
+    "month": 9,
+    "day": 21,
+    "title": "شهادت امام علی",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز شهادت امام علی.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "eid-fitr-1",
+    "calendar": "hijri",
+    "month": 10,
+    "day": 1,
+    "title": "عید فطر",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "آغاز عید فطر پس از ماه رمضان.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "eid-fitr-2",
+    "calendar": "hijri",
+    "month": 10,
+    "day": 2,
+    "title": "تعطیل عید فطر",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "دومین روز تعطیلات عید فطر.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "imam-sadeq-martyrdom",
+    "calendar": "hijri",
+    "month": 10,
+    "day": 25,
+    "title": "شهادت امام جعفر صادق",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز شهادت امام ششم شیعیان.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "eid-adha",
+    "calendar": "hijri",
+    "month": 12,
+    "day": 10,
+    "title": "عید قربان",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "عید قربان از مهم‌ترین مناسبت‌های اسلامی.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "eid-ghadir",
+    "calendar": "hijri",
+    "month": 12,
+    "day": 18,
+    "title": "عید غدیر",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "عید غدیر از اعیاد مهم شیعیان.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "tasua",
+    "calendar": "hijri",
+    "month": 1,
+    "day": 9,
+    "title": "تاسوعا",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "تاسوعای حسینی.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "ashura",
+    "calendar": "hijri",
+    "month": 1,
+    "day": 10,
+    "title": "عاشورا",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "عاشورای حسینی.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "arbaeen",
+    "calendar": "hijri",
+    "month": 2,
+    "day": 20,
+    "title": "اربعین",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "اربعین حسینی.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "prophet-demise",
+    "calendar": "hijri",
+    "month": 2,
+    "day": 28,
+    "title": "رحلت پیامبر و شهادت امام حسن",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز رحلت پیامبر اسلام و شهادت امام حسن مجتبی.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "imam-reza-martyrdom",
+    "calendar": "hijri",
+    "month": 2,
+    "day": 30,
+    "title": "شهادت امام رضا",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز شهادت امام رضا.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "imam-hasan-askari-martyrdom",
+    "calendar": "hijri",
+    "month": 3,
+    "day": 8,
+    "title": "شهادت امام حسن عسکری",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز شهادت امام حسن عسکری.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "prophet-birthday",
+    "calendar": "hijri",
+    "month": 3,
+    "day": 17,
+    "title": "ولادت پیامبر و امام جعفر صادق",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز ولادت پیامبر اسلام و امام جعفر صادق.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  },
+  {
+    "id": "fatima-martyrdom",
+    "calendar": "hijri",
+    "month": 6,
+    "day": 3,
+    "title": "شهادت حضرت فاطمه",
+    "category": "islamic",
+    "isHoliday": true,
+    "description": "سالروز شهادت حضرت فاطمه.",
+    "note": "تاریخ قمری در تقویم رسمی ممکن است با اعلام رؤیت هلال اندکی جابه‌جا شود."
+  }
+]

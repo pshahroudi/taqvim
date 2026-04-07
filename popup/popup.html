@@ -1,98 +1,81 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taqvim</title>
-    <link rel="stylesheet" href="popup.css" />
-  </head>
-  <body>
-    <div class="app">
-      <header class="topbar">
-        <div class="brand-wrap">
-          <div class="brand">Taqvim</div>
-          <div class="sub">Persian Calendar</div>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taqvim</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <div class="brand">Taqvim</div>
+        <div class="sub">Persian calendar and holiday browser</div>
+      </div>
 
-        <div class="actions">
-          <button id="themeToggle" class="icon-btn" title="Cycle theme">
-            🌓
-          </button>
-          <button id="openSettings" class="icon-btn" title="Open settings">
-            ⚙
-          </button>
-        </div>
-      </header>
+      <div class="actions">
+        <button id="themeToggle" class="icon-btn" title="Cycle theme" aria-label="Cycle theme">🌓</button>
+        <button id="openSettings" class="icon-btn" title="Open settings" aria-label="Open settings">⚙</button>
+      </div>
+    </header>
 
-      <section class="today-card">
-        <div class="section-label">Today</div>
-        <div id="todayJalali" class="jalali-date"></div>
-        <div id="todayGregorian" class="gregorian-date"></div>
-        <div id="todayHijri" class="hijri-date hidden"></div>
-        <div id="holidayStatus" class="holiday-status">
-          Holiday data comes next
-        </div>
-      </section>
+    <main class="workspace">
+      <section class="calendar-shell">
+        <div class="calendar-header">
+          <div class="calendar-toolbar">
+            <label class="field field-month">
+              <span class="field-label">Month</span>
+              <select id="monthSelect" class="field-control field-control-fa" dir="rtl"></select>
+            </label>
 
-      <section class="tabs">
-        <button class="tab active" type="button">Calendar</button>
-        <button class="tab muted-tab" type="button" disabled>Convert</button>
-      </section>
-
-      <section class="panel">
-        <div class="panel-header">
-          <button
-            id="prevMonth"
-            class="nav-btn"
-            type="button"
-            aria-label="Previous month"
-          >
-            ‹
-          </button>
-
-          <div class="month-group">
-            <div id="monthTitle" class="month-title"></div>
-            <div id="monthSubtitle" class="month-subtitle"></div>
+            <label class="field field-year">
+              <span class="field-label">Year</span>
+              <select id="yearSelect" class="field-control field-control-fa" dir="rtl"></select>
+            </label>
           </div>
 
-          <button
-            id="nextMonth"
-            class="nav-btn"
-            type="button"
-            aria-label="Next month"
-          >
-            ›
-          </button>
+          <div class="calendar-actions" aria-label="Month navigation">
+            <button id="prevMonth" class="nav-btn" type="button" aria-label="Previous month">‹</button>
+            <button id="goToday" class="today-btn" type="button">Today</button>
+            <button id="nextMonth" class="nav-btn" type="button" aria-label="Next month">›</button>
+          </div>
         </div>
 
-        <div class="panel-actions">
-          <button id="goToday" class="today-btn" type="button">Today</button>
-        </div>
-
-        <div class="weekday-row">
-          <div>Sat</div>
-          <div>Sun</div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-        </div>
-
-        <div id="calendarGrid" class="calendar-grid"></div>
+        <div id="weekdayRow" class="weekday-row" role="row"></div>
+        <div id="calendarGrid" class="calendar-grid" role="grid" aria-label="Calendar month"></div>
       </section>
 
-      <section class="details-card">
-        <div class="section-label">Selected day</div>
-        <div id="selectedJalali" class="detail-primary"></div>
-        <div id="selectedGregorian" class="detail-secondary"></div>
-        <div id="selectedHijri" class="detail-secondary hidden"></div>
-        <div id="selectedHoliday" class="detail-secondary">
-          Holiday data comes next
-        </div>
-      </section>
-    </div>
+      <aside class="sidebar-shell">
+        <section class="today-card side-card">
+          <div class="section-label">Today</div>
+          <div id="todayJalali" class="jalali-date rtl-text" lang="fa" dir="rtl"></div>
+          <div id="todayGregorian" class="gregorian-date ltr-text" lang="en" dir="ltr"></div>
+          <div id="todayHijri" class="hijri-date ltr-text hidden" lang="en" dir="ltr"></div>
 
-    <script type="module" src="popup.js"></script>
-  </body>
+          <div class="holiday-block">
+            <div id="todayHolidayStatus" class="holiday-status ltr-text">Loading…</div>
+            <div id="todayHolidayChips" class="chip-row hidden"></div>
+            <div id="todayHolidayNotes" class="holiday-notes hidden"></div>
+          </div>
+        </section>
+
+        <section class="details-card side-card">
+          <div class="section-label">Selected day</div>
+          <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
+          <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
+          <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
+
+          <div class="holiday-block detail-holiday-block">
+            <div id="selectedHolidayStatus" class="detail-status ltr-text">Loading…</div>
+            <div id="selectedHolidayChips" class="chip-row hidden"></div>
+            <div id="selectedHolidayList" class="holiday-list hidden"></div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
 </html>

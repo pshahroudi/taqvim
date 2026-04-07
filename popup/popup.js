@@ -5,65 +5,37 @@ import {
   previousJalaliMonth,
   sameJalaliDate,
   toGregorian,
-  toJalali,
+  toJalali
 } from "../src/calendar/jalali.js";
+import { getSettings, normalizeSettings } from "../src/ui/storage.js";
 
 const root = document.documentElement;
 
 const themeToggle = document.getElementById("themeToggle");
 const openSettings = document.getElementById("openSettings");
 
+const monthSelectEl = document.getElementById("monthSelect");
+const yearSelectEl = document.getElementById("yearSelect");
+const weekdayRowEl = document.getElementById("weekdayRow");
+const calendarGridEl = document.getElementById("calendarGrid");
+
 const todayJalaliEl = document.getElementById("todayJalali");
 const todayGregorianEl = document.getElementById("todayGregorian");
 const todayHijriEl = document.getElementById("todayHijri");
-const holidayStatusEl = document.getElementById("holidayStatus");
-
-const monthTitleEl = document.getElementById("monthTitle");
-const monthSubtitleEl = document.getElementById("monthSubtitle");
-const calendarGridEl = document.getElementById("calendarGrid");
+const todayHolidayStatusEl = document.getElementById("todayHolidayStatus");
+const todayHolidayChipsEl = document.getElementById("todayHolidayChips");
+const todayHolidayNotesEl = document.getElementById("todayHolidayNotes");
 
 const selectedJalaliEl = document.getElementById("selectedJalali");
 const selectedGregorianEl = document.getElementById("selectedGregorian");
 const selectedHijriEl = document.getElementById("selectedHijri");
-const selectedHolidayEl = document.getElementById("selectedHoliday");
+const selectedHolidayStatusEl = document.getElementById("selectedHolidayStatus");
+const selectedHolidayChipsEl = document.getElementById("selectedHolidayChips");
+const selectedHolidayListEl = document.getElementById("selectedHolidayList");
 
 const prevMonthBtn = document.getElementById("prevMonth");
 const nextMonthBtn = document.getElementById("nextMonth");
 const goTodayBtn = document.getElementById("goToday");
-
-const jalaliFullFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
-
-const jalaliMonthFormatter = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-  year: "numeric",
-  month: "long",
-});
-
-const gregorianFullFormatter = new Intl.DateTimeFormat("en-US", {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
-
-const gregorianMonthFormatter = new Intl.DateTimeFormat("en-US", {
-  year: "numeric",
-  month: "long",
-});
-
-const gregorianMonthNameFormatter = new Intl.DateTimeFormat("en-US", {
-  month: "long",
-});
-
-const hijriFullFormatter = new Intl.DateTimeFormat("en-US-u-ca-islamic", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
 
 const todayDate = new Date();
 todayDate.setHours(12, 0, 0, 0);
@@ -71,32 +43,144 @@ todayDate.setHours(12, 0, 0, 0);
 const todayJalali = toJalali(
   todayDate.getFullYear(),
   todayDate.getMonth() + 1,
-  todayDate.getDate(),
+  todayDate.getDate()
 );
+
+const YEAR_RANGE = { min: 1300, max: 1500 };
+
+const JALALI_MONTH_NAMES = [
+  "فروردین",
+  "اردیبهشت",
+  "خرداد",
+  "تیر",
+  "مرداد",
+  "شهریور",
+  "مهر",
+  "آبان",
+  "آذر",
+  "دی",
+  "بهمن",
+  "اسفند"
+];
+
+const WEEKDAY_LABELS = {
+  saturday: ["ش", "ی", "د", "س", "چ", "پ", "ج"],
+  sunday: ["ی", "د", "س", "چ", "پ", "ج", "ش"],
+  monday: ["د", "س", "چ", "پ", "ج", "ش", "ی"]
+};
 
 const state = {
   view: {
     jy: todayJalali.jy,
-    jm: todayJalali.jm,
+    jm: todayJalali.jm
   },
   selected: {
     jy: todayJalali.jy,
     jm: todayJalali.jm,
-    jd: todayJalali.jd,
+    jd: todayJalali.jd
   },
   settings: {
     theme: "system",
     showHijri: false,
+    usePersianNumerals: true,
+    weekStart: "saturday",
+    showHolidays: true,
+    holidayTypes: {
+      officialIran: true,
+      cultural: true,
+      islamic: false
+    },
+    highlightWeekends: true,
+    autoJumpToTodayOnOpen: true
   },
+  holidayData: {
+    officialIran: [],
+    cultural: [],
+    islamic: []
+  }
 };
 
-async function getSettings() {
-  const result = await chrome.storage.sync.get(["theme", "showHijri"]);
+function getJalaliFormatter(usePersianNumerals) {
+  return new Intl.DateTimeFormat(
+    usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
+    {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }
+  );
+}
 
-  return {
-    theme: result.theme || "system",
-    showHijri: result.showHijri ?? false,
-  };
+function getJalaliMonthFormatter(usePersianNumerals) {
+  return new Intl.DateTimeFormat(
+    usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
+    {
+      year: "numeric",
+      month: "long"
+    }
+  );
+}
+
+const gregorianFullFormatter = new Intl.DateTimeFormat("en-US", {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+});
+
+const hijriFullFormatter = new Intl.DateTimeFormat("en-US-u-ca-islamic-nu-latn", {
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+});
+
+const hijriPartsFormatter = new Intl.DateTimeFormat("en-US-u-ca-islamic-nu-latn", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric"
+});
+
+function formatNumber(value) {
+  return new Intl.NumberFormat(
+    state.settings.usePersianNumerals ? "fa-IR" : "en-US",
+    { useGrouping: false }
+  ).format(value);
+}
+
+function formatYearOption(value) {
+  return new Intl.NumberFormat(
+    state.settings.usePersianNumerals ? "fa-IR" : "en-US",
+    { useGrouping: false, maximumFractionDigits: 0 }
+  ).format(value);
+}
+
+function getHolidayCategoryLabel(category) {
+  switch (category) {
+    case "officialIran":
+      return "رسمی";
+    case "cultural":
+      return "فرهنگی";
+    case "islamic":
+      return "اسلامی";
+    default:
+      return "مناسبت";
+  }
+}
+
+function getWeekIndex(jsDay) {
+  switch (state.settings.weekStart) {
+    case "sunday":
+      return jsDay;
+    case "monday":
+      return (jsDay + 6) % 7;
+    default:
+      return (jsDay + 1) % 7;
+  }
+}
+
+function isWeekend(date) {
+  return state.settings.highlightWeekends && date.getDay() === 5;
 }
 
 function applyTheme(theme) {
@@ -119,68 +203,183 @@ function toDisplayDateFromJalali(jy, jm, jd) {
   return createLocalDate(g.gy, g.gm, g.gd);
 }
 
-function getSaturdayIndex(jsDay) {
-  return (jsDay + 1) % 7;
+function getHijriParts(date) {
+  const parts = hijriPartsFormatter.formatToParts(date);
+  const valueOf = (type) => Number(parts.find((part) => part.type === type)?.value || 0);
+
+  return {
+    hy: valueOf("year"),
+    hm: valueOf("month"),
+    hd: valueOf("day")
+  };
 }
 
-function getGregorianMonthSubtitle(jy, jm) {
-  const daysInMonth = getJalaliMonthLength(jy, jm);
+async function loadHolidayData() {
+  const [officialIran, cultural, islamic] = await Promise.all([
+    fetch(chrome.runtime.getURL("src/data/holidays-ir.json")).then((response) => response.json()),
+    fetch(chrome.runtime.getURL("src/data/holidays-cultural.json")).then((response) => response.json()),
+    fetch(chrome.runtime.getURL("src/data/holidays-islamic.json")).then((response) => response.json())
+  ]);
 
-  const firstG = toGregorian(jy, jm, 1);
-  const lastG = toGregorian(jy, jm, daysInMonth);
+  state.holidayData = { officialIran, cultural, islamic };
+}
 
-  const firstDate = createLocalDate(firstG.gy, firstG.gm, firstG.gd);
-  const lastDate = createLocalDate(lastG.gy, lastG.gm, lastG.gd);
+function getActiveDatasets() {
+  const active = [];
+  if (state.settings.holidayTypes?.officialIran) active.push(...state.holidayData.officialIran);
+  if (state.settings.holidayTypes?.cultural) active.push(...state.holidayData.cultural);
+  if (state.settings.holidayTypes?.islamic) active.push(...state.holidayData.islamic);
+  return active;
+}
 
-  if (
-    firstDate.getFullYear() === lastDate.getFullYear() &&
-    firstDate.getMonth() === lastDate.getMonth()
-  ) {
-    return gregorianMonthFormatter.format(firstDate);
+function getHolidayRecordsForDate(date, jalaliDate) {
+  if (!state.settings.showHolidays) {
+    return [];
   }
 
-  if (firstDate.getFullYear() === lastDate.getFullYear()) {
-    return `${gregorianMonthNameFormatter.format(firstDate)} – ${gregorianMonthNameFormatter.format(lastDate)} ${lastDate.getFullYear()}`;
+  const hijri = getHijriParts(date);
+
+  return getActiveDatasets().filter((record) => {
+    if (record.calendar === "jalali") {
+      return record.month === jalaliDate.jm && record.day === jalaliDate.jd;
+    }
+
+    if (record.calendar === "hijri") {
+      return record.month === hijri.hm && record.day === hijri.hd;
+    }
+
+    return false;
+  });
+}
+
+function hasPublicHoliday(records) {
+  return records.some((record) => record.isHoliday);
+}
+
+function hasObservance(records) {
+  return records.some((record) => !record.isHoliday);
+}
+
+function dedupeHolidayRecords(records) {
+  const seen = new Set();
+  return records.filter((record) => {
+    const key = `${record.category}:${record.title}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function renderWeekdayHeader() {
+  const labels = WEEKDAY_LABELS[state.settings.weekStart] || WEEKDAY_LABELS.saturday;
+  weekdayRowEl.innerHTML = labels.map((label) => `<div class="rtl-text" dir="rtl">${label}</div>`).join("");
+}
+
+function renderHolidayChips(target, records) {
+  if (!records.length) {
+    target.innerHTML = "";
+    target.classList.add("hidden");
+    return;
   }
 
-  return `${gregorianMonthFormatter.format(firstDate)} – ${gregorianMonthFormatter.format(lastDate)}`;
+  target.innerHTML = dedupeHolidayRecords(records)
+    .map((record) => {
+      const chipClass = record.isHoliday ? "public" : "observance";
+      return `
+        <span class="chip ${chipClass}">
+          <span class="chip-dot"></span>
+          ${record.title}
+        </span>
+      `;
+    })
+    .join("");
+
+  target.classList.remove("hidden");
 }
 
-function renderTodayCard() {
-  todayJalaliEl.textContent = jalaliFullFormatter.format(todayDate);
-  todayGregorianEl.textContent = gregorianFullFormatter.format(todayDate);
-  todayHijriEl.textContent = hijriFullFormatter.format(todayDate);
-  todayHijriEl.classList.toggle("hidden", !state.settings.showHijri);
-  holidayStatusEl.textContent = "Holiday data comes next";
+function renderHolidayNotes(target, records) {
+  const notes = dedupeHolidayRecords(records)
+    .filter((record) => record.description || record.note)
+    .map((record) => `
+      <div class="note-card">
+        <div class="note-title">${record.title}</div>
+        ${record.description ? `<div class="note-body">${record.description}</div>` : ""}
+        ${record.note ? `<div class="note-body">${record.note}</div>` : ""}
+      </div>
+    `)
+    .join("");
+
+  target.innerHTML = notes;
+  target.classList.toggle("hidden", !notes);
 }
 
-function renderSelectedDetails() {
-  const selectedDate = toDisplayDateFromJalali(
-    state.selected.jy,
-    state.selected.jm,
-    state.selected.jd,
-  );
+function renderSelectedHolidayList(records) {
+  if (!records.length) {
+    selectedHolidayListEl.innerHTML = "";
+    selectedHolidayListEl.classList.add("hidden");
+    return;
+  }
 
-  selectedJalaliEl.textContent = jalaliFullFormatter.format(selectedDate);
-  selectedGregorianEl.textContent = gregorianFullFormatter.format(selectedDate);
-  selectedHijriEl.textContent = hijriFullFormatter.format(selectedDate);
-  selectedHijriEl.classList.toggle("hidden", !state.settings.showHijri);
-  selectedHolidayEl.textContent = "Holiday data comes next";
+  selectedHolidayListEl.innerHTML = dedupeHolidayRecords(records)
+    .map((record) => `
+      <div class="holiday-item">
+        <div class="holiday-item-title">${record.title}</div>
+        ${record.description ? `<div class="holiday-item-body">${record.description}</div>` : ""}
+        <div class="holiday-item-foot">
+          ${record.isHoliday ? "تعطیل رسمی" : "مناسبت"}
+          • ${getHolidayCategoryLabel(record.category)}
+          ${record.note ? `• ${record.note}` : ""}
+        </div>
+      </div>
+    `)
+    .join("");
+
+  selectedHolidayListEl.classList.remove("hidden");
+}
+
+function getHolidayStatus(records, forToday = false) {
+  if (!state.settings.showHolidays) {
+    return "Holiday layer is hidden";
+  }
+
+  if (!records.length) {
+    return forToday ? "No holiday today" : "No holiday on this day";
+  }
+
+  if (hasPublicHoliday(records) && hasObservance(records)) {
+    return "Public holiday and observances";
+  }
+
+  if (hasPublicHoliday(records)) {
+    return "Public holiday";
+  }
+
+  return "Observance";
 }
 
 function buildDayCell(jy, jm, jd, isMuted) {
   const g = toGregorian(jy, jm, jd);
   const date = createLocalDate(g.gy, g.gm, g.gd);
   const gDay = date.getDate();
+  const records = getHolidayRecordsForDate(date, { jy, jm, jd });
   const isToday = sameJalaliDate({ jy, jm, jd }, todayJalali);
   const isSelected = sameJalaliDate({ jy, jm, jd }, state.selected);
-  const isWeekend = getSaturdayIndex(date.getDay()) === 6;
 
   const classes = ["day"];
   if (isMuted) classes.push("muted");
   if (isToday) classes.push("today");
   if (isSelected) classes.push("selected");
-  if (isWeekend) classes.push("weekend");
+  if (isWeekend(date)) classes.push("weekend");
+  if (hasPublicHoliday(records)) classes.push("holiday-public");
+  else if (hasObservance(records)) classes.push("holiday-observance");
+
+  const markers = [];
+  if (hasPublicHoliday(records)) {
+    markers.push(`<span class="holiday-marker public" title="Public holiday"></span>`);
+  }
+  if (hasObservance(records)) {
+    markers.push(`<span class="holiday-marker observance" title="Observance"></span>`);
+  }
 
   return `
     <button
@@ -191,10 +390,86 @@ function buildDayCell(jy, jm, jd, isMuted) {
       data-jd="${jd}"
       aria-label="Jalali ${jy}/${jm}/${jd}"
     >
-      <span class="day-j">${jd}</span>
-      <span class="day-g">${gDay}</span>
+      <span class="day-j">${formatNumber(jd)}</span>
+      <span class="day-g">${formatNumber(gDay)}</span>
+      <span class="holiday-marker-row">${markers.join("")}</span>
     </button>
   `;
+}
+
+function renderTodayCard() {
+  const jalaliFormatter = getJalaliFormatter(state.settings.usePersianNumerals);
+  const todayRecords = getHolidayRecordsForDate(todayDate, todayJalali);
+
+  todayJalaliEl.textContent = jalaliFormatter.format(todayDate);
+  todayGregorianEl.textContent = gregorianFullFormatter.format(todayDate);
+  todayHijriEl.textContent = hijriFullFormatter.format(todayDate);
+  todayHijriEl.classList.toggle("hidden", !state.settings.showHijri);
+
+  todayHolidayStatusEl.textContent = todayRecords.length
+    ? `${getHolidayStatus(todayRecords, true)} • ${todayRecords.map((item) => item.title).join(" • ")}`
+    : getHolidayStatus(todayRecords, true);
+
+  renderHolidayChips(todayHolidayChipsEl, todayRecords);
+  renderHolidayNotes(todayHolidayNotesEl, todayRecords);
+}
+
+function renderSelectedDetails() {
+  const selectedDate = toDisplayDateFromJalali(
+    state.selected.jy,
+    state.selected.jm,
+    state.selected.jd
+  );
+  const selectedRecords = getHolidayRecordsForDate(selectedDate, state.selected);
+  const jalaliFormatter = getJalaliFormatter(state.settings.usePersianNumerals);
+
+  selectedJalaliEl.textContent = jalaliFormatter.format(selectedDate);
+  selectedGregorianEl.textContent = gregorianFullFormatter.format(selectedDate);
+  selectedHijriEl.textContent = hijriFullFormatter.format(selectedDate);
+  selectedHijriEl.classList.toggle("hidden", !state.settings.showHijri);
+  selectedHolidayStatusEl.textContent = selectedRecords.length
+    ? `${getHolidayStatus(selectedRecords)} • ${selectedRecords.map((item) => item.title).join(" • ")}`
+    : getHolidayStatus(selectedRecords);
+
+  renderHolidayChips(selectedHolidayChipsEl, selectedRecords);
+  renderSelectedHolidayList(selectedRecords);
+}
+
+function getGregorianRangeForView(jy, jm) {
+  const first = toGregorian(jy, jm, 1);
+  const last = toGregorian(jy, jm, getJalaliMonthLength(jy, jm));
+  const firstDate = createLocalDate(first.gy, first.gm, first.gd);
+  const lastDate = createLocalDate(last.gy, last.gm, last.gd);
+
+  const firstMonth = firstDate.toLocaleString("en-US", { month: "long" });
+  const lastMonth = lastDate.toLocaleString("en-US", { month: "long" });
+
+  if (firstDate.getFullYear() === lastDate.getFullYear() && firstDate.getMonth() === lastDate.getMonth()) {
+    return `${firstMonth} ${lastDate.getFullYear()}`;
+  }
+
+  if (firstDate.getFullYear() === lastDate.getFullYear()) {
+    return `${firstMonth} – ${lastMonth} ${lastDate.getFullYear()}`;
+  }
+
+  return `${firstMonth} ${firstDate.getFullYear()} – ${lastMonth} ${lastDate.getFullYear()}`;
+}
+
+function renderJumpControls() {
+  monthSelectEl.innerHTML = JALALI_MONTH_NAMES.map((monthName, index) => {
+    const jm = index + 1;
+    return `<option value="${jm}">${monthName}</option>`;
+  }).join("");
+
+  yearSelectEl.innerHTML = Array.from(
+    { length: YEAR_RANGE.max - YEAR_RANGE.min + 1 },
+    (_, index) => YEAR_RANGE.min + index
+  )
+    .map((year) => `<option value="${year}">${formatYearOption(year)}</option>`)
+    .join("");
+
+  monthSelectEl.value = String(state.view.jm);
+  yearSelectEl.value = String(state.view.jy);
 }
 
 function renderMonth() {
@@ -203,14 +478,11 @@ function renderMonth() {
 
   const firstG = toGregorian(jy, jm, 1);
   const firstDate = createLocalDate(firstG.gy, firstG.gm, firstG.gd);
-  const firstWeekdayIndex = getSaturdayIndex(firstDate.getDay());
+  const firstWeekdayIndex = getWeekIndex(firstDate.getDay());
 
   const prev = previousJalaliMonth(jy, jm);
   const next = nextJalaliMonth(jy, jm);
   const prevMonthLength = getJalaliMonthLength(prev.jy, prev.jm);
-
-  monthTitleEl.textContent = jalaliMonthFormatter.format(firstDate);
-  monthSubtitleEl.textContent = getGregorianMonthSubtitle(jy, jm);
 
   const totalCells = Math.ceil((firstWeekdayIndex + daysInMonth) / 7) * 7;
   let html = "";
@@ -233,10 +505,12 @@ function renderMonth() {
   }
 
   calendarGridEl.innerHTML = html;
+  renderJumpControls();
 }
 
 function render() {
   applyTheme(state.settings.theme);
+  renderWeekdayHeader();
   renderTodayCard();
   renderMonth();
   renderSelectedDetails();
@@ -259,7 +533,7 @@ function goToMonth(jy, jm) {
   state.selected = {
     jy,
     jm,
-    jd: Math.min(state.selected.jd, maxDay),
+    jd: Math.min(state.selected.jd, maxDay)
   };
 
   render();
@@ -271,13 +545,11 @@ openSettings.addEventListener("click", () => {
   chrome.runtime.openOptionsPage();
 });
 
-window
-  .matchMedia("(prefers-color-scheme: dark)")
-  .addEventListener("change", () => {
-    if (state.settings.theme === "system") {
-      applyTheme("system");
-    }
-  });
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+  if (state.settings.theme === "system") {
+    applyTheme("system");
+  }
+});
 
 prevMonthBtn.addEventListener("click", () => {
   const prev = previousJalaliMonth(state.view.jy, state.view.jm);
@@ -292,16 +564,24 @@ nextMonthBtn.addEventListener("click", () => {
 goTodayBtn.addEventListener("click", () => {
   state.view = {
     jy: todayJalali.jy,
-    jm: todayJalali.jm,
+    jm: todayJalali.jm
   };
 
   state.selected = {
     jy: todayJalali.jy,
     jm: todayJalali.jm,
-    jd: todayJalali.jd,
+    jd: todayJalali.jd
   };
 
   render();
+});
+
+monthSelectEl.addEventListener("change", () => {
+  goToMonth(state.view.jy, Number(monthSelectEl.value));
+});
+
+yearSelectEl.addEventListener("change", () => {
+  goToMonth(Number(yearSelectEl.value), state.view.jm);
 });
 
 calendarGridEl.addEventListener("click", (event) => {
@@ -321,9 +601,32 @@ calendarGridEl.addEventListener("click", (event) => {
   render();
 });
 
+chrome.storage.onChanged.addListener(async (changes, areaName) => {
+  if (areaName !== "sync") return;
+
+  const updates = {};
+  for (const [key, change] of Object.entries(changes)) {
+    updates[key] = change.newValue;
+  }
+
+  state.settings = normalizeSettings({ ...state.settings, ...updates });
+  render();
+});
+
 async function init() {
   state.settings = await getSettings();
+  await loadHolidayData();
+
+  if (state.settings.autoJumpToTodayOnOpen) {
+    state.view = { jy: todayJalali.jy, jm: todayJalali.jm };
+    state.selected = { jy: todayJalali.jy, jm: todayJalali.jm, jd: todayJalali.jd };
+  }
+
   render();
 }
 
-init();
+init().catch((error) => {
+  console.error("Taqvim popup init failed:", error);
+  todayHolidayStatusEl.textContent = "Could not load holiday data";
+  selectedHolidayStatusEl.textContent = "Could not load holiday data";
+});

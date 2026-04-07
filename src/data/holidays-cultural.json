@@ -1,0 +1,82 @@
+[
+  {
+    "id": "tirgan",
+    "calendar": "jalali",
+    "month": 4,
+    "day": 13,
+    "title": "تیرگان",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "جشن تیرگان از جشن‌های کهن ایرانی مرتبط با باران و آرش کمانگیر."
+  },
+  {
+    "id": "amordadegan",
+    "calendar": "jalali",
+    "month": 5,
+    "day": 7,
+    "title": "امردادگان",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "جشن امردادگان؛ از آیین‌های باستانی ایرانی."
+  },
+  {
+    "id": "mehrgan",
+    "calendar": "jalali",
+    "month": 7,
+    "day": 16,
+    "title": "مهرگان",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "جشن مهرگان؛ یکی از مهم‌ترین جشن‌های کهن ایرانی."
+  },
+  {
+    "id": "abangan",
+    "calendar": "jalali",
+    "month": 8,
+    "day": 10,
+    "title": "آبانگان",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "جشنی ایرانی در پیوند با آب و ایزدبانوی آناهیتا."
+  },
+  {
+    "id": "azar-celebration",
+    "calendar": "jalali",
+    "month": 9,
+    "day": 9,
+    "title": "آذرگان",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "آیین سنتی ایرانی مرتبط با آذر و فروغ."
+  },
+  {
+    "id": "yalda",
+    "calendar": "jalali",
+    "month": 9,
+    "day": 30,
+    "title": "شب یلدا",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "بلندترین شب سال و از مشهورترین آیین‌های ایرانی."
+  },
+  {
+    "id": "sadeh",
+    "calendar": "jalali",
+    "month": 11,
+    "day": 10,
+    "title": "سده",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "جشن سده؛ آیین کهن ایرانی با محور آتش و روشنایی."
+  },
+  {
+    "id": "sepandarmazgan",
+    "calendar": "jalali",
+    "month": 12,
+    "day": 5,
+    "title": "سپندارمذگان",
+    "category": "cultural",
+    "isHoliday": false,
+    "description": "آیینی ایرانی که به مهر، زمین و زن نسبت داده می‌شود."
+  }
+]
