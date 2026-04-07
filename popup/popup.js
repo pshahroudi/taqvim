@@ -24,7 +24,6 @@ const todayGregorianEl = document.getElementById("todayGregorian");
 const todayHijriEl = document.getElementById("todayHijri");
 const todayHolidayStatusEl = document.getElementById("todayHolidayStatus");
 const todayHolidayChipsEl = document.getElementById("todayHolidayChips");
-const todayHolidayNotesEl = document.getElementById("todayHolidayNotes");
 
 const selectedJalaliEl = document.getElementById("selectedJalali");
 const selectedGregorianEl = document.getElementById("selectedGregorian");
@@ -100,28 +99,6 @@ const state = {
   }
 };
 
-function getJalaliFormatter(usePersianNumerals) {
-  return new Intl.DateTimeFormat(
-    usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
-    {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    }
-  );
-}
-
-function getJalaliMonthFormatter(usePersianNumerals) {
-  return new Intl.DateTimeFormat(
-    usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
-    {
-      year: "numeric",
-      month: "long"
-    }
-  );
-}
-
 const gregorianFullFormatter = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
   year: "numeric",
@@ -141,6 +118,18 @@ const hijriPartsFormatter = new Intl.DateTimeFormat("en-US-u-ca-islamic-nu-latn"
   day: "numeric"
 });
 
+function getJalaliFormatter(usePersianNumerals) {
+  return new Intl.DateTimeFormat(
+    usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
+    {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    }
+  );
+}
+
 function formatNumber(value) {
   return new Intl.NumberFormat(
     state.settings.usePersianNumerals ? "fa-IR" : "en-US",
@@ -158,11 +147,11 @@ function formatYearOption(value) {
 function getHolidayCategoryLabel(category) {
   switch (category) {
     case "officialIran":
-      return "رسمی";
+      return "تعطیل رسمی";
     case "cultural":
-      return "فرهنگی";
+      return "مناسبت فرهنگی";
     case "islamic":
-      return "اسلامی";
+      return "مناسبت اسلامی";
     default:
       return "مناسبت";
   }
@@ -270,76 +259,9 @@ function dedupeHolidayRecords(records) {
   });
 }
 
-function renderWeekdayHeader() {
-  const labels = WEEKDAY_LABELS[state.settings.weekStart] || WEEKDAY_LABELS.saturday;
-  weekdayRowEl.innerHTML = labels.map((label) => `<div class="rtl-text" dir="rtl">${label}</div>`).join("");
-}
-
-function renderHolidayChips(target, records) {
-  if (!records.length) {
-    target.innerHTML = "";
-    target.classList.add("hidden");
-    return;
-  }
-
-  target.innerHTML = dedupeHolidayRecords(records)
-    .map((record) => {
-      const chipClass = record.isHoliday ? "public" : "observance";
-      return `
-        <span class="chip ${chipClass}">
-          <span class="chip-dot"></span>
-          ${record.title}
-        </span>
-      `;
-    })
-    .join("");
-
-  target.classList.remove("hidden");
-}
-
-function renderHolidayNotes(target, records) {
-  const notes = dedupeHolidayRecords(records)
-    .filter((record) => record.description || record.note)
-    .map((record) => `
-      <div class="note-card">
-        <div class="note-title">${record.title}</div>
-        ${record.description ? `<div class="note-body">${record.description}</div>` : ""}
-        ${record.note ? `<div class="note-body">${record.note}</div>` : ""}
-      </div>
-    `)
-    .join("");
-
-  target.innerHTML = notes;
-  target.classList.toggle("hidden", !notes);
-}
-
-function renderSelectedHolidayList(records) {
-  if (!records.length) {
-    selectedHolidayListEl.innerHTML = "";
-    selectedHolidayListEl.classList.add("hidden");
-    return;
-  }
-
-  selectedHolidayListEl.innerHTML = dedupeHolidayRecords(records)
-    .map((record) => `
-      <div class="holiday-item">
-        <div class="holiday-item-title">${record.title}</div>
-        ${record.description ? `<div class="holiday-item-body">${record.description}</div>` : ""}
-        <div class="holiday-item-foot">
-          ${record.isHoliday ? "تعطیل رسمی" : "مناسبت"}
-          • ${getHolidayCategoryLabel(record.category)}
-          ${record.note ? `• ${record.note}` : ""}
-        </div>
-      </div>
-    `)
-    .join("");
-
-  selectedHolidayListEl.classList.remove("hidden");
-}
-
 function getHolidayStatus(records, forToday = false) {
   if (!state.settings.showHolidays) {
-    return "Holiday layer is hidden";
+    return "Holiday layer hidden";
   }
 
   if (!records.length) {
@@ -355,6 +277,64 @@ function getHolidayStatus(records, forToday = false) {
   }
 
   return "Observance";
+}
+
+function renderWeekdayHeader() {
+  const labels = WEEKDAY_LABELS[state.settings.weekStart] || WEEKDAY_LABELS.saturday;
+  weekdayRowEl.innerHTML = labels
+    .map((label) => `<div class="rtl-text" dir="rtl">${label}</div>`)
+    .join("");
+}
+
+function renderHolidayChips(target, records) {
+  if (!target) return;
+
+  const uniqueRecords = dedupeHolidayRecords(records);
+
+  if (!uniqueRecords.length) {
+    target.innerHTML = "";
+    target.classList.add("hidden");
+    return;
+  }
+
+  target.innerHTML = uniqueRecords
+    .map((record) => {
+      const chipClass = record.isHoliday ? "public" : "observance";
+      return `
+        <span class="chip ${chipClass}">
+          <span class="chip-dot"></span>
+          ${record.title}
+        </span>
+      `;
+    })
+    .join("");
+
+  target.classList.remove("hidden");
+}
+
+function renderSelectedHolidayList(records) {
+  const uniqueRecords = dedupeHolidayRecords(records);
+
+  if (!uniqueRecords.length) {
+    selectedHolidayListEl.innerHTML = "";
+    selectedHolidayListEl.classList.add("hidden");
+    return;
+  }
+
+  selectedHolidayListEl.innerHTML = uniqueRecords
+    .map((record) => `
+      <div class="holiday-item">
+        <div class="holiday-item-title">${record.title}</div>
+        ${record.description ? `<div class="holiday-item-body">${record.description}</div>` : ""}
+        <div class="holiday-item-foot">
+          ${getHolidayCategoryLabel(record.category)}
+          ${record.note ? ` • ${record.note}` : ""}
+        </div>
+      </div>
+    `)
+    .join("");
+
+  selectedHolidayListEl.classList.remove("hidden");
 }
 
 function buildDayCell(jy, jm, jd, isMuted) {
@@ -375,10 +355,10 @@ function buildDayCell(jy, jm, jd, isMuted) {
 
   const markers = [];
   if (hasPublicHoliday(records)) {
-    markers.push(`<span class="holiday-marker public" title="Public holiday"></span>`);
+    markers.push('<span class="holiday-marker public" title="Public holiday"></span>');
   }
   if (hasObservance(records)) {
-    markers.push(`<span class="holiday-marker observance" title="Observance"></span>`);
+    markers.push('<span class="holiday-marker observance" title="Observance"></span>');
   }
 
   return `
@@ -406,12 +386,8 @@ function renderTodayCard() {
   todayHijriEl.textContent = hijriFullFormatter.format(todayDate);
   todayHijriEl.classList.toggle("hidden", !state.settings.showHijri);
 
-  todayHolidayStatusEl.textContent = todayRecords.length
-    ? `${getHolidayStatus(todayRecords, true)} • ${todayRecords.map((item) => item.title).join(" • ")}`
-    : getHolidayStatus(todayRecords, true);
-
+  todayHolidayStatusEl.textContent = getHolidayStatus(todayRecords, true);
   renderHolidayChips(todayHolidayChipsEl, todayRecords);
-  renderHolidayNotes(todayHolidayNotesEl, todayRecords);
 }
 
 function renderSelectedDetails() {
@@ -427,32 +403,10 @@ function renderSelectedDetails() {
   selectedGregorianEl.textContent = gregorianFullFormatter.format(selectedDate);
   selectedHijriEl.textContent = hijriFullFormatter.format(selectedDate);
   selectedHijriEl.classList.toggle("hidden", !state.settings.showHijri);
-  selectedHolidayStatusEl.textContent = selectedRecords.length
-    ? `${getHolidayStatus(selectedRecords)} • ${selectedRecords.map((item) => item.title).join(" • ")}`
-    : getHolidayStatus(selectedRecords);
 
+  selectedHolidayStatusEl.textContent = getHolidayStatus(selectedRecords, false);
   renderHolidayChips(selectedHolidayChipsEl, selectedRecords);
   renderSelectedHolidayList(selectedRecords);
-}
-
-function getGregorianRangeForView(jy, jm) {
-  const first = toGregorian(jy, jm, 1);
-  const last = toGregorian(jy, jm, getJalaliMonthLength(jy, jm));
-  const firstDate = createLocalDate(first.gy, first.gm, first.gd);
-  const lastDate = createLocalDate(last.gy, last.gm, last.gd);
-
-  const firstMonth = firstDate.toLocaleString("en-US", { month: "long" });
-  const lastMonth = lastDate.toLocaleString("en-US", { month: "long" });
-
-  if (firstDate.getFullYear() === lastDate.getFullYear() && firstDate.getMonth() === lastDate.getMonth()) {
-    return `${firstMonth} ${lastDate.getFullYear()}`;
-  }
-
-  if (firstDate.getFullYear() === lastDate.getFullYear()) {
-    return `${firstMonth} – ${lastMonth} ${lastDate.getFullYear()}`;
-  }
-
-  return `${firstMonth} ${firstDate.getFullYear()} – ${lastMonth} ${lastDate.getFullYear()}`;
 }
 
 function renderJumpControls() {

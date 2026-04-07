@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <div class="app">
+  <div class="app-shell">
     <header class="topbar">
       <div class="brand-wrap">
         <div class="brand">Taqvim</div>
@@ -21,21 +21,21 @@
     </header>
 
     <main class="workspace">
-      <section class="calendar-shell">
-        <div class="calendar-header">
-          <div class="calendar-toolbar">
+      <section class="calendar-shell" aria-label="Calendar panel">
+        <div class="controls-row">
+          <div class="jump-controls">
             <label class="field field-month">
               <span class="field-label">Month</span>
-              <select id="monthSelect" class="field-control field-control-fa" dir="rtl"></select>
+              <select id="monthSelect" class="field-control field-control-fa" dir="rtl" aria-label="Persian month"></select>
             </label>
 
             <label class="field field-year">
               <span class="field-label">Year</span>
-              <select id="yearSelect" class="field-control field-control-fa" dir="rtl"></select>
+              <select id="yearSelect" class="field-control field-control-fa" dir="rtl" aria-label="Persian year"></select>
             </label>
           </div>
 
-          <div class="calendar-actions" aria-label="Month navigation">
+          <div class="calendar-nav" aria-label="Month navigation">
             <button id="prevMonth" class="nav-btn" type="button" aria-label="Previous month">‹</button>
             <button id="goToday" class="today-btn" type="button">Today</button>
             <button id="nextMonth" class="nav-btn" type="button" aria-label="Next month">›</button>
@@ -47,29 +47,35 @@
       </section>
 
       <aside class="sidebar-shell">
-        <section class="today-card side-card">
+        <section class="side-card today-card">
           <div class="section-label">Today</div>
-          <div id="todayJalali" class="jalali-date rtl-text" lang="fa" dir="rtl"></div>
-          <div id="todayGregorian" class="gregorian-date ltr-text" lang="en" dir="ltr"></div>
-          <div id="todayHijri" class="hijri-date ltr-text hidden" lang="en" dir="ltr"></div>
+          <div class="date-stack">
+            <div id="todayJalali" class="jalali-date rtl-text" lang="fa" dir="rtl"></div>
+            <div id="todayGregorian" class="gregorian-date ltr-text" lang="en" dir="ltr"></div>
+            <div id="todayHijri" class="hijri-date ltr-text hidden" lang="en" dir="ltr"></div>
+          </div>
 
-          <div class="holiday-block">
-            <div id="todayHolidayStatus" class="holiday-status ltr-text">Loading…</div>
+          <div class="holiday-panel compact-panel">
+            <div id="todayHolidayStatus" class="status-line ltr-text">Loading…</div>
             <div id="todayHolidayChips" class="chip-row hidden"></div>
-            <div id="todayHolidayNotes" class="holiday-notes hidden"></div>
           </div>
         </section>
 
-        <section class="details-card side-card">
+        <section class="side-card details-card">
           <div class="section-label">Selected day</div>
-          <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
-          <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
-          <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
 
-          <div class="holiday-block detail-holiday-block">
-            <div id="selectedHolidayStatus" class="detail-status ltr-text">Loading…</div>
-            <div id="selectedHolidayChips" class="chip-row hidden"></div>
-            <div id="selectedHolidayList" class="holiday-list hidden"></div>
+          <div class="details-scroll">
+            <div class="date-stack">
+              <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
+              <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
+              <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
+            </div>
+
+            <div class="holiday-panel">
+              <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
+              <div id="selectedHolidayChips" class="chip-row hidden"></div>
+              <div id="selectedHolidayList" class="holiday-list hidden"></div>
+            </div>
           </div>
         </section>
       </aside>
