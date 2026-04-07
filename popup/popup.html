@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taqvim</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand-wrap">
+          <div class="brand">Taqvim</div>
+          <div class="sub">Persian Calendar</div>
+        </div>
+
+        <div class="actions">
+          <button id="themeToggle" class="icon-btn" title="Toggle theme">
+            🌓
+          </button>
+          <button id="openSettings" class="icon-btn" title="Open settings">
+            ⚙
+          </button>
+        </div>
+      </header>
+
+      <section class="today-card">
+        <div class="section-label">Today</div>
+        <div id="jalaliDate" class="jalali-date">۱۸ فروردین ۱۴۰۵</div>
+        <div id="gregorianDate" class="gregorian-date">
+          Tuesday, April 7, 2026
+        </div>
+        <div id="hijriDate" class="hijri-date hidden">18 Ramadan 1447</div>
+        <div id="holidayStatus" class="holiday-status">No holiday today</div>
+      </section>
+
+      <section class="tabs">
+        <button class="tab active">Calendar</button>
+        <button class="tab">Convert</button>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <button id="prevMonth" class="nav-btn">‹</button>
+          <div class="month-group">
+            <div class="month-title">فروردین ۱۴۰۵</div>
+            <div class="month-subtitle">April 2026</div>
+          </div>
+          <button id="nextMonth" class="nav-btn">›</button>
+        </div>
+
+        <div class="weekday-row">
+          <div>Sat</div>
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+        </div>
+
+        <div class="calendar-grid">
+          <div class="day muted">29</div>
+          <div class="day muted">30</div>
+          <div class="day today">
+            <span class="day-j">1</span>
+            <span class="day-g">21</span>
+          </div>
+          <div class="day">
+            <span class="day-j">2</span>
+            <span class="day-g">22</span>
+          </div>
+          <div class="day">
+            <span class="day-j">3</span>
+            <span class="day-g">23</span>
+          </div>
+          <div class="day holiday">
+            <span class="day-j">4</span>
+            <span class="day-g">24</span>
+          </div>
+          <div class="day">
+            <span class="day-j">5</span>
+            <span class="day-g">25</span>
+          </div>
+
+          <div class="day">
+            <span class="day-j">6</span><span class="day-g">26</span>
+          </div>
+          <div class="day">
+            <span class="day-j">7</span><span class="day-g">27</span>
+          </div>
+          <div class="day">
+            <span class="day-j">8</span><span class="day-g">28</span>
+          </div>
+          <div class="day">
+            <span class="day-j">9</span><span class="day-g">29</span>
+          </div>
+          <div class="day">
+            <span class="day-j">10</span><span class="day-g">30</span>
+          </div>
+          <div class="day">
+            <span class="day-j">11</span><span class="day-g">31</span>
+          </div>
+          <div class="day">
+            <span class="day-j">12</span><span class="day-g">1</span>
+          </div>
+
+          <div class="day">
+            <span class="day-j">13</span><span class="day-g">2</span>
+          </div>
+          <div class="day">
+            <span class="day-j">14</span><span class="day-g">3</span>
+          </div>
+          <div class="day">
+            <span class="day-j">15</span><span class="day-g">4</span>
+          </div>
+          <div class="day selected">
+            <span class="day-j">16</span><span class="day-g">5</span>
+          </div>
+          <div class="day">
+            <span class="day-j">17</span><span class="day-g">6</span>
+          </div>
+          <div class="day">
+            <span class="day-j">18</span><span class="day-g">7</span>
+          </div>
+          <div class="day">
+            <span class="day-j">19</span><span class="day-g">8</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="details-card">
+        <div class="section-label">Selected day</div>
+        <div class="detail-primary">سه‌شنبه ۱۸ فروردین ۱۴۰۵</div>
+        <div class="detail-secondary">Tuesday, April 7, 2026</div>
+        <div class="detail-secondary">No holiday</div>
+      </section>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Taqvim",
+  "version": "0.1.0",
+  "description": "Fast Jalali calendar with Gregorian, optional Hijri, holidays, and date conversion.",
+  "action": {
+    "default_title": "Taqvim",
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "permissions": ["storage", "alarms"],
+  "options_page": "options/options.html"
+}
