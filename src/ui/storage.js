@@ -1,138 +1,139 @@
-export const DEFAULT_SETTINGS = {
+const DEFAULT_SETTINGS = {
   theme: "system",
   showHijri: false,
   usePersianNumerals: true,
   weekStart: "saturday",
   showHolidays: true,
-  highlightWeekends: true,
-  autoJumpToTodayOnOpen: true,
-  compactMode: false,
   holidayTypes: {
     officialIran: true,
     cultural: true,
     islamic: false
-  }
+  },
+  highlightWeekends: true,
+  autoJumpToTodayOnOpen: true
 };
 
-function deepClone(value) {
-  return JSON.parse(JSON.stringify(value));
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
-function normalizeHolidayTypes(rawHolidayTypes = {}) {
+function normalizeHolidayTypes(value) {
+  const source = isPlainObject(value) ? value : {};
   return {
-    officialIran: Boolean(rawHolidayTypes.officialIran),
-    cultural: Boolean(rawHolidayTypes.cultural),
-    islamic: Boolean(rawHolidayTypes.islamic)
+    officialIran: source.officialIran ?? DEFAULT_SETTINGS.holidayTypes.officialIran,
+    cultural: source.cultural ?? DEFAULT_SETTINGS.holidayTypes.cultural,
+    islamic: source.islamic ?? DEFAULT_SETTINGS.holidayTypes.islamic
   };
 }
 
-export function normalizeSettings(raw = {}) {
-  const merged = {
-    ...deepClone(DEFAULT_SETTINGS),
-    ...(raw || {})
+export function normalizeSettings(input = {}) {
+  const source = isPlainObject(input.settings) ? input.settings : input;
+
+  return {
+    ...DEFAULT_SETTINGS,
+    ...source,
+    theme: ["system", "light", "dark"].includes(source.theme)
+      ? source.theme
+      : DEFAULT_SETTINGS.theme,
+    showHijri: Boolean(source.showHijri ?? DEFAULT_SETTINGS.showHijri),
+    usePersianNumerals: Boolean(
+      source.usePersianNumerals ?? DEFAULT_SETTINGS.usePersianNumerals
+    ),
+    weekStart: ["saturday", "sunday", "monday"].includes(source.weekStart)
+      ? source.weekStart
+      : DEFAULT_SETTINGS.weekStart,
+    showHolidays: Boolean(source.showHolidays ?? DEFAULT_SETTINGS.showHolidays),
+    holidayTypes: normalizeHolidayTypes(source.holidayTypes),
+    highlightWeekends: Boolean(
+      source.highlightWeekends ?? DEFAULT_SETTINGS.highlightWeekends
+    ),
+    autoJumpToTodayOnOpen: Boolean(
+      source.autoJumpToTodayOnOpen ?? DEFAULT_SETTINGS.autoJumpToTodayOnOpen
+    )
   };
+}
 
-  const resolvedAutoJump = raw?.autoJumpToTodayOnOpen ?? raw?.autoJumpToToday;
+function mergeSettings(base, patch = {}) {
+  const normalizedBase = normalizeSettings(base);
+  const normalizedPatch = isPlainObject(patch) ? patch : {};
 
-  merged.holidayTypes = normalizeHolidayTypes({
-    ...DEFAULT_SETTINGS.holidayTypes,
-    ...(raw?.holidayTypes || {})
+  return normalizeSettings({
+    ...normalizedBase,
+    ...normalizedPatch,
+    holidayTypes: {
+      ...normalizedBase.holidayTypes,
+      ...(isPlainObject(normalizedPatch.holidayTypes) ? normalizedPatch.holidayTypes : {})
+    }
   });
-
-  if (!["system", "light", "dark"].includes(merged.theme)) {
-    merged.theme = DEFAULT_SETTINGS.theme;
-  }
-
-  if (!["saturday", "sunday", "monday"].includes(merged.weekStart)) {
-    merged.weekStart = DEFAULT_SETTINGS.weekStart;
-  }
-
-  merged.showHijri = Boolean(merged.showHijri);
-  merged.usePersianNumerals = Boolean(merged.usePersianNumerals);
-  merged.showHolidays = Boolean(merged.showHolidays);
-  merged.highlightWeekends = Boolean(merged.highlightWeekends);
-  merged.compactMode = Boolean(merged.compactMode);
-  merged.autoJumpToTodayOnOpen =
-    resolvedAutoJump === undefined
-      ? DEFAULT_SETTINGS.autoJumpToTodayOnOpen
-      : Boolean(resolvedAutoJump);
-
-  return merged;
 }
 
-function toStorageShape(settings) {
+function toStoragePayload(settings) {
   const normalized = normalizeSettings(settings);
-
   return {
-    ...normalized,
-    autoJumpToToday: normalized.autoJumpToTodayOnOpen
+    theme: normalized.theme,
+    showHijri: normalized.showHijri,
+    usePersianNumerals: normalized.usePersianNumerals,
+    weekStart: normalized.weekStart,
+    showHolidays: normalized.showHolidays,
+    holidayTypes: normalized.holidayTypes,
+    highlightWeekends: normalized.highlightWeekends,
+    autoJumpToTodayOnOpen: normalized.autoJumpToTodayOnOpen
   };
+}
+
+function needsMigration(raw) {
+  if (!isPlainObject(raw)) return false;
+  if (isPlainObject(raw.settings)) return true;
+
+  const requiredKeys = [
+    "theme",
+    "showHijri",
+    "usePersianNumerals",
+    "weekStart",
+    "showHolidays",
+    "holidayTypes",
+    "highlightWeekends",
+    "autoJumpToTodayOnOpen"
+  ];
+
+  return requiredKeys.some((key) => !(key in raw));
+}
+
+async function writeSettings(settings, { removeLegacy = true } = {}) {
+  const normalized = normalizeSettings(settings);
+  const payload = toStoragePayload(normalized);
+
+  if (removeLegacy) {
+    try {
+      await chrome.storage.sync.remove("settings");
+    } catch {
+      // ignore remove failures so settings can still be written
+    }
+  }
+
+  await chrome.storage.sync.set(payload);
+  return normalized;
 }
 
 export async function getSettings() {
   const raw = await chrome.storage.sync.get(null);
-  return normalizeSettings(raw);
-}
+  const normalized = normalizeSettings(raw);
 
-export async function saveSettings(partial = {}) {
-  const current = await getSettings();
-  const next = normalizeSettings({
-    ...current,
-    ...partial,
-    holidayTypes: {
-      ...current.holidayTypes,
-      ...(partial?.holidayTypes || {})
-    }
-  });
-
-  await chrome.storage.sync.set(toStorageShape(next));
-  return next;
-}
-
-export async function setSettings(partial = {}) {
-  return saveSettings(partial);
-}
-
-export async function updateSettings(partial = {}) {
-  return saveSettings(partial);
-}
-
-export async function resetSettings() {
-  const next = deepClone(DEFAULT_SETTINGS);
-  await chrome.storage.sync.clear();
-  await chrome.storage.sync.set(toStorageShape(next));
-  return next;
-}
-
-export function watchSettings(callback) {
-  const handler = async (changes, areaName) => {
-    if (areaName !== "sync") return;
-
-    const nextPartial = {};
-
-    for (const [key, change] of Object.entries(changes)) {
-      nextPartial[key] = change.newValue;
-    }
-
-    callback(normalizeSettings(nextPartial));
-  };
-
-  chrome.storage.onChanged.addListener(handler);
-  return () => chrome.storage.onChanged.removeListener(handler);
-}
-
-export function getManifestVersion() {
-  try {
-    return chrome.runtime.getManifest().version || "0.1.0";
-  } catch {
-    return "0.1.0";
+  if (needsMigration(raw)) {
+    await writeSettings(normalized, { removeLegacy: true });
   }
+
+  return normalized;
 }
 
-export function normalizeWeekStart(weekStart) {
-  return normalizeSettings({ weekStart }).weekStart;
+export async function saveSettingsPatch(patch) {
+  const current = await getSettings();
+  const next = mergeSettings(current, patch);
+  return writeSettings(next, { removeLegacy: true });
 }
 
-export function settingsFromStorage(raw) {
-  return normalizeSettings(raw);
+export async function setSettings(settings) {
+  return writeSettings(settings, { removeLegacy: true });
 }
+
+export { DEFAULT_SETTINGS };

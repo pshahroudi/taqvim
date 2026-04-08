@@ -7,7 +7,7 @@ import {
   toGregorian,
   toJalali
 } from "../src/calendar/jalali.js";
-import { getSettings, normalizeSettings } from "../src/ui/storage.js";
+import { getSettings, normalizeSettings, saveSettingsPatch } from "../src/ui/storage.js";
 
 const root = document.documentElement;
 
@@ -671,9 +671,9 @@ async function cycleTheme() {
   const currentIndex = order.indexOf(state.settings.theme);
   const nextTheme = order[(currentIndex + 1) % order.length];
 
-  state.settings.theme = nextTheme;
-  await chrome.storage.sync.set({ theme: nextTheme });
-  applyTheme(nextTheme);
+  state.settings = normalizeSettings({ ...state.settings, theme: nextTheme });
+  await saveSettingsPatch({ theme: nextTheme });
+  applyTheme(state.settings.theme);
 }
 
 function syncDatePickerToView() {
@@ -812,15 +812,10 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-chrome.storage.onChanged.addListener(async (changes, areaName) => {
+chrome.storage.onChanged.addListener(async (_changes, areaName) => {
   if (areaName !== "sync") return;
 
-  const updates = {};
-  for (const [key, change] of Object.entries(changes)) {
-    updates[key] = change.newValue;
-  }
-
-  state.settings = normalizeSettings({ ...state.settings, ...updates });
+  state.settings = await getSettings();
   render();
 });
 
