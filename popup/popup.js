@@ -19,6 +19,9 @@ const yearSelectEl = document.getElementById("yearSelect");
 const weekdayRowEl = document.getElementById("weekdayRow");
 const calendarGridEl = document.getElementById("calendarGrid");
 
+const tehranTimeEl = document.getElementById("tehranTime");
+const tehranDateEl = document.getElementById("tehranDate");
+
 const todayJalaliEl = document.getElementById("todayJalali");
 const todayGregorianEl = document.getElementById("todayGregorian");
 const todayHijriEl = document.getElementById("todayHijri");
@@ -46,6 +49,7 @@ const todayJalali = toJalali(
 );
 
 const YEAR_RANGE = { min: 1300, max: 1500 };
+const TEHRAN_TIME_ZONE = "Asia/Tehran";
 
 const JALALI_MONTH_NAMES = [
   "فروردین",
@@ -96,7 +100,8 @@ const state = {
     officialIran: [],
     cultural: [],
     islamic: []
-  }
+  },
+  tehranClockInterval: null
 };
 
 const gregorianFullFormatter = new Intl.DateTimeFormat("en-US", {
@@ -115,6 +120,20 @@ const hijriFullFormatter = new Intl.DateTimeFormat("en-US-u-ca-islamic-nu-latn",
 const hijriPartsFormatter = new Intl.DateTimeFormat("en-US-u-ca-islamic-nu-latn", {
   year: "numeric",
   month: "numeric",
+  day: "numeric"
+});
+
+const tehranTimeFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: TEHRAN_TIME_ZONE,
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false
+});
+
+const tehranDateFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: TEHRAN_TIME_ZONE,
+  weekday: "short",
+  month: "short",
   day: "numeric"
 });
 
@@ -142,6 +161,15 @@ function formatYearOption(value) {
     state.settings.usePersianNumerals ? "fa-IR" : "en-US",
     { useGrouping: false, maximumFractionDigits: 0 }
   ).format(value);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 function getHolidayCategoryLabel(category) {
@@ -185,6 +213,22 @@ function applyTheme(theme) {
 
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   root.classList.toggle("dark", prefersDark);
+}
+
+function updateTehranClock() {
+  const now = new Date();
+  tehranTimeEl.textContent = tehranTimeFormatter.format(now);
+  tehranDateEl.textContent = `${tehranDateFormatter.format(now)} · ${TEHRAN_TIME_ZONE}`;
+}
+
+function startTehranClock() {
+  updateTehranClock();
+
+  if (state.tehranClockInterval) {
+    clearInterval(state.tehranClockInterval);
+  }
+
+  state.tehranClockInterval = window.setInterval(updateTehranClock, 30000);
 }
 
 function toDisplayDateFromJalali(jy, jm, jd) {
@@ -301,9 +345,9 @@ function renderHolidayChips(target, records) {
     .map((record) => {
       const chipClass = record.isHoliday ? "public" : "observance";
       return `
-        <span class="chip ${chipClass}">
+        <span class="chip ${chipClass}" lang="fa" dir="rtl">
           <span class="chip-dot"></span>
-          ${record.title}
+          <span class="chip-text">${escapeHtml(record.title)}</span>
         </span>
       `;
     })
@@ -323,12 +367,12 @@ function renderSelectedHolidayList(records) {
 
   selectedHolidayListEl.innerHTML = uniqueRecords
     .map((record) => `
-      <div class="holiday-item">
-        <div class="holiday-item-title">${record.title}</div>
-        ${record.description ? `<div class="holiday-item-body">${record.description}</div>` : ""}
+      <div class="holiday-item" lang="fa" dir="rtl">
+        <div class="holiday-item-title">${escapeHtml(record.title)}</div>
+        ${record.description ? `<div class="holiday-item-body">${escapeHtml(record.description)}</div>` : ""}
         <div class="holiday-item-foot">
-          ${getHolidayCategoryLabel(record.category)}
-          ${record.note ? ` • ${record.note}` : ""}
+          ${escapeHtml(getHolidayCategoryLabel(record.category))}
+          ${record.note ? ` • ${escapeHtml(record.note)}` : ""}
         </div>
       </div>
     `)
@@ -576,6 +620,7 @@ async function init() {
     state.selected = { jy: todayJalali.jy, jm: todayJalali.jm, jd: todayJalali.jd };
   }
 
+  startTehranClock();
   render();
 }
 
@@ -583,4 +628,6 @@ init().catch((error) => {
   console.error("Taqvim popup init failed:", error);
   todayHolidayStatusEl.textContent = "Could not load holiday data";
   selectedHolidayStatusEl.textContent = "Could not load holiday data";
+  tehranTimeEl.textContent = "--:--";
+  tehranDateEl.textContent = TEHRAN_TIME_ZONE;
 });

@@ -47,6 +47,14 @@
       </section>
 
       <aside class="sidebar-shell">
+        <section class="time-card" aria-label="Tehran local time">
+          <div class="time-card-label">Tehran time</div>
+          <div class="time-card-main">
+            <div id="tehranTime" class="tehran-time-value ltr-text">--:--</div>
+            <div id="tehranDate" class="tehran-time-date ltr-text">Asia/Tehran</div>
+          </div>
+        </section>
+
         <section class="side-card today-card">
           <div class="section-label">Today</div>
           <div class="date-stack">
@@ -57,7 +65,7 @@
 
           <div class="holiday-panel compact-panel">
             <div id="todayHolidayStatus" class="status-line ltr-text">Loading…</div>
-            <div id="todayHolidayChips" class="chip-row hidden"></div>
+            <div id="todayHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
           </div>
         </section>
 
@@ -71,9 +79,9 @@
               <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
             </div>
 
-            <div class="holiday-panel">
+            <div class="holiday-panel holiday-panel-selected">
               <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
-              <div id="selectedHolidayChips" class="chip-row hidden"></div>
+              <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
               <div id="selectedHolidayList" class="holiday-list hidden"></div>
             </div>
           </div>
