@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <div class="app-shell app-shell-compact">
+  <div class="app-shell">
     <main class="workspace workspace-two-column">
       <section class="calendar-shell" aria-label="Calendar panel">
         <div class="controls-row">
@@ -68,38 +68,36 @@
           <div class="side-card-head">
             <div class="section-label section-label-tight">Tehran now</div>
             <div class="actions actions-compact">
-              <button id="themeToggle" class="icon-btn" title="Cycle theme" aria-label="Cycle theme">🌓</button>
+              <button id="themeToggle" class="icon-btn" title="Cycle theme" aria-label="Cycle theme">◐</button>
               <button id="openSettings" class="icon-btn" title="Open settings" aria-label="Open settings">⚙</button>
             </div>
           </div>
-          <div class="topbar-tehran-main side-tehran-main">
-            <div class="topbar-tehran-time-wrap">
-              <span id="tehranPhaseIcon" class="tehran-phase-icon" aria-hidden="true">☀️</span>
-              <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
-            </div>
-            <div class="topbar-tehran-copy">
-              <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
-              <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
-            </div>
+
+          <div class="tehran-time-line">
+            <span id="tehranPhaseIcon" class="tehran-phase-icon" aria-hidden="true">☀</span>
+            <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
           </div>
+          <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
+          <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
         </section>
 
-        <section class="side-card merged-side-card">
-          <div class="details-scroll merged-details-scroll single-details-scroll">
-            <div class="info-section info-section-selected info-section-single">
-              <div class="section-label">Selected day</div>
-              <div class="date-stack">
-                <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
-                <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
-                <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
-              </div>
+        <section class="side-card merged-side-card" aria-label="Selected day details">
+          <div class="section-label">Selected day</div>
 
-              <div class="holiday-panel holiday-panel-selected compact-panel">
-                <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
-                <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
-                <div id="selectedHolidayList" class="holiday-list hidden"></div>
-              </div>
+          <div class="detail-surface">
+            <div class="date-stack">
+              <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
+              <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
+              <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
             </div>
+          </div>
+
+          <div class="holiday-panel holiday-panel-selected compact-panel">
+            <div class="status-card">
+              <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
+            </div>
+            <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
+            <div id="selectedHolidayList" class="holiday-list hidden"></div>
           </div>
 
           <div class="today-data-cache hidden" aria-hidden="true">

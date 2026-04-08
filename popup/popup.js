@@ -149,6 +149,7 @@ const tehranTimeFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: TEHRAN_TIME_ZONE,
   hour: "2-digit",
   minute: "2-digit",
+  second: "2-digit",
   hour12: false
 });
 
@@ -233,19 +234,36 @@ function isWeekend(date) {
   return state.settings.highlightWeekends && date.getDay() === 5;
 }
 
+function updateThemeToggleIcon() {
+  if (!themeToggle) return;
+
+  const iconMap = {
+    system: "◐",
+    light: "☼",
+    dark: "☾"
+  };
+
+  themeToggle.textContent = iconMap[state.settings.theme] || iconMap.system;
+  themeToggle.title = `Theme: ${state.settings.theme}`;
+  themeToggle.setAttribute("aria-label", `Theme: ${state.settings.theme}`);
+}
+
 function applyTheme(theme) {
   if (theme === "dark") {
     root.classList.add("dark");
+    updateThemeToggleIcon();
     return;
   }
 
   if (theme === "light") {
     root.classList.remove("dark");
+    updateThemeToggleIcon();
     return;
   }
 
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   root.classList.toggle("dark", prefersDark);
+  updateThemeToggleIcon();
 }
 
 function updateTehranClock() {
@@ -258,7 +276,7 @@ function updateTehranClock() {
   tehranPersianDateEl.textContent = formatPersianOrderedDate(now, { timeZone: TEHRAN_TIME_ZONE });
 
   if (tehranPhaseIconEl) {
-    tehranPhaseIconEl.textContent = isAmInTehran ? "☀️" : "🌙";
+    tehranPhaseIconEl.textContent = isAmInTehran ? "☀" : "☾";
     tehranPhaseIconEl.setAttribute("aria-label", isAmInTehran ? "AM in Tehran" : "PM in Tehran");
     tehranPhaseIconEl.title = isAmInTehran ? "AM in Tehran" : "PM in Tehran";
   }
@@ -271,7 +289,7 @@ function startTehranClock() {
     clearInterval(state.tehranClockInterval);
   }
 
-  state.tehranClockInterval = window.setInterval(updateTehranClock, 30000);
+  state.tehranClockInterval = window.setInterval(updateTehranClock, 1000);
 }
 
 function toDisplayDateFromJalali(jy, jm, jd) {
@@ -372,6 +390,14 @@ function getHolidayStatus(records, forToday = false) {
   }
 
   return "Observance";
+}
+
+function getHolidayStatusTone(records) {
+  if (!state.settings.showHolidays) return "muted";
+  if (!records.length) return "empty";
+  if (hasPublicHoliday(records) && hasObservance(records)) return "mixed";
+  if (hasPublicHoliday(records)) return "public";
+  return "observance";
 }
 
 function renderWeekdayLabels(target) {
@@ -525,6 +551,7 @@ function renderSelectedDetails() {
   selectedHijriEl.classList.toggle("hidden", !state.settings.showHijri);
 
   selectedHolidayStatusEl.textContent = getHolidayStatus(selectedRecords, false);
+  selectedHolidayStatusEl.dataset.tone = getHolidayStatusTone(selectedRecords);
   renderHolidayChips(selectedHolidayChipsEl, selectedRecords);
   renderSelectedHolidayList(selectedRecords);
 }
