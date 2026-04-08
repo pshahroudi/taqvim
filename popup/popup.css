@@ -1,63 +1,63 @@
 :root {
   color-scheme: light;
-  --bg: #f5eee6;
-  --bg-glow-1: rgba(217, 186, 152, 0.20);
-  --bg-glow-2: rgba(228, 205, 179, 0.18);
+  --bg: #f6efe7;
+  --bg-glow-1: rgba(215, 187, 160, 0.22);
+  --bg-glow-2: rgba(232, 210, 189, 0.18);
   --panel: rgba(255, 250, 244, 0.94);
   --panel-solid: #fffaf4;
-  --panel-2: #fff8f1;
-  --panel-3: #f7efe5;
-  --panel-4: #f1e6da;
-  --text: #2f2723;
-  --text-soft: #76685d;
-  --muted: #a49688;
-  --border: #e6d8c8;
-  --border-strong: #d9c7b4;
-  --accent: #8d6857;
-  --accent-soft: rgba(141, 104, 87, 0.11);
-  --accent-soft-strong: rgba(141, 104, 87, 0.18);
-  --accent-strong: #6f4f41;
-  --today-ring: #b08974;
-  --weekend-soft: #fbf1eb;
-  --holiday-public: #d76563;
-  --holiday-public-soft: rgba(215, 101, 99, 0.12);
-  --holiday-observance: #b7894b;
-  --holiday-observance-soft: rgba(183, 137, 75, 0.12);
-  --status-neutral-bg: #f4ece4;
-  --status-neutral-text: #5f544d;
-  --shadow-xl: 0 18px 40px rgba(82, 56, 37, 0.10);
-  --shadow-lg: 0 10px 26px rgba(82, 56, 37, 0.08);
-  --shadow-sm: 0 4px 12px rgba(82, 56, 37, 0.06);
+  --panel-2: #fff8f2;
+  --panel-3: #f7efe7;
+  --panel-4: #f2e7dc;
+  --text: #30261f;
+  --text-soft: #75665c;
+  --muted: #b4a496;
+  --border: #e2d3c2;
+  --border-strong: #d4c1ad;
+  --accent: #9d745c;
+  --accent-soft: rgba(157, 116, 92, 0.11);
+  --accent-soft-strong: rgba(157, 116, 92, 0.18);
+  --accent-strong: #7c5947;
+  --today-ring: #b38972;
+  --weekend-soft: #fbf2ec;
+  --holiday-public: #d96b64;
+  --holiday-public-soft: rgba(217, 107, 100, 0.11);
+  --holiday-observance: #bb8c50;
+  --holiday-observance-soft: rgba(187, 140, 80, 0.11);
+  --status-neutral-bg: #f5ece3;
+  --status-neutral-text: #62554b;
+  --shadow-xl: 0 18px 42px rgba(78, 54, 37, 0.11);
+  --shadow-lg: 0 10px 24px rgba(78, 54, 37, 0.08);
+  --shadow-sm: 0 4px 12px rgba(78, 54, 37, 0.05);
 }
 
 :root.dark {
   color-scheme: dark;
-  --bg: #171413;
-  --bg-glow-1: rgba(158, 122, 100, 0.14);
-  --bg-glow-2: rgba(107, 85, 72, 0.14);
-  --panel: rgba(33, 28, 27, 0.95);
-  --panel-solid: #231e1d;
-  --panel-2: #2b2523;
-  --panel-3: #352d2a;
-  --panel-4: #403632;
+  --bg: #1a1513;
+  --bg-glow-1: rgba(181, 139, 113, 0.10);
+  --bg-glow-2: rgba(120, 95, 78, 0.10);
+  --panel: rgba(37, 30, 27, 0.95);
+  --panel-solid: #251f1c;
+  --panel-2: #2d2521;
+  --panel-3: #362d29;
+  --panel-4: #3f3530;
   --text: #f6efe8;
-  --text-soft: #d4c3b5;
-  --muted: #9c8b7d;
-  --border: rgba(241, 222, 204, 0.12);
-  --border-strong: rgba(241, 222, 204, 0.20);
-  --accent: #d4ab92;
-  --accent-soft: rgba(212, 171, 146, 0.14);
-  --accent-soft-strong: rgba(212, 171, 146, 0.22);
-  --accent-strong: #f2d8c7;
-  --today-ring: #e0b8a0;
-  --weekend-soft: rgba(163, 104, 99, 0.16);
-  --holiday-public: #ff9a95;
-  --holiday-public-soft: rgba(255, 154, 149, 0.14);
-  --holiday-observance: #e2b072;
-  --holiday-observance-soft: rgba(226, 176, 114, 0.14);
-  --status-neutral-bg: rgba(242, 216, 199, 0.06);
-  --status-neutral-text: #e2d2c4;
-  --shadow-xl: 0 22px 52px rgba(0, 0, 0, 0.34);
+  --text-soft: #d6c4b5;
+  --muted: #99887a;
+  --border: rgba(242, 224, 207, 0.11);
+  --border-strong: rgba(242, 224, 207, 0.18);
+  --accent: #ddb399;
+  --accent-soft: rgba(221, 179, 153, 0.12);
+  --accent-soft-strong: rgba(221, 179, 153, 0.18);
+  --accent-strong: #f3dccd;
+  --today-ring: #e0baa4;
+  --weekend-soft: rgba(162, 105, 99, 0.15);
+  --holiday-public: #ff9e96;
+  --holiday-public-soft: rgba(255, 158, 150, 0.12);
+  --holiday-observance: #e4b476;
+  --holiday-observance-soft: rgba(228, 180, 118, 0.12);
+  --status-neutral-bg: rgba(243, 220, 205, 0.06);
+  --status-neutral-text: #e1d1c4;
+  --shadow-xl: 0 22px 56px rgba(0, 0, 0, 0.34);
   --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.26);
   --shadow-sm: 0 8px 18px rgba(0, 0, 0, 0.18);
 }
@@ -74,15 +74,15 @@ body {
   padding: 0;
   overflow: hidden;
   background:
-    radial-gradient(circle at top left, var(--bg-glow-1), transparent 30%),
-    radial-gradient(circle at bottom right, var(--bg-glow-2), transparent 28%),
+    radial-gradient(circle at top left, var(--bg-glow-1), transparent 28%),
+    radial-gradient(circle at bottom right, var(--bg-glow-2), transparent 25%),
     var(--bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 body {
-  padding: 12px;
+  padding: 10px;
 }
 
 button,
@@ -102,8 +102,8 @@ button {
   height: 100%;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1.72fr) minmax(0, 0.98fr);
-  gap: 12px;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 0.9fr);
+  gap: 10px;
 }
 
 .calendar-shell,
@@ -112,14 +112,14 @@ button {
   border: 1px solid var(--border);
   border-radius: 24px;
   box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(12px);
 }
 
 .calendar-shell {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 14px;
 }
 
 .controls-row {
@@ -128,7 +128,7 @@ button {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 12px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .date-picker-anchor {
@@ -138,7 +138,7 @@ button {
 
 .actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex: 0 0 auto;
 }
 
@@ -161,11 +161,11 @@ button {
 
 .icon-btn,
 .nav-btn {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 16px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
   box-shadow: var(--shadow-sm);
 }
 
@@ -177,7 +177,7 @@ button {
 .mini-close-btn:hover,
 .mini-today-btn:hover {
   border-color: var(--accent);
-  box-shadow: 0 8px 18px rgba(111, 79, 65, 0.14);
+  box-shadow: 0 8px 18px rgba(124, 89, 71, 0.16);
 }
 
 .icon-btn:active,
@@ -192,14 +192,14 @@ button {
 
 .date-picker-toggle {
   width: 100%;
-  min-height: 88px;
-  padding: 16px 18px;
+  min-height: 78px;
   border-radius: 22px;
+  padding: 15px 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   text-align: left;
   box-shadow: var(--shadow-sm);
 }
@@ -208,30 +208,25 @@ button {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .date-picker-label {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-soft);
 }
 
 .date-picker-value {
-  display: block;
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 850;
   line-height: 1.2;
   color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .date-picker-meta {
-  display: block;
   font-size: 12px;
   line-height: 1.35;
   color: var(--text-soft);
@@ -251,9 +246,9 @@ button {
 }
 
 .today-btn {
-  min-width: 118px;
-  height: 46px;
-  padding: 0 20px;
+  min-width: 114px;
+  height: 44px;
+  padding: 0 18px;
   border-radius: 16px;
   cursor: pointer;
   font-weight: 800;
@@ -457,21 +452,21 @@ button {
   background: linear-gradient(180deg, var(--accent-soft-strong), var(--accent-soft));
 }
 
-.weekday-row,
-.calendar-grid {
-  gap: 10px;
-}
-
-.weekday-row {
+.weekday-strip {
   margin-bottom: 10px;
-  padding: 10px 8px;
+  padding: 8px 10px;
   border-radius: 18px;
   border: 1px solid var(--border);
   background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
 }
 
+.weekday-row,
+.calendar-grid {
+  gap: 9px;
+}
+
 .weekday-row div {
-  padding: 2px 0;
+  padding: 3px 0;
   font-size: 13px;
 }
 
@@ -486,11 +481,11 @@ button {
   position: relative;
   min-height: 0;
   height: 100%;
-  padding: 12px 12px 10px;
+  padding: 10px 12px 9px;
   border: 1px solid var(--border);
   border-radius: 20px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.20), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 55%),
     var(--panel-2);
   display: flex;
   flex-direction: column;
@@ -502,21 +497,21 @@ button {
     border-color 0.14s ease,
     box-shadow 0.14s ease,
     background-color 0.14s ease;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .day:hover {
   transform: translateY(-1px);
   border-color: var(--accent);
-  box-shadow: 0 10px 20px rgba(111, 79, 65, 0.12);
+  box-shadow: 0 10px 20px rgba(124, 89, 71, 0.12);
 }
 
 .day-j {
   align-self: flex-end;
   text-align: right;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 850;
-  line-height: 1.02;
+  line-height: 1.05;
   color: var(--text);
 }
 
@@ -524,7 +519,7 @@ button {
   align-self: flex-start;
   text-align: left;
   font-size: 11px;
-  font-weight: 750;
+  font-weight: 700;
   line-height: 1;
   color: var(--text-soft);
 }
@@ -538,9 +533,9 @@ button {
   border-color: var(--accent);
   box-shadow:
     inset 0 0 0 2px var(--accent),
-    0 10px 22px rgba(111, 79, 65, 0.12);
+    0 10px 22px rgba(124, 89, 71, 0.10);
   background:
-    linear-gradient(180deg, var(--accent-soft-strong), transparent 56%),
+    linear-gradient(180deg, var(--accent-soft), transparent 56%),
     var(--panel-2);
 }
 
@@ -550,19 +545,19 @@ button {
 
 .day.weekend {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 55%),
     var(--weekend-soft);
 }
 
 .day.holiday-public {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 55%),
     var(--holiday-public-soft);
 }
 
 .day.holiday-observance {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 55%),
     var(--holiday-observance-soft);
 }
 
@@ -578,16 +573,17 @@ button {
   width: 9px;
   height: 9px;
   border-radius: 999px;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
 }
 
 .holiday-marker.public,
-.chip.public .chip-dot {
+.chip.public .chip-dot,
+.holiday-item-dot.public {
   background: var(--holiday-public);
 }
 
 .holiday-marker.observance,
-.chip.observance .chip-dot {
+.chip.observance .chip-dot,
+.holiday-item-dot.observance {
   background: var(--holiday-observance);
 }
 
@@ -595,32 +591,27 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .side-card {
   min-height: 0;
-  padding: 16px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .side-card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.actions-compact {
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .actions-compact .icon-btn {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 15px;
   font-size: 18px;
 }
@@ -632,11 +623,15 @@ button {
     linear-gradient(180deg, var(--panel-2), var(--panel-3));
 }
 
-.tehran-time-line {
+.tehran-row {
+  display: grid;
+  gap: 10px;
+}
+
+.tehran-time-block {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
 }
 
 .tehran-phase-icon {
@@ -646,45 +641,48 @@ button {
   width: 40px;
   height: 40px;
   border-radius: 999px;
-  font-size: 20px;
+  font-size: 19px;
   background: linear-gradient(180deg, var(--accent-soft-strong), var(--accent-soft));
   box-shadow: var(--shadow-sm);
   flex: 0 0 auto;
 }
 
 .topbar-tehran-time {
-  font-size: 34px;
+  font-size: 40px;
   font-weight: 850;
+  letter-spacing: -0.05em;
   line-height: 1;
-  letter-spacing: -0.04em;
-  font-variant-numeric: tabular-nums;
   color: var(--text);
   white-space: nowrap;
+}
+
+.tehran-copy-block {
+  display: grid;
+  gap: 4px;
 }
 
 .topbar-tehran-date,
 .topbar-tehran-persian {
-  display: block;
-  font-size: 14px;
-  line-height: 1.45;
-  max-width: 100%;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .topbar-tehran-date {
   color: var(--text-soft);
-  margin-bottom: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .topbar-tehran-persian {
-  font-weight: 750;
   color: var(--text);
+  font-weight: 760;
 }
 
 .merged-side-card {
   flex: 1 1 auto;
+  gap: 10px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 30%),
+    var(--panel);
 }
 
 .section-label {
@@ -693,7 +691,7 @@ button {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-soft);
-  margin-bottom: 12px;
+  margin-bottom: 2px;
 }
 
 .section-label-tight {
@@ -701,8 +699,8 @@ button {
 }
 
 .detail-surface {
-  padding: 16px;
-  border-radius: 20px;
+  padding: 14px 16px;
+  border-radius: 22px;
   border: 1px solid var(--border);
   background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
 }
@@ -710,65 +708,32 @@ button {
 .date-stack {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .detail-primary {
-  display: block;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 850;
-  line-height: 1.65;
+  line-height: 1.55;
   color: var(--text);
 }
 
 .detail-secondary {
-  display: block;
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 13px;
+  line-height: 1.42;
   color: var(--text-soft);
-}
-
-.compact-panel {
-  margin-top: 14px;
-}
-
-.holiday-panel {
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.holiday-panel-selected {
-  flex: 1 1 auto;
 }
 
 .status-card {
   border-radius: 18px;
   border: 1px solid var(--border);
   background: var(--status-neutral-bg);
-  padding: 14px 16px;
-}
-
-.status-card:has(.status-line[data-tone="public"]) {
-  background: color-mix(in srgb, var(--holiday-public-soft) 70%, var(--panel-2));
-  border-color: color-mix(in srgb, var(--holiday-public) 20%, var(--border));
-}
-
-.status-card:has(.status-line[data-tone="observance"]) {
-  background: color-mix(in srgb, var(--holiday-observance-soft) 70%, var(--panel-2));
-  border-color: color-mix(in srgb, var(--holiday-observance) 18%, var(--border));
-}
-
-.status-card:has(.status-line[data-tone="mixed"]) {
-  background: color-mix(in srgb, var(--accent-soft-strong) 70%, var(--panel-2));
-  border-color: color-mix(in srgb, var(--accent) 18%, var(--border));
+  padding: 12px 14px;
 }
 
 .status-line {
-  display: block;
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.4;
   font-weight: 850;
   color: var(--status-neutral-text);
 }
@@ -802,12 +767,11 @@ button {
   max-width: 100%;
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 8px 12px;
+  padding: 7px 12px;
   background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
   font-size: 12px;
   font-weight: 800;
   color: var(--text);
-  box-shadow: var(--shadow-sm);
 }
 
 .chip-text {
@@ -825,45 +789,61 @@ button {
 
 .holiday-list {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   min-height: 0;
-  overflow: auto;
-  padding-right: 2px;
-  scrollbar-width: none;
-}
-
-.holiday-list::-webkit-scrollbar {
-  width: 0;
-  height: 0;
 }
 
 .holiday-item {
   border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 14px;
+  border-radius: 16px;
+  padding: 10px 12px;
   background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
   direction: rtl;
   text-align: right;
-  box-shadow: var(--shadow-sm);
+}
+
+.holiday-item-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+.holiday-item-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
 }
 
 .holiday-item-title {
   font-size: 14px;
-  font-weight: 800;
-  line-height: 1.5;
+  font-weight: 820;
+  line-height: 1.45;
   color: var(--text);
-  margin-bottom: 8px;
+  min-width: 0;
+}
+
+.holiday-item-tag {
+  font-size: 11px;
+  line-height: 1;
+  color: var(--text-soft);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 8px;
+  white-space: nowrap;
 }
 
 .holiday-item-body,
-.holiday-item-foot {
-  font-size: 13px;
-  line-height: 1.8;
+.holiday-item-note {
+  font-size: 12px;
+  line-height: 1.55;
   color: var(--text-soft);
+  margin-top: 7px;
 }
 
-.holiday-item-foot {
-  margin-top: 10px;
+.holiday-item-note {
+  color: var(--muted);
 }
 
 .rtl-text {

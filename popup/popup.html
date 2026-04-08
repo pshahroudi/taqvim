@@ -59,7 +59,9 @@
           </div>
         </div>
 
-        <div id="weekdayRow" class="weekday-row" role="row"></div>
+        <div class="weekday-strip">
+          <div id="weekdayRow" class="weekday-row" role="row"></div>
+        </div>
         <div id="calendarGrid" class="calendar-grid" role="grid" aria-label="Calendar month"></div>
       </section>
 
@@ -73,12 +75,16 @@
             </div>
           </div>
 
-          <div class="tehran-time-line">
-            <span id="tehranPhaseIcon" class="tehran-phase-icon" aria-hidden="true">☀</span>
-            <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
+          <div class="tehran-row">
+            <div class="tehran-time-block">
+              <span id="tehranPhaseIcon" class="tehran-phase-icon" aria-hidden="true">☀</span>
+              <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
+            </div>
+            <div class="tehran-copy-block">
+              <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
+              <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
+            </div>
           </div>
-          <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
-          <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
         </section>
 
         <section class="side-card merged-side-card" aria-label="Selected day details">
@@ -92,13 +98,12 @@
             </div>
           </div>
 
-          <div class="holiday-panel holiday-panel-selected compact-panel">
-            <div class="status-card">
-              <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
-            </div>
-            <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
-            <div id="selectedHolidayList" class="holiday-list hidden"></div>
+          <div class="status-card">
+            <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
           </div>
+
+          <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
+          <div id="selectedHolidayList" class="holiday-list hidden"></div>
 
           <div class="today-data-cache hidden" aria-hidden="true">
             <div id="todayJalali"></div>

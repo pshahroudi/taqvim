@@ -443,16 +443,24 @@ function renderSelectedHolidayList(records) {
   }
 
   selectedHolidayListEl.innerHTML = uniqueRecords
-    .map((record) => `
-      <div class="holiday-item" lang="fa" dir="rtl">
-        <div class="holiday-item-title">${escapeHtml(record.title)}</div>
-        ${record.description ? `<div class="holiday-item-body">${escapeHtml(record.description)}</div>` : ""}
-        <div class="holiday-item-foot">
-          ${escapeHtml(getHolidayCategoryLabel(record.category))}
-          ${record.note ? ` • ${escapeHtml(record.note)}` : ""}
+    .map((record) => {
+      const dotClass = record.isHoliday ? "public" : "observance";
+      const category = escapeHtml(getHolidayCategoryLabel(record.category));
+      const description = record.description ? `<div class="holiday-item-body">${escapeHtml(record.description)}</div>` : "";
+      const note = record.note ? `<div class="holiday-item-note">${escapeHtml(record.note)}</div>` : "";
+
+      return `
+        <div class="holiday-item" lang="fa" dir="rtl">
+          <div class="holiday-item-head">
+            <span class="holiday-item-dot ${dotClass}"></span>
+            <div class="holiday-item-title">${escapeHtml(record.title)}</div>
+            <div class="holiday-item-tag">${category}</div>
+          </div>
+          ${description}
+          ${note}
         </div>
-      </div>
-    `)
+      `;
+    })
     .join("");
 
   selectedHolidayListEl.classList.remove("hidden");
@@ -544,6 +552,7 @@ function renderSelectedDetails() {
     state.selected.jd
   );
   const selectedRecords = getHolidayRecordsForDate(selectedDate, state.selected);
+  const uniqueRecords = dedupeHolidayRecords(selectedRecords);
 
   selectedJalaliEl.textContent = formatPersianOrderedDate(selectedDate);
   selectedGregorianEl.textContent = gregorianFullFormatter.format(selectedDate);
@@ -552,8 +561,15 @@ function renderSelectedDetails() {
 
   selectedHolidayStatusEl.textContent = getHolidayStatus(selectedRecords, false);
   selectedHolidayStatusEl.dataset.tone = getHolidayStatusTone(selectedRecords);
-  renderHolidayChips(selectedHolidayChipsEl, selectedRecords);
-  renderSelectedHolidayList(selectedRecords);
+
+  if (uniqueRecords.length > 1) {
+    renderHolidayChips(selectedHolidayChipsEl, uniqueRecords);
+  } else {
+    selectedHolidayChipsEl.innerHTML = "";
+    selectedHolidayChipsEl.classList.add("hidden");
+  }
+
+  renderSelectedHolidayList(uniqueRecords);
 }
 
 function renderDatePickerToggle() {
