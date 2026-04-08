@@ -14,6 +14,17 @@
         <div class="sub">Persian calendar and holiday browser</div>
       </div>
 
+      <div class="topbar-tehran" aria-label="Tehran local time and date">
+        <div class="topbar-tehran-label">Tehran now</div>
+        <div class="topbar-tehran-main">
+          <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
+          <div class="topbar-tehran-copy">
+            <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
+            <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
+          </div>
+        </div>
+      </div>
+
       <div class="actions">
         <button id="themeToggle" class="icon-btn" title="Cycle theme" aria-label="Cycle theme">🌓</button>
         <button id="openSettings" class="icon-btn" title="Open settings" aria-label="Open settings">⚙</button>
@@ -23,16 +34,45 @@
     <main class="workspace">
       <section class="calendar-shell" aria-label="Calendar panel">
         <div class="controls-row">
-          <div class="jump-controls">
-            <label class="field field-month">
-              <span class="field-label">Month</span>
-              <select id="monthSelect" class="field-control field-control-fa" dir="rtl" aria-label="Persian month"></select>
-            </label>
+          <div class="date-picker-anchor">
+            <button
+              id="datePickerToggle"
+              class="date-picker-toggle"
+              type="button"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="miniDatePicker"
+            >
+              <span class="date-picker-copy">
+                <span class="date-picker-label">Jump to date</span>
+                <span id="datePickerValue" class="date-picker-value rtl-text" lang="fa" dir="rtl"></span>
+                <span id="datePickerMeta" class="date-picker-meta ltr-text" lang="en" dir="ltr"></span>
+              </span>
+              <span class="date-picker-caret" aria-hidden="true">▾</span>
+            </button>
 
-            <label class="field field-year">
-              <span class="field-label">Year</span>
-              <select id="yearSelect" class="field-control field-control-fa" dir="rtl" aria-label="Persian year"></select>
-            </label>
+            <div id="miniDatePicker" class="mini-picker hidden" role="dialog" aria-label="Select a date">
+              <div class="mini-picker-top">
+                <div class="mini-picker-eyebrow">Select a day</div>
+                <button id="miniPickerClose" class="mini-close-btn" type="button" aria-label="Close date picker">✕</button>
+              </div>
+
+              <div class="mini-picker-nav">
+                <button id="miniPrevMonth" class="mini-nav-btn" type="button" aria-label="Previous month">‹</button>
+                <div class="mini-picker-title-wrap">
+                  <div id="miniPickerTitle" class="mini-picker-title rtl-text" lang="fa" dir="rtl"></div>
+                  <div id="miniPickerSubtitle" class="mini-picker-subtitle ltr-text" lang="en" dir="ltr"></div>
+                </div>
+                <button id="miniNextMonth" class="mini-nav-btn" type="button" aria-label="Next month">›</button>
+              </div>
+
+              <div id="miniWeekdayRow" class="mini-weekday-row" role="row"></div>
+              <div id="miniCalendarGrid" class="mini-calendar-grid" role="grid" aria-label="Mini calendar"></div>
+
+              <div class="mini-picker-actions">
+                <button id="miniGoToday" class="mini-today-btn" type="button">Go to today</button>
+              </div>
+            </div>
           </div>
 
           <div class="calendar-nav" aria-label="Month navigation">
@@ -45,45 +85,31 @@
         <div id="weekdayRow" class="weekday-row" role="row"></div>
         <div id="calendarGrid" class="calendar-grid" role="grid" aria-label="Calendar month"></div>
       </section>
-
       <aside class="sidebar-shell">
-        <section class="time-card" aria-label="Tehran local time">
-          <div class="time-card-label">Tehran time</div>
-          <div class="time-card-main">
-            <div id="tehranTime" class="tehran-time-value ltr-text">--:--</div>
-            <div id="tehranDate" class="tehran-time-date ltr-text">Asia/Tehran</div>
-          </div>
-        </section>
+        <section class="side-card merged-side-card">
+          <div class="details-scroll merged-details-scroll single-details-scroll">
+            <div class="info-section info-section-selected info-section-single">
+              <div class="section-label">Selected day</div>
+              <div class="date-stack">
+                <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
+                <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
+                <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
+              </div>
 
-        <section class="side-card today-card">
-          <div class="section-label">Today</div>
-          <div class="date-stack">
-            <div id="todayJalali" class="jalali-date rtl-text" lang="fa" dir="rtl"></div>
-            <div id="todayGregorian" class="gregorian-date ltr-text" lang="en" dir="ltr"></div>
-            <div id="todayHijri" class="hijri-date ltr-text hidden" lang="en" dir="ltr"></div>
-          </div>
-
-          <div class="holiday-panel compact-panel">
-            <div id="todayHolidayStatus" class="status-line ltr-text">Loading…</div>
-            <div id="todayHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
-          </div>
-        </section>
-
-        <section class="side-card details-card">
-          <div class="section-label">Selected day</div>
-
-          <div class="details-scroll">
-            <div class="date-stack">
-              <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
-              <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
-              <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
+              <div class="holiday-panel holiday-panel-selected compact-panel">
+                <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
+                <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
+                <div id="selectedHolidayList" class="holiday-list hidden"></div>
+              </div>
             </div>
+          </div>
 
-            <div class="holiday-panel holiday-panel-selected">
-              <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
-              <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
-              <div id="selectedHolidayList" class="holiday-list hidden"></div>
-            </div>
+          <div class="today-data-cache hidden" aria-hidden="true">
+            <div id="todayJalali"></div>
+            <div id="todayGregorian"></div>
+            <div id="todayHijri" class="hidden"></div>
+            <div id="todayHolidayStatus"></div>
+            <div id="todayHolidayChips" class="hidden"></div>
           </div>
         </section>
       </aside>
