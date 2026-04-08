@@ -7,31 +7,8 @@
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div class="brand-wrap">
-        <div class="brand">Taqvim</div>
-        <div class="sub">Persian calendar and holiday browser</div>
-      </div>
-
-      <div class="topbar-tehran" aria-label="Tehran local time and date">
-        <div class="topbar-tehran-label">Tehran now</div>
-        <div class="topbar-tehran-main">
-          <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
-          <div class="topbar-tehran-copy">
-            <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
-            <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button id="themeToggle" class="icon-btn" title="Cycle theme" aria-label="Cycle theme">🌓</button>
-        <button id="openSettings" class="icon-btn" title="Open settings" aria-label="Open settings">⚙</button>
-      </div>
-    </header>
-
-    <main class="workspace">
+  <div class="app-shell app-shell-compact">
+    <main class="workspace workspace-two-column">
       <section class="calendar-shell" aria-label="Calendar panel">
         <div class="controls-row">
           <div class="date-picker-anchor">
@@ -85,7 +62,28 @@
         <div id="weekdayRow" class="weekday-row" role="row"></div>
         <div id="calendarGrid" class="calendar-grid" role="grid" aria-label="Calendar month"></div>
       </section>
+
       <aside class="sidebar-shell">
+        <section class="side-card side-card-tehran" aria-label="Tehran local time and date">
+          <div class="side-card-head">
+            <div class="section-label section-label-tight">Tehran now</div>
+            <div class="actions actions-compact">
+              <button id="themeToggle" class="icon-btn" title="Cycle theme" aria-label="Cycle theme">🌓</button>
+              <button id="openSettings" class="icon-btn" title="Open settings" aria-label="Open settings">⚙</button>
+            </div>
+          </div>
+          <div class="topbar-tehran-main side-tehran-main">
+            <div class="topbar-tehran-time-wrap">
+              <span id="tehranPhaseIcon" class="tehran-phase-icon" aria-hidden="true">☀️</span>
+              <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
+            </div>
+            <div class="topbar-tehran-copy">
+              <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
+              <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
+            </div>
+          </div>
+        </section>
+
         <section class="side-card merged-side-card">
           <div class="details-scroll merged-details-scroll single-details-scroll">
             <div class="info-section info-section-selected info-section-single">

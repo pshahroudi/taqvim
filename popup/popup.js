@@ -30,6 +30,7 @@ const miniGoTodayBtn = document.getElementById("miniGoToday");
 const weekdayRowEl = document.getElementById("weekdayRow");
 const calendarGridEl = document.getElementById("calendarGrid");
 
+const tehranPhaseIconEl = document.getElementById("tehranPhaseIcon");
 const tehranTimeEl = document.getElementById("tehranTime");
 const tehranDateEl = document.getElementById("tehranDate");
 const tehranPersianDateEl = document.getElementById("tehranPersianDate");
@@ -158,11 +159,17 @@ const tehranDateFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric"
 });
 
-function getTehranPersianDateFormatter() {
+const tehranHourFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: TEHRAN_TIME_ZONE,
+  hour: "2-digit",
+  hour12: false
+});
+
+function getPersianCalendarFormatter(usePersianNumerals, timeZone) {
   return new Intl.DateTimeFormat(
-    state.settings.usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
+    usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
     {
-      timeZone: TEHRAN_TIME_ZONE,
+      ...(timeZone ? { timeZone } : {}),
       weekday: "long",
       year: "numeric",
       month: "long",
@@ -171,16 +178,15 @@ function getTehranPersianDateFormatter() {
   );
 }
 
-function getJalaliFormatter(usePersianNumerals) {
-  return new Intl.DateTimeFormat(
-    usePersianNumerals ? "fa-IR-u-ca-persian" : "fa-IR-u-ca-persian-nu-latn",
-    {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    }
-  );
+function formatPersianOrderedDate(date, { timeZone } = {}) {
+  const formatter = getPersianCalendarFormatter(state.settings.usePersianNumerals, timeZone);
+  const parts = formatter.formatToParts(date);
+  const partValue = (type) => parts.find((part) => part.type === type)?.value ?? "";
+  const weekday = partValue("weekday");
+  const day = partValue("day");
+  const month = partValue("month");
+  const year = partValue("year");
+  return `${weekday}، ${day} ${month} ${year}`;
 }
 
 function formatNumber(value) {
@@ -244,9 +250,18 @@ function applyTheme(theme) {
 
 function updateTehranClock() {
   const now = new Date();
+  const tehranHour = Number(tehranHourFormatter.format(now));
+  const isAmInTehran = tehranHour < 12;
+
   tehranTimeEl.textContent = tehranTimeFormatter.format(now);
   tehranDateEl.textContent = `${tehranDateFormatter.format(now)} · ${TEHRAN_TIME_ZONE}`;
-  tehranPersianDateEl.textContent = getTehranPersianDateFormatter().format(now);
+  tehranPersianDateEl.textContent = formatPersianOrderedDate(now, { timeZone: TEHRAN_TIME_ZONE });
+
+  if (tehranPhaseIconEl) {
+    tehranPhaseIconEl.textContent = isAmInTehran ? "☀️" : "🌙";
+    tehranPhaseIconEl.setAttribute("aria-label", isAmInTehran ? "AM in Tehran" : "PM in Tehran");
+    tehranPhaseIconEl.title = isAmInTehran ? "AM in Tehran" : "PM in Tehran";
+  }
 }
 
 function startTehranClock() {
@@ -485,10 +500,9 @@ function buildMiniDayCell(jy, jm, jd, isMuted) {
 }
 
 function renderTodayCard() {
-  const jalaliFormatter = getJalaliFormatter(state.settings.usePersianNumerals);
   const todayRecords = getHolidayRecordsForDate(todayDate, todayJalali);
 
-  todayJalaliEl.textContent = jalaliFormatter.format(todayDate);
+  todayJalaliEl.textContent = formatPersianOrderedDate(todayDate);
   todayGregorianEl.textContent = gregorianFullFormatter.format(todayDate);
   todayHijriEl.textContent = hijriFullFormatter.format(todayDate);
   todayHijriEl.classList.toggle("hidden", !state.settings.showHijri);
@@ -504,9 +518,8 @@ function renderSelectedDetails() {
     state.selected.jd
   );
   const selectedRecords = getHolidayRecordsForDate(selectedDate, state.selected);
-  const jalaliFormatter = getJalaliFormatter(state.settings.usePersianNumerals);
 
-  selectedJalaliEl.textContent = jalaliFormatter.format(selectedDate);
+  selectedJalaliEl.textContent = formatPersianOrderedDate(selectedDate);
   selectedGregorianEl.textContent = gregorianFullFormatter.format(selectedDate);
   selectedHijriEl.textContent = hijriFullFormatter.format(selectedDate);
   selectedHijriEl.classList.toggle("hidden", !state.settings.showHijri);
