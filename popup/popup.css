@@ -14,18 +14,18 @@
   --muted: #9aa6b8;
   --border: #e5eaf2;
   --border-strong: #d6deeb;
-  --accent: #2f80ed;
-  --accent-soft: #eaf2ff;
+  --accent: #32363c;
+  --accent-soft: #ebebeb;
   --accent-soft-strong: #d8e9ff;
-  --accent-strong: #1d62c5;
-  --today-ring: #2f80ed;
-  --weekend-soft: #fff7f7;
+  --accent-strong: #454545;
+  --today-ring: #575757;
+  --weekend-soft: #ffe6e6;
   --holiday-public: #ff2d55;
   --holiday-public-soft: #fff1f4;
   --holiday-observance: #f59e0b;
   --holiday-observance-soft: #fff8e7;
-  --convert-jalali-bg: #eef5ff;
-  --convert-jalali-border: #cfe2ff;
+  --convert-jalali-bg: #f6f9fc;
+  --convert-jalali-border: #2d5289;
   --convert-jalali-accent: #2f80ed;
   --convert-gregorian-bg: #fff4ff;
   --convert-gregorian-border: #f4d7ff;
@@ -35,7 +35,7 @@
   --convert-hijri-accent: #f59e0b;
   --status-neutral-bg: #f7f9fc;
   --status-neutral-text: #52627a;
-  --shadow-xl: 0 18px 35px rgba(30, 49, 82, 0.10);
+  --shadow-xl: 0 18px 35px rgba(30, 49, 82, 0.1);
   --shadow-lg: 0 10px 24px rgba(30, 49, 82, 0.07);
   --shadow-sm: 0 3px 9px rgba(30, 49, 82, 0.05);
 }
@@ -65,7 +65,7 @@
   --holiday-public: #fb7185;
   --holiday-public-soft: rgba(251, 113, 133, 0.11);
   --holiday-observance: #fbbf24;
-  --holiday-observance-soft: rgba(251, 191, 36, 0.10);
+  --holiday-observance-soft: rgba(251, 191, 36, 0.1);
   --convert-jalali-bg: rgba(90, 162, 255, 0.14);
   --convert-jalali-border: rgba(90, 162, 255, 0.32);
   --convert-jalali-accent: #83b9ff;
@@ -73,10 +73,10 @@
   --convert-gregorian-border: rgba(168, 85, 247, 0.32);
   --convert-gregorian-accent: #c084fc;
   --convert-hijri-bg: rgba(251, 191, 36, 0.12);
-  --convert-hijri-border: rgba(251, 191, 36, 0.30);
+  --convert-hijri-border: rgba(251, 191, 36, 0.3);
   --convert-hijri-accent: #fbbf24;
   --status-neutral-bg: rgba(255, 255, 255, 0.03);
-  --status-neutral-text: #d7dee7;
+  --status-neutral-text: #000000;
   --shadow-xl: 0 8px 18px rgba(0, 0, 0, 0.18);
   --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.12);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -95,7 +95,9 @@ body {
   overflow: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family: Quicksand, Nunito, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  font-family:
+    Quicksand, Nunito, "Segoe UI Variable", "Segoe UI", ui-sans-serif,
+    system-ui, sans-serif;
 }
 
 body {
@@ -152,7 +154,7 @@ button {
   color: var(--text-soft);
   cursor: pointer;
   font-size: 12px;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .tab-btn.active {
@@ -188,23 +190,25 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 18px 18px 20px;
+  padding: 10px;
 }
 
 .controls-row {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
-  justify-content: start;
+  align-items: start;
+  column-gap: 12px;
+  row-gap: 8px;
+  margin-bottom: 14px;
+  justify-content: stretch;
 }
 
 .date-picker-anchor {
   position: relative;
   width: 100%;
   min-width: 0;
+  display: block;
 }
 
 .compact-head-actions,
@@ -215,6 +219,7 @@ button {
 }
 
 .calendar-nav {
+  align-self: start;
   gap: 8px;
   padding: 0;
   border: 0;
@@ -223,6 +228,7 @@ button {
 }
 
 .compact-head-actions {
+  align-self: stretch;
   gap: 8px;
   margin-left: auto;
 }
@@ -257,16 +263,18 @@ button {
 
 .utility-btn {
   width: 36px;
+  height: 36px;
   min-width: 36px;
   min-height: 36px;
   padding: 0;
   border-radius: 10px;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
+  display: inline-grid;
+  place-items: center;
+  gap: 0;
   font-size: 12px;
   font-weight: 850;
+  line-height: 1;
   box-shadow: none;
 }
 
@@ -274,13 +282,15 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: auto;
-  height: auto;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
   color: var(--text-soft);
   background: transparent;
+  font-family: "Segoe UI Symbol", "Segoe UI", system-ui, sans-serif;
   font-size: 17px;
-  line-height: 1;
+  line-height: 18px;
+  text-align: center;
 }
 
 .utility-label {
@@ -298,7 +308,7 @@ button {
   border-radius: 13px;
   cursor: pointer;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: #ffffff;
   background: var(--accent);
   border-color: var(--accent);
@@ -330,9 +340,9 @@ button {
 
 .date-picker-toggle {
   width: 100%;
-  min-height: 44px;
+  min-height: 42px;
   border-radius: 12px;
-  padding: 9px 14px;
+  padding: 8px 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -349,17 +359,32 @@ button {
 
 .date-picker-label {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--text-soft);
 }
 
 .date-picker-value {
+  grid-column: 1 / -1;
+
+  width: 100%;
+  min-height: 38px;
+
+  box-sizing: border-box;
+
+  padding: 8px 12px;
+  border: 1px solid #d3dbe8;
+  border-radius: 12px;
+  background: #f6f8fb;
+
   font-size: 16px;
   line-height: 1.25;
   font-weight: 840;
   color: var(--text);
+  display: flex;
+  justify-content: center; /* Horizontal */
+  align-items: center; /* Vertical */
 }
 
 .date-picker-meta {
@@ -377,14 +402,16 @@ button {
 
 .mini-picker {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   left: 0;
-  width: min(330px, calc(100vw - 24px));
-  padding: 14px;
+  width: min(316px, calc(100vw - 24px));
+  max-height: calc(100vh - 150px);
+  padding: 12px;
   z-index: 10;
   border-radius: 16px;
   background: var(--panel);
   box-shadow: var(--shadow-xl);
+  overflow: hidden;
 }
 
 .mini-picker-top {
@@ -392,33 +419,36 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .mini-picker-eyebrow {
   font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0;
+  font-weight: 600;
   text-transform: uppercase;
+  display: flex;
+  justify-content: center; /* Horizontal */
+  align-items: center; /* Vertical */
   color: var(--text-soft);
 }
 
 .mini-close-btn,
 .mini-nav-btn {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   border-radius: 10px;
   cursor: pointer;
   font-size: 15px;
+  line-height: 1;
   box-shadow: var(--shadow-sm);
 }
 
 .mini-picker-nav {
   display: grid;
-  grid-template-columns: 32px minmax(0, 1fr) 32px;
+  grid-template-columns: 30px minmax(0, 1fr) 30px;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
 .mini-picker-title-wrap {
@@ -427,9 +457,12 @@ button {
 }
 
 .mini-picker-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
-  line-height: 1.3;
+  line-height: 1.25;
+  display: flex;
+  justify-content: center; /* Horizontal */
+  align-items: center; /* Vertical */
   color: var(--accent-strong);
 }
 
@@ -438,7 +471,9 @@ button {
   font-size: 10px;
   line-height: 1.35;
   color: var(--text-soft);
-  text-align: center;
+  display: flex;
+  justify-content: center; /* Horizontal */
+  align-items: center; /* Vertical */
 }
 
 .mini-weekday-row,
@@ -451,12 +486,12 @@ button {
 
 .mini-weekday-row,
 .mini-calendar-grid {
-  gap: 6px;
+  gap: 4px;
 }
 
 .mini-weekday-row {
   margin-bottom: 0;
-  padding: 10px 8px 6px;
+  padding: 7px 7px 4px;
   border-radius: 12px 12px 0 0;
   background: var(--calendar-board);
 }
@@ -475,8 +510,8 @@ button {
 }
 
 .mini-calendar-grid {
-  grid-auto-rows: 31px;
-  padding: 6px 8px 10px;
+  grid-auto-rows: 26px;
+  padding: 5px 7px 7px;
   border-radius: 0 0 12px 12px;
   background: var(--calendar-board);
 }
@@ -484,13 +519,14 @@ button {
 .mini-day {
   position: relative;
   width: 100%;
-  height: 31px;
-  border-radius: 10px;
+  height: 26px;
+  border-radius: 9px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--text);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 800;
+  line-height: 1;
   cursor: pointer;
   box-shadow: none;
 }
@@ -544,16 +580,16 @@ button {
 .mini-picker-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .mini-today-btn {
-  min-height: 34px;
-  padding: 0 13px;
-  border-radius: 11px;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 11.5px;
+  font-weight: 600;
   color: var(--accent-strong);
   background: var(--accent-soft);
 }
@@ -668,7 +704,7 @@ button {
 .day.selected.holiday-observance {
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 12px 22px rgba(47, 128, 237, 0.30);
+  box-shadow: 0 12px 22px rgba(47, 128, 237, 0.3);
 }
 
 .day.selected .day-j,
@@ -718,27 +754,29 @@ button {
 
 .side-card-tehran {
   flex: 0 0 auto;
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #ffffff;
-  box-shadow: 0 14px 26px rgba(47, 128, 237, 0.26);
-}
-
-.side-card-tehran .section-label,
-.side-card-tehran .topbar-tehran-date,
-.side-card-tehran .topbar-tehran-persian,
-.side-card-tehran .topbar-tehran-time {
-  color: #ffffff;
+  background: #f6f8fb;
+  border-color: var(--border);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
 }
 
 .side-card-tehran .section-label,
 .side-card-tehran .topbar-tehran-date {
-  opacity: 0.86;
+  color: var(--text-soft);
+  opacity: 1;
+}
+
+.side-card-tehran .topbar-tehran-persian {
+  color: var(--text);
+}
+
+.side-card-tehran .topbar-tehran-time {
+  color: var(--accent);
 }
 
 .side-card-tehran .tehran-phase-icon {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.14);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .tehran-row {
@@ -806,8 +844,8 @@ button {
 }
 
 .section-label {
-  font-size: 9px;
-  font-weight: 850;
+  font-size: 12px;
+  font-weight: 750;
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--text-soft);
@@ -828,11 +866,11 @@ button {
 .today-badge {
   border: 1px solid var(--today-ring);
   border-radius: 999px;
-  padding: 3px 7px;
+  padding: 9px;
   color: var(--accent-strong);
   background: var(--accent-soft);
   font-size: 10px;
-  font-weight: 850;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -870,9 +908,12 @@ button {
 }
 
 .status-line {
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.35;
-  font-weight: 850;
+  font-weight: 600;
+  display: flex;
+  justify-content: center; /* Horizontal */
+  align-items: center; /* Vertical */
   color: var(--status-neutral-text);
 }
 
@@ -944,30 +985,38 @@ button {
 
 .holiday-item-head {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "dot title"
+    ". tag";
   align-items: center;
-  gap: 7px;
+  gap: 6px 7px;
 }
 
 .holiday-item-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
+  grid-area: dot;
 }
 
 .holiday-item-title {
-  font-size: 13px;
+  grid-area: title;
+  font-size: 16px;
   font-weight: 820;
   line-height: 1.4;
   color: var(--text);
   min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .holiday-item-tag {
+  grid-area: tag;
+  width: fit-content;
+  justify-self: start;
   font-size: 10px;
   line-height: 1;
-  color: var(--text-soft);
-  background: rgba(255, 255, 255, 0.2);
+  color: var(--holiday-public);
+  background: var(--status-neutral-bg);
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 4px 7px;
@@ -978,8 +1027,8 @@ button {
 .holiday-item-note {
   font-size: 11px;
   line-height: 1.5;
-  color: var(--text-soft);
-  margin-top: 6px;
+  color: #000000;
+  margin-top: 10px;
 }
 
 .holiday-item-note {
@@ -1210,8 +1259,8 @@ input:focus-visible,
 }
 
 :root.dark .side-card-tehran {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--panel-2);
+  border-color: var(--border);
 }
 
 :root.dark .today-btn {
@@ -1221,8 +1270,18 @@ input:focus-visible,
 }
 
 :root.dark .side-card-tehran .tehran-phase-icon {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.14);
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+:root.dark .side-card-tehran .topbar-tehran-time {
+  color: var(--accent-strong);
+}
+
+:root.dark .date-picker-value {
+  background: var(--panel-2);
+  border-color: var(--border-strong);
+  color: var(--text);
 }
 
 :root.dark .icon-btn:hover,
@@ -1296,7 +1355,7 @@ input:focus-visible,
 }
 
 :root.dark .utility-icon {
-  background: var(--accent-soft);
+  background: transparent;
   color: var(--accent-strong);
 }
 

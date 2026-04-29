@@ -1,203 +1,421 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taqvim</title>
-  <link rel="stylesheet" href="popup.css" />
-</head>
-<body>
-  <div class="app-shell">
-    <header class="app-topbar">
-      <nav class="tab-bar" role="tablist" aria-label="Taqvim views">
-        <button id="calendarTab" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="calendarPanel">Calendar</button>
-        <button id="convertTab" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="convertPanel">Convert</button>
-      </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taqvim</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-topbar">
+        <nav class="tab-bar" role="tablist" aria-label="Taqvim views">
+          <button
+            id="calendarTab"
+            class="tab-btn active"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="calendarPanel"
+          >
+            Calendar
+          </button>
+          <button
+            id="convertTab"
+            class="tab-btn"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="convertPanel"
+          >
+            Convert
+          </button>
+        </nav>
 
-      <div class="compact-head-actions" aria-label="Popup actions">
-        <button id="themeToggle" class="utility-btn" title="Cycle theme" aria-label="Theme: system" type="button">
-          <span id="themeToggleIcon" class="utility-icon" aria-hidden="true">◐</span>
-          <span class="utility-label">Theme</span>
-        </button>
-        <button id="openSettings" class="utility-btn" title="Open settings" aria-label="Open settings" type="button">
-          <span class="utility-icon" aria-hidden="true">⚙</span>
-          <span class="utility-label">Settings</span>
-        </button>
-      </div>
-    </header>
-
-    <main id="calendarPanel" class="workspace workspace-two-column tab-panel" role="tabpanel" aria-labelledby="calendarTab">
-      <section class="calendar-shell" aria-label="Calendar panel">
-        <div class="controls-row">
-          <div class="date-picker-anchor">
-            <button
-              id="datePickerToggle"
-              class="date-picker-toggle"
-              type="button"
-              aria-haspopup="dialog"
-              aria-expanded="false"
-              aria-controls="miniDatePicker"
+        <div class="compact-head-actions" aria-label="Popup actions">
+          <button
+            id="themeToggle"
+            class="utility-btn"
+            title="Cycle theme"
+            aria-label="Theme: system"
+            type="button"
+          >
+            <span id="themeToggleIcon" class="utility-icon" aria-hidden="true"
+              >◐</span
             >
-              <span class="date-picker-copy">
-                <span class="date-picker-label">Jump to date</span>
-                <span id="datePickerValue" class="date-picker-value rtl-text" lang="fa" dir="rtl"></span>
-                <span id="datePickerMeta" class="date-picker-meta ltr-text" lang="en" dir="ltr"></span>
-              </span>
-              <span class="date-picker-caret" aria-hidden="true">▾</span>
-            </button>
+            <span class="utility-label">Theme</span>
+          </button>
+          <button
+            id="openSettings"
+            class="utility-btn"
+            title="Open settings"
+            aria-label="Open settings"
+            type="button"
+          >
+            <span class="utility-icon" aria-hidden="true">⚙</span>
+            <span class="utility-label">Settings</span>
+          </button>
+        </div>
+      </header>
 
-            <div id="miniDatePicker" class="mini-picker hidden" role="dialog" aria-label="Select a date">
+      <main
+        id="calendarPanel"
+        class="workspace workspace-two-column tab-panel"
+        role="tabpanel"
+        aria-labelledby="calendarTab"
+      >
+        <section class="calendar-shell" aria-label="Calendar panel">
+          <div class="controls-row">
+            <div class="date-picker-anchor">
+              <button
+                id="datePickerToggle"
+                class="date-picker-toggle"
+                type="button"
+                aria-haspopup="dialog"
+                aria-expanded="false"
+                aria-controls="miniDatePicker"
+              >
+                <span class="date-picker-copy">
+                  <span class="date-picker-label">Jump to date</span>
+
+                  <span
+                    id="datePickerMeta"
+                    class="date-picker-meta ltr-text"
+                    lang="en"
+                    dir="ltr"
+                  ></span>
+                </span>
+                <span class="date-picker-caret" aria-hidden="true">▾</span>
+              </button>
+            </div>
+
+            <div class="calendar-nav" aria-label="Month navigation">
+              <button
+                id="prevMonth"
+                class="nav-btn"
+                type="button"
+                aria-label="Previous month"
+              >
+                ‹
+              </button>
+              <button id="goToday" class="today-btn" type="button">
+                Today
+              </button>
+              <button
+                id="nextMonth"
+                class="nav-btn"
+                type="button"
+                aria-label="Next month"
+              >
+                ›
+              </button>
+            </div>
+
+            <span
+              id="datePickerValue"
+              class="date-picker-value rtl-text"
+              lang="fa"
+              dir="rtl"
+            ></span>
+
+            <div
+              id="miniDatePicker"
+              class="mini-picker hidden"
+              role="dialog"
+              aria-label="Select a date"
+            >
               <div class="mini-picker-top">
                 <div class="mini-picker-eyebrow">Select a day</div>
-                <button id="miniPickerClose" class="mini-close-btn" type="button" aria-label="Close date picker">✕</button>
+                <button
+                  id="miniPickerClose"
+                  class="mini-close-btn"
+                  type="button"
+                  aria-label="Close date picker"
+                >
+                  ✕
+                </button>
               </div>
 
               <div class="mini-picker-nav">
-                <button id="miniPrevMonth" class="mini-nav-btn" type="button" aria-label="Previous month">‹</button>
+                <button
+                  id="miniPrevMonth"
+                  class="mini-nav-btn"
+                  type="button"
+                  aria-label="Previous month"
+                >
+                  ‹
+                </button>
                 <div class="mini-picker-title-wrap">
-                  <div id="miniPickerTitle" class="mini-picker-title rtl-text" lang="fa" dir="rtl"></div>
-                  <div id="miniPickerSubtitle" class="mini-picker-subtitle ltr-text" lang="en" dir="ltr"></div>
+                  <div
+                    id="miniPickerTitle"
+                    class="mini-picker-title rtl-text"
+                    lang="fa"
+                    dir="rtl"
+                  ></div>
+                  <div
+                    id="miniPickerSubtitle"
+                    class="mini-picker-subtitle ltr-text"
+                    lang="en"
+                    dir="ltr"
+                  ></div>
                 </div>
-                <button id="miniNextMonth" class="mini-nav-btn" type="button" aria-label="Next month">›</button>
+                <button
+                  id="miniNextMonth"
+                  class="mini-nav-btn"
+                  type="button"
+                  aria-label="Next month"
+                >
+                  ›
+                </button>
               </div>
 
-              <div id="miniWeekdayRow" class="mini-weekday-row" role="row"></div>
-              <div id="miniCalendarGrid" class="mini-calendar-grid" role="grid" aria-label="Mini calendar"></div>
+              <div
+                id="miniWeekdayRow"
+                class="mini-weekday-row"
+                role="row"
+              ></div>
+              <div
+                id="miniCalendarGrid"
+                class="mini-calendar-grid"
+                role="grid"
+                aria-label="Mini calendar"
+              ></div>
 
               <div class="mini-picker-actions">
-                <button id="miniGoToday" class="mini-today-btn" type="button">Go to today</button>
+                <button id="miniGoToday" class="mini-today-btn" type="button">
+                  Go to today
+                </button>
               </div>
             </div>
           </div>
 
-          <div class="calendar-nav" aria-label="Month navigation">
-            <button id="prevMonth" class="nav-btn" type="button" aria-label="Previous month">‹</button>
-            <button id="goToday" class="today-btn" type="button">Today</button>
-            <button id="nextMonth" class="nav-btn" type="button" aria-label="Next month">›</button>
+          <div class="weekday-strip">
+            <div id="weekdayRow" class="weekday-row" role="row"></div>
+          </div>
+          <div
+            id="calendarGrid"
+            class="calendar-grid"
+            role="grid"
+            aria-label="Calendar month"
+          ></div>
+        </section>
+
+        <aside class="sidebar-shell">
+          <section
+            class="side-card side-card-tehran"
+            aria-label="Tehran local time and date"
+          >
+            <div class="section-label section-label-tight">Tehran now</div>
+
+            <div class="tehran-row">
+              <div class="tehran-time-block">
+                <span
+                  id="tehranPhaseIcon"
+                  class="tehran-phase-icon"
+                  aria-hidden="true"
+                  >☀</span
+                >
+                <div id="tehranTime" class="topbar-tehran-time ltr-text">
+                  --:--
+                </div>
+              </div>
+              <div class="tehran-copy-block">
+                <div id="tehranDate" class="topbar-tehran-date ltr-text">
+                  Asia/Tehran
+                </div>
+                <div
+                  id="tehranPersianDate"
+                  class="topbar-tehran-persian rtl-text"
+                  lang="fa"
+                  dir="rtl"
+                ></div>
+              </div>
+            </div>
+          </section>
+
+          <section
+            class="side-card merged-side-card"
+            aria-label="Selected day details"
+          >
+            <div class="detail-heading">
+              <div class="section-label">Selected day</div>
+              <!-- <span id="selectedTodayBadge" class="today-badge hidden"
+                >Today</span 
+              >-->
+            </div>
+
+            <div class="detail-surface">
+              <div class="date-stack">
+                <div
+                  id="selectedJalali"
+                  class="detail-primary rtl-text"
+                  lang="fa"
+                  dir="rtl"
+                ></div>
+                <div
+                  id="selectedGregorian"
+                  class="detail-secondary ltr-text"
+                  lang="en"
+                  dir="ltr"
+                ></div>
+                <div
+                  id="selectedHijri"
+                  class="detail-secondary ltr-text hidden"
+                  lang="en"
+                  dir="ltr"
+                ></div>
+              </div>
+            </div>
+
+            <div class="status-card">
+              <div id="selectedHolidayStatus" class="status-line ltr-text">
+                Loading…
+              </div>
+            </div>
+
+            <div
+              id="selectedHolidayChips"
+              class="chip-row hidden"
+              lang="fa"
+              dir="rtl"
+            ></div>
+            <div id="selectedHolidayList" class="holiday-list hidden"></div>
+
+            <div class="today-data-cache hidden" aria-hidden="true">
+              <div id="todayJalali"></div>
+              <div id="todayGregorian"></div>
+              <div id="todayHijri" class="hidden"></div>
+              <div id="todayHolidayStatus"></div>
+              <div id="todayHolidayChips" class="hidden"></div>
+            </div>
+          </section>
+        </aside>
+      </main>
+
+      <section
+        id="convertPanel"
+        class="convert-shell tab-panel hidden"
+        role="tabpanel"
+        aria-labelledby="convertTab"
+      >
+        <div class="convert-card">
+          <div class="convert-head">
+            <div>
+              <div class="section-label">Date converter</div>
+              <h1 lang="fa" dir="rtl">تبدیل تاریخ</h1>
+            </div>
           </div>
 
-        </div>
+          <div class="convert-grid">
+            <label class="convert-field">
+              <span>Source calendar</span>
+              <select id="convertSource">
+                <option value="jalali">Jalali</option>
+                <option value="gregorian">Gregorian</option>
+                <option value="hijri">Hijri</option>
+              </select>
+            </label>
 
-        <div class="weekday-strip">
-          <div id="weekdayRow" class="weekday-row" role="row"></div>
+            <label class="convert-field">
+              <span>Year</span>
+              <input
+                id="convertYear"
+                type="number"
+                inputmode="numeric"
+                min="1"
+              />
+            </label>
+
+            <label class="convert-field">
+              <span>Month</span>
+              <input
+                id="convertMonth"
+                type="number"
+                inputmode="numeric"
+                min="1"
+                max="12"
+              />
+            </label>
+
+            <label class="convert-field">
+              <span>Day</span>
+              <input
+                id="convertDay"
+                type="number"
+                inputmode="numeric"
+                min="1"
+                max="31"
+              />
+            </label>
+          </div>
+
+          <div
+            id="convertError"
+            class="convert-error hidden"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <div class="convert-results" aria-live="polite">
+            <div class="convert-result-row">
+              <div>
+                <span class="convert-result-label">Jalali</span>
+                <strong id="convertJalali" class="rtl-text" lang="fa" dir="rtl"
+                  >--</strong
+                >
+              </div>
+              <button
+                class="copy-btn"
+                type="button"
+                data-copy-target="convertJalali"
+                aria-label="Copy Jalali date"
+              >
+                Copy
+              </button>
+            </div>
+
+            <div class="convert-result-row">
+              <div>
+                <span class="convert-result-label">Gregorian</span>
+                <strong
+                  id="convertGregorian"
+                  class="ltr-text"
+                  lang="en"
+                  dir="ltr"
+                  >--</strong
+                >
+              </div>
+              <button
+                class="copy-btn"
+                type="button"
+                data-copy-target="convertGregorian"
+                aria-label="Copy Gregorian date"
+              >
+                Copy
+              </button>
+            </div>
+
+            <div class="convert-result-row">
+              <div>
+                <span class="convert-result-label">Hijri</span>
+                <strong id="convertHijri" class="ltr-text" lang="en" dir="ltr"
+                  >--</strong
+                >
+              </div>
+              <button
+                class="copy-btn"
+                type="button"
+                data-copy-target="convertHijri"
+                aria-label="Copy Hijri date"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
         </div>
-        <div id="calendarGrid" class="calendar-grid" role="grid" aria-label="Calendar month"></div>
       </section>
+    </div>
 
-      <aside class="sidebar-shell">
-        <section class="side-card side-card-tehran" aria-label="Tehran local time and date">
-          <div class="section-label section-label-tight">Tehran now</div>
-
-          <div class="tehran-row">
-            <div class="tehran-time-block">
-              <span id="tehranPhaseIcon" class="tehran-phase-icon" aria-hidden="true">☀</span>
-              <div id="tehranTime" class="topbar-tehran-time ltr-text">--:--</div>
-            </div>
-            <div class="tehran-copy-block">
-              <div id="tehranDate" class="topbar-tehran-date ltr-text">Asia/Tehran</div>
-              <div id="tehranPersianDate" class="topbar-tehran-persian rtl-text" lang="fa" dir="rtl"></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="side-card merged-side-card" aria-label="Selected day details">
-          <div class="detail-heading">
-            <div class="section-label">Selected day</div>
-            <span id="selectedTodayBadge" class="today-badge hidden">Today</span>
-          </div>
-
-          <div class="detail-surface">
-            <div class="date-stack">
-              <div id="selectedJalali" class="detail-primary rtl-text" lang="fa" dir="rtl"></div>
-              <div id="selectedGregorian" class="detail-secondary ltr-text" lang="en" dir="ltr"></div>
-              <div id="selectedHijri" class="detail-secondary ltr-text hidden" lang="en" dir="ltr"></div>
-            </div>
-          </div>
-
-          <div class="status-card">
-            <div id="selectedHolidayStatus" class="status-line ltr-text">Loading…</div>
-          </div>
-
-          <div id="selectedHolidayChips" class="chip-row hidden" lang="fa" dir="rtl"></div>
-          <div id="selectedHolidayList" class="holiday-list hidden"></div>
-
-          <div class="today-data-cache hidden" aria-hidden="true">
-            <div id="todayJalali"></div>
-            <div id="todayGregorian"></div>
-            <div id="todayHijri" class="hidden"></div>
-            <div id="todayHolidayStatus"></div>
-            <div id="todayHolidayChips" class="hidden"></div>
-          </div>
-        </section>
-      </aside>
-    </main>
-
-    <section id="convertPanel" class="convert-shell tab-panel hidden" role="tabpanel" aria-labelledby="convertTab">
-      <div class="convert-card">
-        <div class="convert-head">
-          <div>
-            <div class="section-label">Date converter</div>
-            <h1 lang="fa" dir="rtl">تبدیل تاریخ</h1>
-          </div>
-        </div>
-
-        <div class="convert-grid">
-          <label class="convert-field">
-            <span>Source calendar</span>
-            <select id="convertSource">
-              <option value="jalali">Jalali</option>
-              <option value="gregorian">Gregorian</option>
-              <option value="hijri">Hijri</option>
-            </select>
-          </label>
-
-          <label class="convert-field">
-            <span>Year</span>
-            <input id="convertYear" type="number" inputmode="numeric" min="1" />
-          </label>
-
-          <label class="convert-field">
-            <span>Month</span>
-            <input id="convertMonth" type="number" inputmode="numeric" min="1" max="12" />
-          </label>
-
-          <label class="convert-field">
-            <span>Day</span>
-            <input id="convertDay" type="number" inputmode="numeric" min="1" max="31" />
-          </label>
-        </div>
-
-        <div id="convertError" class="convert-error hidden" role="status" aria-live="polite"></div>
-
-        <div class="convert-results" aria-live="polite">
-          <div class="convert-result-row">
-            <div>
-              <span class="convert-result-label">Jalali</span>
-              <strong id="convertJalali" class="rtl-text" lang="fa" dir="rtl">--</strong>
-            </div>
-            <button class="copy-btn" type="button" data-copy-target="convertJalali" aria-label="Copy Jalali date">Copy</button>
-          </div>
-
-          <div class="convert-result-row">
-            <div>
-              <span class="convert-result-label">Gregorian</span>
-              <strong id="convertGregorian" class="ltr-text" lang="en" dir="ltr">--</strong>
-            </div>
-            <button class="copy-btn" type="button" data-copy-target="convertGregorian" aria-label="Copy Gregorian date">Copy</button>
-          </div>
-
-          <div class="convert-result-row">
-            <div>
-              <span class="convert-result-label">Hijri</span>
-              <strong id="convertHijri" class="ltr-text" lang="en" dir="ltr">--</strong>
-            </div>
-            <button class="copy-btn" type="button" data-copy-target="convertHijri" aria-label="Copy Hijri date">Copy</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <script type="module" src="popup.js"></script>
-</body>
+    <script type="module" src="popup.js"></script>
+  </body>
 </html>

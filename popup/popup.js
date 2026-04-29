@@ -1108,7 +1108,13 @@ miniCalendarGridEl.addEventListener("click", (event) => {
 
 document.addEventListener("click", (event) => {
   if (!state.datePicker.open) return;
-  if (event.target.closest(".date-picker-anchor")) return;
+
+  const target = event.target;
+  const clickedDatePickerToggle = datePickerToggleEl?.contains(target);
+  const clickedMiniDatePicker = miniDatePickerEl?.contains(target);
+
+  if (clickedDatePickerToggle || clickedMiniDatePicker) return;
+
   closeDatePicker();
 });
 

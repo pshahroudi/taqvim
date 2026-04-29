@@ -14,8 +14,8 @@ export function applyTheme(theme, root = document.documentElement, win = window)
 
 export function getThemeIcon(theme) {
   const iconMap = {
-    system: "●",
-    light: "☼",
+    system: "◐",
+    light: "☀",
     dark: "☾"
   };
 
