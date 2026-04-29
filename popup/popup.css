@@ -69,7 +69,7 @@
 html,
 body {
   width: 720px;
-  height: 530px;
+  height: 560px;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -96,10 +96,48 @@ button {
 
 .app-shell {
   height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tab-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn {
+  min-width: 86px;
+  height: 30px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.tab-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.tab-panel {
+  min-height: 0;
 }
 
 .workspace {
-  height: 100%;
+  flex: 1 1 auto;
+  height: auto;
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1.62fr) minmax(0, 0.9fr);
@@ -111,7 +149,7 @@ button {
 .mini-picker {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: var(--shadow-lg);
   backdrop-filter: none;
 }
@@ -164,18 +202,18 @@ button {
 
 .icon-btn,
 .nav-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 13px;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
   cursor: pointer;
   font-size: 17px;
   box-shadow: var(--shadow-sm);
 }
 
 .today-btn {
-  min-height: 38px;
-  padding: 0 14px;
-  border-radius: 13px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 11px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 800;
@@ -206,9 +244,9 @@ button {
 
 .date-picker-toggle {
   width: 100%;
-  min-height: 62px;
-  border-radius: 18px;
-  padding: 12px 14px;
+  min-height: 56px;
+  border-radius: 14px;
+  padding: 10px 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -226,7 +264,7 @@ button {
 .date-picker-label {
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.09em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: var(--text-soft);
 }
@@ -271,7 +309,7 @@ button {
 .mini-picker-eyebrow {
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: var(--text-soft);
 }
@@ -605,7 +643,7 @@ button {
 .topbar-tehran-time {
   font-size: 32px;
   font-weight: 850;
-  letter-spacing: -0.05em;
+  letter-spacing: 0;
   line-height: 1;
   color: var(--text);
   white-space: nowrap;
@@ -641,7 +679,7 @@ button {
 .section-label {
   font-size: 10px;
   font-weight: 850;
-  letter-spacing: 0.12em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: var(--text-soft);
   margin-bottom: 2px;
@@ -649,6 +687,24 @@ button {
 
 .section-label-tight {
   margin-bottom: 8px;
+}
+
+.detail-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.today-badge {
+  border: 1px solid var(--today-ring);
+  border-radius: 999px;
+  padding: 3px 7px;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  font-size: 10px;
+  font-weight: 850;
+  line-height: 1;
 }
 
 .detail-surface {
@@ -816,6 +872,135 @@ button {
   display: none;
 }
 
+.convert-shell {
+  flex: 1 1 auto;
+  display: grid;
+  min-height: 0;
+}
+
+.convert-card {
+  min-height: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: var(--shadow-lg);
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.convert-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.convert-head h1 {
+  margin: 3px 0 0;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.convert-grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 1.25fr) repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.convert-field {
+  display: grid;
+  gap: 6px;
+}
+
+.convert-field span,
+.convert-result-label {
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.convert-field input,
+.convert-field select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 8px 10px;
+  font: inherit;
+}
+
+.convert-error {
+  border: 1px solid var(--holiday-public);
+  border-radius: 12px;
+  background: var(--holiday-public-soft);
+  color: var(--holiday-public);
+  padding: 9px 11px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.convert-results {
+  display: grid;
+  gap: 8px;
+}
+
+.convert-result-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 62px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  padding: 10px 12px;
+}
+
+.convert-result-row strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.copy-btn {
+  min-width: 62px;
+  min-height: 34px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  background: var(--panel-2);
+  color: var(--accent-strong);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.copy-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.tab-panel.hidden,
+.hidden {
+  display: none;
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+.day:focus-visible,
+.mini-day:focus-visible {
+  outline: 3px solid var(--accent-soft-strong);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
+
 :root.dark,
 :root.dark body {
   background: var(--bg);
@@ -917,6 +1102,24 @@ button {
 
 :root.dark .status-card {
   box-shadow: none;
+}
+
+:root.dark .tab-bar,
+:root.dark .convert-card {
+  background: var(--panel);
+  box-shadow: var(--shadow-lg);
+}
+
+:root.dark .tab-btn.active,
+:root.dark .today-badge {
+  background: var(--accent-soft);
+}
+
+:root.dark .convert-result-row,
+:root.dark .convert-field input,
+:root.dark .convert-field select,
+:root.dark .copy-btn {
+  background: var(--panel-2);
 }
 
 @media (max-width: 720px) {

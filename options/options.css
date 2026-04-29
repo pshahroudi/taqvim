@@ -1,14 +1,29 @@
 :root {
-  --bg: #f8fafc;
-  --panel: #ffffff;
-  --panel-alt: #f1f5f9;
-  --text: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --accent: #2563eb;
-  --accent-soft: #dbeafe;
-  --success: #15803d;
-  --shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  color-scheme: light;
+  --bg: #f6efe7;
+  --panel: #fffaf4;
+  --panel-alt: #f7efe7;
+  --text: #30261f;
+  --muted: #75665c;
+  --border: #e2d3c2;
+  --accent: #9d745c;
+  --accent-soft: rgba(157, 116, 92, 0.12);
+  --success: #427a4d;
+  --shadow: 0 10px 24px rgba(78, 54, 37, 0.08);
+}
+
+:root.dark {
+  color-scheme: dark;
+  --bg: #111418;
+  --panel: #181c21;
+  --panel-alt: #20262d;
+  --text: #eef2f6;
+  --muted: #b9c2cc;
+  --border: rgba(255, 255, 255, 0.10);
+  --accent: #9fb8d0;
+  --accent-soft: rgba(159, 184, 208, 0.12);
+  --success: #8ccf9a;
+  --shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
 
 * {
@@ -49,7 +64,7 @@ body {
 .card {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
 }
 
@@ -66,7 +81,7 @@ body {
   color: var(--accent);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   text-transform: uppercase;
 }
 
@@ -103,6 +118,14 @@ h1 {
 }
 
 .btn:hover {
+  border-color: var(--accent);
+}
+
+.btn:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--accent-soft);
+  outline-offset: 2px;
   border-color: var(--accent);
 }
 
@@ -179,6 +202,18 @@ h1 {
   block-size: 20px;
   accent-color: var(--accent);
   flex: 0 0 auto;
+}
+
+.disabled-setting {
+  opacity: 0.52;
+}
+
+.disabled-setting small::after {
+  content: " Hidden while holidays are off.";
+}
+
+.disabled-setting input {
+  cursor: not-allowed;
 }
 
 .nested-row {

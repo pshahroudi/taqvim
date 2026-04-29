@@ -96,7 +96,10 @@ function needsMigration(raw) {
     "autoJumpToTodayOnOpen"
   ];
 
-  return requiredKeys.some((key) => !(key in raw));
+  if (requiredKeys.some((key) => !(key in raw))) return true;
+
+  const holidayTypes = isPlainObject(raw.holidayTypes) ? raw.holidayTypes : {};
+  return Object.keys(DEFAULT_SETTINGS.holidayTypes).some((key) => !(key in holidayTypes));
 }
 
 async function writeSettings(settings, { removeLegacy = true } = {}) {

@@ -8,7 +8,12 @@
 </head>
 <body>
   <div class="app-shell">
-    <main class="workspace workspace-two-column">
+    <nav class="tab-bar" role="tablist" aria-label="Taqvim views">
+      <button id="calendarTab" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="calendarPanel">Calendar</button>
+      <button id="convertTab" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="convertPanel">Convert</button>
+    </nav>
+
+    <main id="calendarPanel" class="workspace workspace-two-column tab-panel" role="tabpanel" aria-labelledby="calendarTab">
       <section class="calendar-shell" aria-label="Calendar panel">
         <div class="controls-row">
           <div class="date-picker-anchor">
@@ -87,7 +92,10 @@
         </section>
 
         <section class="side-card merged-side-card" aria-label="Selected day details">
-          <div class="section-label">Selected day</div>
+          <div class="detail-heading">
+            <div class="section-label">Selected day</div>
+            <span id="selectedTodayBadge" class="today-badge hidden">Today</span>
+          </div>
 
           <div class="detail-surface">
             <div class="date-stack">
@@ -114,6 +122,71 @@
         </section>
       </aside>
     </main>
+
+    <section id="convertPanel" class="convert-shell tab-panel hidden" role="tabpanel" aria-labelledby="convertTab">
+      <div class="convert-card">
+        <div class="convert-head">
+          <div>
+            <div class="section-label">Date converter</div>
+            <h1>Convert dates</h1>
+          </div>
+        </div>
+
+        <div class="convert-grid">
+          <label class="convert-field">
+            <span>Source calendar</span>
+            <select id="convertSource">
+              <option value="jalali">Jalali</option>
+              <option value="gregorian">Gregorian</option>
+              <option value="hijri">Hijri</option>
+            </select>
+          </label>
+
+          <label class="convert-field">
+            <span>Year</span>
+            <input id="convertYear" type="number" inputmode="numeric" min="1" />
+          </label>
+
+          <label class="convert-field">
+            <span>Month</span>
+            <input id="convertMonth" type="number" inputmode="numeric" min="1" max="12" />
+          </label>
+
+          <label class="convert-field">
+            <span>Day</span>
+            <input id="convertDay" type="number" inputmode="numeric" min="1" max="31" />
+          </label>
+        </div>
+
+        <div id="convertError" class="convert-error hidden" role="status" aria-live="polite"></div>
+
+        <div class="convert-results" aria-live="polite">
+          <div class="convert-result-row">
+            <div>
+              <span class="convert-result-label">Jalali</span>
+              <strong id="convertJalali" class="rtl-text" lang="fa" dir="rtl">--</strong>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="convertJalali" aria-label="Copy Jalali date">Copy</button>
+          </div>
+
+          <div class="convert-result-row">
+            <div>
+              <span class="convert-result-label">Gregorian</span>
+              <strong id="convertGregorian" class="ltr-text" lang="en" dir="ltr">--</strong>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="convertGregorian" aria-label="Copy Gregorian date">Copy</button>
+          </div>
+
+          <div class="convert-result-row">
+            <div>
+              <span class="convert-result-label">Hijri</span>
+              <strong id="convertHijri" class="ltr-text" lang="en" dir="ltr">--</strong>
+            </div>
+            <button class="copy-btn" type="button" data-copy-target="convertHijri" aria-label="Copy Hijri date">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script type="module" src="popup.js"></script>

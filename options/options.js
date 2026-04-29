@@ -1,4 +1,49 @@
-import { getSettings, saveSettingsPatch } from "../src/ui/storage.js";
+import {
+  DEFAULT_SETTINGS,
+  getSettings,
+  saveSettingsPatch,
+  setSettings
+} from "../src/ui/storage.js";
+import { applyTheme } from "../src/ui/theme.js";
+
+const root = document.documentElement;
+const saveStatusEl = document.getElementById("saveStatus");
+const appVersionEl = document.getElementById("appVersion");
+const resetDefaultsBtn = document.getElementById("resetDefaultsBtn");
+
+const controls = {
+  theme: findControl(["#theme", "#themeSelect", "select[name='theme']"]),
+  showHijri: findControl(["#showHijri", "#showHijriDate", "input[name='showHijri']"]),
+  usePersianNumerals: findControl(["#usePersianNumerals", "input[name='usePersianNumerals']"]),
+  weekStart: findControl(["#weekStart", "#weekStartsOn", "select[name='weekStart']"]),
+  showHolidays: findControl(["#showHolidays", "input[name='showHolidays']"]),
+  highlightWeekends: findControl(["#highlightWeekends", "input[name='highlightWeekends']"]),
+  autoJumpToTodayOnOpen: findControl([
+    "#autoJumpToTodayOnOpen",
+    "#autoJumpToToday",
+    "input[name='autoJumpToTodayOnOpen']"
+  ]),
+  holidayOfficialIran: findControl([
+    "#holidayOfficialIran",
+    "#officialIran",
+    "input[name='holidayOfficialIran']",
+    "input[name='officialIran']"
+  ]),
+  holidayCultural: findControl([
+    "#holidayCultural",
+    "#cultural",
+    "input[name='holidayCultural']",
+    "input[name='cultural']"
+  ]),
+  holidayIslamic: findControl([
+    "#holidayIslamic",
+    "#islamic",
+    "input[name='holidayIslamic']",
+    "input[name='islamic']"
+  ])
+};
+
+let statusTimer = null;
 
 function findControl(selectors) {
   for (const selector of selectors) {
@@ -17,141 +62,138 @@ function setValueIfPresent(element, value) {
   element.value = value;
 }
 
-function bindCheckbox(selectors, onChange) {
-  const element = findControl(selectors);
-  if (!element) return null;
+function showStatus(message) {
+  if (!saveStatusEl) return;
+
+  saveStatusEl.textContent = message;
+  window.clearTimeout(statusTimer);
+  statusTimer = window.setTimeout(() => {
+    saveStatusEl.textContent = "";
+  }, 2400);
+}
+
+function setVersion() {
+  if (!appVersionEl) return;
+
+  try {
+    appVersionEl.textContent = chrome.runtime.getManifest().version;
+  } catch {
+    appVersionEl.textContent = "0.1.0";
+  }
+}
+
+function updateHolidayCategoryState(showHolidays) {
+  [
+    controls.holidayOfficialIran,
+    controls.holidayCultural,
+    controls.holidayIslamic
+  ].forEach((element) => {
+    if (!element) return;
+    element.disabled = !showHolidays;
+    element.closest(".setting-row")?.classList.toggle("disabled-setting", !showHolidays);
+  });
+}
+
+function applyControls(settings) {
+  setValueIfPresent(controls.theme, settings.theme);
+  setValueIfPresent(controls.showHijri, settings.showHijri);
+  setValueIfPresent(controls.usePersianNumerals, settings.usePersianNumerals);
+  setValueIfPresent(controls.weekStart, settings.weekStart);
+  setValueIfPresent(controls.showHolidays, settings.showHolidays);
+  setValueIfPresent(controls.highlightWeekends, settings.highlightWeekends);
+  setValueIfPresent(controls.autoJumpToTodayOnOpen, settings.autoJumpToTodayOnOpen);
+  setValueIfPresent(controls.holidayOfficialIran, settings.holidayTypes.officialIran);
+  setValueIfPresent(controls.holidayCultural, settings.holidayTypes.cultural);
+  setValueIfPresent(controls.holidayIslamic, settings.holidayTypes.islamic);
+
+  updateHolidayCategoryState(settings.showHolidays);
+  applyTheme(settings.theme, root);
+}
+
+async function savePatch(patch, message = "Saved") {
+  const settings = await saveSettingsPatch(patch);
+  applyControls(settings);
+  showStatus(message);
+}
+
+function bindCheckbox(element, onChange) {
+  if (!element) return;
 
   element.addEventListener("change", async () => {
     await onChange(Boolean(element.checked));
   });
-
-  return element;
 }
 
-function bindSelect(selectors, onChange) {
-  const element = findControl(selectors);
-  if (!element) return null;
+function bindSelect(element, onChange) {
+  if (!element) return;
 
   element.addEventListener("change", async () => {
     await onChange(element.value);
   });
+}
 
-  return element;
+async function resetDefaults() {
+  const settings = await setSettings(DEFAULT_SETTINGS);
+  applyControls(settings);
+  showStatus("Reset to defaults");
 }
 
 async function init() {
-  const settings = await getSettings();
+  setVersion();
+  applyControls(await getSettings());
 
-  const themeEl = bindSelect(
-    ["#theme", "#themeSelect", "select[name='theme']"],
-    async (value) => {
-      await saveSettingsPatch({ theme: value });
+  bindSelect(controls.theme, async (value) => {
+    await savePatch({ theme: value });
+  });
+
+  bindCheckbox(controls.showHijri, async (checked) => {
+    await savePatch({ showHijri: checked });
+  });
+
+  bindCheckbox(controls.usePersianNumerals, async (checked) => {
+    await savePatch({ usePersianNumerals: checked });
+  });
+
+  bindSelect(controls.weekStart, async (value) => {
+    await savePatch({ weekStart: value });
+  });
+
+  bindCheckbox(controls.showHolidays, async (checked) => {
+    await savePatch({ showHolidays: checked });
+  });
+
+  bindCheckbox(controls.highlightWeekends, async (checked) => {
+    await savePatch({ highlightWeekends: checked });
+  });
+
+  bindCheckbox(controls.autoJumpToTodayOnOpen, async (checked) => {
+    await savePatch({ autoJumpToTodayOnOpen: checked });
+  });
+
+  bindCheckbox(controls.holidayOfficialIran, async (checked) => {
+    await savePatch({ holidayTypes: { officialIran: checked } });
+  });
+
+  bindCheckbox(controls.holidayCultural, async (checked) => {
+    await savePatch({ holidayTypes: { cultural: checked } });
+  });
+
+  bindCheckbox(controls.holidayIslamic, async (checked) => {
+    await savePatch({ holidayTypes: { islamic: checked } });
+  });
+
+  resetDefaultsBtn?.addEventListener("click", resetDefaults);
+
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", async () => {
+    const settings = await getSettings();
+    if (settings.theme === "system") {
+      applyTheme("system", root);
     }
-  );
-
-  const showHijriEl = bindCheckbox(
-    ["#showHijri", "#showHijriDate", "input[name='showHijri']"],
-    async (checked) => {
-      await saveSettingsPatch({ showHijri: checked });
-    }
-  );
-
-  const usePersianNumeralsEl = bindCheckbox(
-    ["#usePersianNumerals", "input[name='usePersianNumerals']"],
-    async (checked) => {
-      await saveSettingsPatch({ usePersianNumerals: checked });
-    }
-  );
-
-  const weekStartEl = bindSelect(
-    ["#weekStart", "#weekStartsOn", "select[name='weekStart']"],
-    async (value) => {
-      await saveSettingsPatch({ weekStart: value });
-    }
-  );
-
-  const showHolidaysEl = bindCheckbox(
-    ["#showHolidays", "input[name='showHolidays']"],
-    async (checked) => {
-      await saveSettingsPatch({ showHolidays: checked });
-    }
-  );
-
-  const highlightWeekendsEl = bindCheckbox(
-    ["#highlightWeekends", "input[name='highlightWeekends']"],
-    async (checked) => {
-      await saveSettingsPatch({ highlightWeekends: checked });
-    }
-  );
-
-  const autoJumpEl = bindCheckbox(
-    ["#autoJumpToTodayOnOpen", "#autoJumpToToday", "input[name='autoJumpToTodayOnOpen']"],
-    async (checked) => {
-      await saveSettingsPatch({ autoJumpToTodayOnOpen: checked });
-    }
-  );
-
-  const officialIranEl = bindCheckbox(
-    [
-      "#holidayOfficialIran",
-      "#officialIran",
-      "input[name='holidayOfficialIran']",
-      "input[name='officialIran']"
-    ],
-    async (checked) => {
-      await saveSettingsPatch({ holidayTypes: { officialIran: checked } });
-    }
-  );
-
-  const culturalEl = bindCheckbox(
-    [
-      "#holidayCultural",
-      "#cultural",
-      "input[name='holidayCultural']",
-      "input[name='cultural']"
-    ],
-    async (checked) => {
-      await saveSettingsPatch({ holidayTypes: { cultural: checked } });
-    }
-  );
-
-  const islamicEl = bindCheckbox(
-    [
-      "#holidayIslamic",
-      "#islamic",
-      "input[name='holidayIslamic']",
-      "input[name='islamic']"
-    ],
-    async (checked) => {
-      await saveSettingsPatch({ holidayTypes: { islamic: checked } });
-    }
-  );
-
-  setValueIfPresent(themeEl, settings.theme);
-  setValueIfPresent(showHijriEl, settings.showHijri);
-  setValueIfPresent(usePersianNumeralsEl, settings.usePersianNumerals);
-  setValueIfPresent(weekStartEl, settings.weekStart);
-  setValueIfPresent(showHolidaysEl, settings.showHolidays);
-  setValueIfPresent(highlightWeekendsEl, settings.highlightWeekends);
-  setValueIfPresent(autoJumpEl, settings.autoJumpToTodayOnOpen);
-  setValueIfPresent(officialIranEl, settings.holidayTypes.officialIran);
-  setValueIfPresent(culturalEl, settings.holidayTypes.cultural);
-  setValueIfPresent(islamicEl, settings.holidayTypes.islamic);
+  });
 
   chrome.storage.onChanged.addListener(async (_changes, areaName) => {
     if (areaName !== "sync") return;
-
-    const latest = await getSettings();
-    setValueIfPresent(themeEl, latest.theme);
-    setValueIfPresent(showHijriEl, latest.showHijri);
-    setValueIfPresent(usePersianNumeralsEl, latest.usePersianNumerals);
-    setValueIfPresent(weekStartEl, latest.weekStart);
-    setValueIfPresent(showHolidaysEl, latest.showHolidays);
-    setValueIfPresent(highlightWeekendsEl, latest.highlightWeekends);
-    setValueIfPresent(autoJumpEl, latest.autoJumpToTodayOnOpen);
-    setValueIfPresent(officialIranEl, latest.holidayTypes.officialIran);
-    setValueIfPresent(culturalEl, latest.holidayTypes.cultural);
-    setValueIfPresent(islamicEl, latest.holidayTypes.islamic);
+    applyControls(await getSettings());
   });
 }
 

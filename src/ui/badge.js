@@ -1,31 +1,17 @@
 import { toJalali } from "../calendar/jalali.js";
-
-const PERSIAN_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
-
-function toPersianDigits(value) {
-  return String(value).replace(/\d/g, (digit) => PERSIAN_DIGITS[Number(digit)]);
-}
-
-function createTodayDate() {
-  const date = new Date();
-  date.setHours(12, 0, 0, 0);
-  return date;
-}
+import { TEHRAN_TIME_ZONE, getDatePartsInTimeZone } from "../utils/dates.js";
+import { formatNumber, formatPersianOrderedDate } from "../utils/format.js";
+import { DEFAULT_SETTINGS } from "./storage.js";
 
 function getBadgeText(dayNumber, usePersianNumerals) {
-  return usePersianNumerals ? toPersianDigits(dayNumber) : String(dayNumber);
+  return formatNumber(dayNumber, usePersianNumerals);
 }
 
-function formatTitle(date, usePersianNumerals) {
-  const locale = usePersianNumerals ? "fa-IR-u-ca-persian" : "en-US-u-ca-persian";
-  const formatter = new Intl.DateTimeFormat(locale, {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric"
-  });
-
-  return `Taqvim — ${formatter.format(date)}`;
+function formatTitle(now, usePersianNumerals) {
+  return `Taqvim - Tehran date: ${formatPersianOrderedDate(now, {
+    usePersianNumerals,
+    timeZone: TEHRAN_TIME_ZONE
+  })}`;
 }
 
 export async function updateBadge() {
@@ -33,19 +19,21 @@ export async function updateBadge() {
     "usePersianNumerals"
   ]);
 
-  const usePersianNumerals = settings.usePersianNumerals ?? true;
-  const today = createTodayDate();
+  const usePersianNumerals =
+    settings.usePersianNumerals ?? DEFAULT_SETTINGS.usePersianNumerals;
+  const now = new Date();
+  const tehranDate = getDatePartsInTimeZone(now, TEHRAN_TIME_ZONE);
   const jalali = toJalali(
-    today.getFullYear(),
-    today.getMonth() + 1,
-    today.getDate()
+    tehranDate.year,
+    tehranDate.month,
+    tehranDate.day
   );
 
-  await chrome.action.setBadgeBackgroundColor({ color: "#2563eb" });
+  await chrome.action.setBadgeBackgroundColor({ color: "#9d745c" });
   await chrome.action.setBadgeText({
     text: getBadgeText(jalali.jd, usePersianNumerals)
   });
   await chrome.action.setTitle({
-    title: formatTitle(today, usePersianNumerals)
+    title: formatTitle(now, usePersianNumerals)
   });
 }

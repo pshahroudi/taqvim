@@ -1,47 +1,29 @@
 import { updateBadge } from "../src/ui/badge.js";
-
-const DEFAULT_SETTINGS = {
-  theme: "system",
-  showHijri: false,
-  usePersianNumerals: true,
-  weekStart: "saturday",
-  showHolidays: true,
-  holidayTypes: {
-    officialIran: true,
-    cultural: true,
-    islamic: false
-  }
-};
+import { DEFAULT_SETTINGS, normalizeSettings, setSettings } from "../src/ui/storage.js";
+import { getNextTehranMidnightTimestamp } from "../src/utils/dates.js";
 
 const MIDNIGHT_ALARM = "taqvim-midnight-refresh";
 
 async function ensureDefaultSettings() {
-  const current = await chrome.storage.sync.get([
-    "theme",
-    "showHijri",
-    "usePersianNumerals",
-    "weekStart",
-    "showHolidays",
-    "holidayTypes"
-  ]);
+  const keys = Object.keys(DEFAULT_SETTINGS);
+  const current = await chrome.storage.sync.get(null);
+  const normalized = normalizeSettings(current);
+  const holidayTypeKeys = Object.keys(DEFAULT_SETTINGS.holidayTypes);
+  const holidayTypes = current.holidayTypes || {};
+  const shouldWriteDefaults =
+    Boolean(current.settings) ||
+    keys.some((key) => current[key] === undefined) ||
+    holidayTypeKeys.some((key) => holidayTypes[key] === undefined);
 
-  const updates = {};
-
-  for (const [key, value] of Object.entries(DEFAULT_SETTINGS)) {
-    if (current[key] === undefined) {
-      updates[key] = value;
-    }
-  }
-
-  if (Object.keys(updates).length > 0) {
-    await chrome.storage.sync.set(updates);
+  if (shouldWriteDefaults) {
+    await setSettings(normalized);
   }
 }
 
 function getNextMidnightTimestamp() {
-  const next = new Date();
-  next.setHours(24, 0, 5, 0);
-  return next.getTime();
+  // The badge intentionally reflects the Tehran calendar date, so refresh at
+  // Tehran midnight rather than the browser machine's local midnight.
+  return getNextTehranMidnightTimestamp();
 }
 
 async function scheduleNextMidnightRefresh() {
@@ -74,9 +56,7 @@ chrome.storage.onChanged.addListener(async (changes, areaName) => {
   if (areaName !== "sync") return;
 
   const relevant = [
-    "usePersianNumerals",
-    "showHolidays",
-    "holidayTypes"
+    "usePersianNumerals"
   ];
 
   if (!Object.keys(changes).some((key) => relevant.includes(key))) {
