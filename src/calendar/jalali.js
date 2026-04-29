@@ -3,6 +3,9 @@ const BREAKS = [
   2262, 2324, 2394, 2456, 3178,
 ];
 
+export const MIN_JALALI_YEAR = BREAKS[0];
+export const MAX_JALALI_YEAR = BREAKS[BREAKS.length - 1] - 1;
+
 function div(a, b) {
   return Math.trunc(a / b);
 }
@@ -19,7 +22,7 @@ function jalCal(jy) {
   let jm = 0;
   let jump = 0;
 
-  if (jy < jp || jy >= BREAKS[bl - 1]) {
+  if (!isSupportedJalaliYear(jy)) {
     throw new Error("Jalali year out of supported range.");
   }
 
@@ -129,6 +132,10 @@ export function toJalali(gy, gm, gd) {
 
 export function toGregorian(jy, jm, jd) {
   return d2g(j2d(jy, jm, jd));
+}
+
+export function isSupportedJalaliYear(jy) {
+  return Number.isInteger(jy) && jy >= MIN_JALALI_YEAR && jy <= MAX_JALALI_YEAR;
 }
 
 export function isLeapJalaliYear(jy) {

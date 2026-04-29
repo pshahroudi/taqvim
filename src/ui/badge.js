@@ -3,8 +3,8 @@ import { TEHRAN_TIME_ZONE, getDatePartsInTimeZone } from "../utils/dates.js";
 import { formatNumber, formatPersianOrderedDate } from "../utils/format.js";
 import { DEFAULT_SETTINGS } from "./storage.js";
 
-function getBadgeText(dayNumber, usePersianNumerals) {
-  return formatNumber(dayNumber, usePersianNumerals);
+function getBadgeText(jalaliDate, usePersianNumerals) {
+  return formatNumber(jalaliDate.jd, usePersianNumerals);
 }
 
 function formatTitle(now, usePersianNumerals) {
@@ -23,17 +23,27 @@ export async function updateBadge() {
     settings.usePersianNumerals ?? DEFAULT_SETTINGS.usePersianNumerals;
   const now = new Date();
   const tehranDate = getDatePartsInTimeZone(now, TEHRAN_TIME_ZONE);
-  const jalali = toJalali(
-    tehranDate.year,
-    tehranDate.month,
-    tehranDate.day
-  );
 
-  await chrome.action.setBadgeBackgroundColor({ color: "#9d745c" });
-  await chrome.action.setBadgeText({
-    text: getBadgeText(jalali.jd, usePersianNumerals)
-  });
-  await chrome.action.setTitle({
-    title: formatTitle(now, usePersianNumerals)
-  });
+  await chrome.action.setBadgeBackgroundColor({ color: "#2f80ed" });
+
+  try {
+    const jalali = toJalali(
+      tehranDate.year,
+      tehranDate.month,
+      tehranDate.day
+    );
+
+    await chrome.action.setBadgeText({
+      text: getBadgeText(jalali, usePersianNumerals)
+    });
+    await chrome.action.setTitle({
+      title: formatTitle(now, usePersianNumerals)
+    });
+  } catch (error) {
+    await chrome.action.setBadgeText({ text: "" });
+    await chrome.action.setTitle({
+      title: "Taqvim - date unavailable"
+    });
+    console.warn("Taqvim badge update skipped:", error);
+  }
 }

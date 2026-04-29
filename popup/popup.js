@@ -1,6 +1,7 @@
 import {
   createLocalDate,
   getJalaliMonthLength,
+  isSupportedJalaliYear,
   nextJalaliMonth,
   previousJalaliMonth,
   sameJalaliDate,
@@ -835,6 +836,7 @@ function isValidJalaliDate(jalaliDate) {
   if (
     !jalaliDate ||
     !Number.isInteger(jalaliDate.jy) ||
+    !isSupportedJalaliYear(jalaliDate.jy) ||
     !Number.isInteger(jalaliDate.jm) ||
     !Number.isInteger(jalaliDate.jd) ||
     jalaliDate.jm < 1 ||
@@ -908,6 +910,8 @@ function focusSelectedDay() {
 }
 
 function goToMonth(jy, jm) {
+  if (!isSupportedJalaliYear(jy)) return;
+
   const maxDay = getJalaliMonthLength(jy, jm);
 
   state.view = { jy, jm };
@@ -1027,6 +1031,7 @@ miniPickerCloseEl.addEventListener("click", () => {
 
 miniPrevMonthBtn.addEventListener("click", () => {
   const prev = previousJalaliMonth(state.datePicker.jy, state.datePicker.jm);
+  if (!isSupportedJalaliYear(prev.jy)) return;
   state.datePicker.jy = prev.jy;
   state.datePicker.jm = prev.jm;
   render();
@@ -1034,6 +1039,7 @@ miniPrevMonthBtn.addEventListener("click", () => {
 
 miniNextMonthBtn.addEventListener("click", () => {
   const next = nextJalaliMonth(state.datePicker.jy, state.datePicker.jm);
+  if (!isSupportedJalaliYear(next.jy)) return;
   state.datePicker.jy = next.jy;
   state.datePicker.jm = next.jm;
   render();

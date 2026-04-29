@@ -1,64 +1,82 @@
 :root {
   color-scheme: light;
-  --bg: #f6efe7;
-  --bg-glow-1: rgba(215, 187, 160, 0.16);
-  --bg-glow-2: rgba(232, 210, 189, 0.12);
-  --panel: rgba(255, 250, 244, 0.96);
-  --panel-solid: #fffaf4;
-  --panel-2: #fff8f2;
-  --panel-3: #f7efe7;
-  --panel-4: #f2e7dc;
-  --text: #30261f;
-  --text-soft: #75665c;
-  --muted: #b4a496;
-  --border: #e2d3c2;
-  --border-strong: #d4c1ad;
-  --accent: #9d745c;
-  --accent-soft: rgba(157, 116, 92, 0.11);
-  --accent-soft-strong: rgba(157, 116, 92, 0.18);
-  --accent-strong: #7c5947;
-  --today-ring: #b38972;
-  --weekend-soft: #fbf2ec;
-  --holiday-public: #d96b64;
-  --holiday-public-soft: rgba(217, 107, 100, 0.11);
-  --holiday-observance: #bb8c50;
-  --holiday-observance-soft: rgba(187, 140, 80, 0.11);
-  --status-neutral-bg: #f5ece3;
-  --status-neutral-text: #62554b;
-  --shadow-xl: 0 14px 30px rgba(78, 54, 37, 0.10);
-  --shadow-lg: 0 8px 20px rgba(78, 54, 37, 0.07);
-  --shadow-sm: 0 3px 8px rgba(78, 54, 37, 0.04);
+  --bg: #f4f6fa;
+  --bg-glow-1: transparent;
+  --bg-glow-2: transparent;
+  --panel: #ffffff;
+  --panel-solid: #ffffff;
+  --panel-2: #f8fafc;
+  --panel-3: #eef2f7;
+  --panel-4: #e4e9f2;
+  --text: #071932;
+  --text-soft: #52627a;
+  --muted: #9aa6b8;
+  --border: #e5eaf2;
+  --border-strong: #d6deeb;
+  --accent: #2f80ed;
+  --accent-soft: #eaf2ff;
+  --accent-soft-strong: #d8e9ff;
+  --accent-strong: #1d62c5;
+  --today-ring: #2f80ed;
+  --weekend-soft: #fff7f7;
+  --holiday-public: #ff2d55;
+  --holiday-public-soft: #fff1f4;
+  --holiday-observance: #f59e0b;
+  --holiday-observance-soft: #fff8e7;
+  --convert-jalali-bg: #eef5ff;
+  --convert-jalali-border: #cfe2ff;
+  --convert-jalali-accent: #2f80ed;
+  --convert-gregorian-bg: #fff4ff;
+  --convert-gregorian-border: #f4d7ff;
+  --convert-gregorian-accent: #8b3dff;
+  --convert-hijri-bg: #fff9ea;
+  --convert-hijri-border: #fee5a7;
+  --convert-hijri-accent: #f59e0b;
+  --status-neutral-bg: #f7f9fc;
+  --status-neutral-text: #52627a;
+  --shadow-xl: 0 18px 35px rgba(30, 49, 82, 0.10);
+  --shadow-lg: 0 10px 24px rgba(30, 49, 82, 0.07);
+  --shadow-sm: 0 3px 9px rgba(30, 49, 82, 0.05);
 }
 
 :root.dark {
   color-scheme: dark;
-  --bg: #111418;
+  --bg: #0f1520;
   --bg-glow-1: transparent;
   --bg-glow-2: transparent;
-  --panel: rgba(24, 28, 33, 0.99);
-  --panel-solid: #181c21;
-  --panel-2: #1d2228;
-  --panel-3: #232931;
-  --panel-4: #2b323b;
-  --text: #eef2f6;
-  --text-soft: #b9c2cc;
-  --muted: #8e98a5;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --accent: #9fb8d0;
-  --accent-soft: rgba(159, 184, 208, 0.10);
-  --accent-soft-strong: rgba(159, 184, 208, 0.16);
-  --accent-strong: #d8e7f5;
-  --today-ring: #8eaed0;
-  --weekend-soft: #20262d;
-  --holiday-public: #ff8f86;
-  --holiday-public-soft: rgba(255, 143, 134, 0.10);
-  --holiday-observance: #f0bd78;
-  --holiday-observance-soft: rgba(240, 189, 120, 0.10);
+  --panel: #151c27;
+  --panel-solid: #151c27;
+  --panel-2: #1b2431;
+  --panel-3: #222d3c;
+  --panel-4: #2b384b;
+  --text: #f5f8ff;
+  --text-soft: #b8c4d6;
+  --muted: #8794a8;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --accent: #5aa2ff;
+  --accent-soft: rgba(90, 162, 255, 0.14);
+  --accent-soft-strong: rgba(90, 162, 255, 0.24);
+  --accent-strong: #d8e9ff;
+  --today-ring: #5aa2ff;
+  --weekend-soft: #251f2a;
+  --holiday-public: #fb7185;
+  --holiday-public-soft: rgba(251, 113, 133, 0.11);
+  --holiday-observance: #fbbf24;
+  --holiday-observance-soft: rgba(251, 191, 36, 0.10);
+  --convert-jalali-bg: rgba(90, 162, 255, 0.14);
+  --convert-jalali-border: rgba(90, 162, 255, 0.32);
+  --convert-jalali-accent: #83b9ff;
+  --convert-gregorian-bg: rgba(168, 85, 247, 0.13);
+  --convert-gregorian-border: rgba(168, 85, 247, 0.32);
+  --convert-gregorian-accent: #c084fc;
+  --convert-hijri-bg: rgba(251, 191, 36, 0.12);
+  --convert-hijri-border: rgba(251, 191, 36, 0.30);
+  --convert-hijri-accent: #fbbf24;
   --status-neutral-bg: rgba(255, 255, 255, 0.03);
   --status-neutral-text: #d7dee7;
-  --shadow-xl: 0 8px 18px rgba(0, 0, 0, 0.20);
-  --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.14);
+  --shadow-xl: 0 8px 18px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.12);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
@@ -73,16 +91,13 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top left, var(--bg-glow-1), transparent 26%),
-    radial-gradient(circle at bottom right, var(--bg-glow-2), transparent 22%),
-    var(--bg);
+  background: var(--bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 body {
-  padding: 8px;
+  padding: 10px;
 }
 
 button,
@@ -99,26 +114,26 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .tab-bar {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   width: fit-content;
-  padding: 3px;
+  padding: 4px;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--panel);
+  border-radius: 10px;
+  background: var(--panel-solid);
   box-shadow: var(--shadow-sm);
 }
 
 .tab-btn {
   min-width: 86px;
-  height: 30px;
+  height: 32px;
   border: 0;
-  border-radius: 9px;
+  border-radius: 8px;
   background: transparent;
   color: var(--text-soft);
   cursor: pointer;
@@ -127,8 +142,9 @@ button {
 }
 
 .tab-btn.active {
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 6px 12px rgba(47, 128, 237, 0.24);
 }
 
 .tab-panel {
@@ -141,7 +157,7 @@ button {
   min-height: 0;
   display: grid;
   grid-template-columns: minmax(0, 1.62fr) minmax(0, 0.9fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 .calendar-shell,
@@ -149,7 +165,7 @@ button {
 .mini-picker {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: var(--shadow-lg);
   backdrop-filter: none;
 }
@@ -158,20 +174,22 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 16px;
 }
 
 .controls-row {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-columns: 156px auto auto;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 10px;
+  margin-bottom: 14px;
+  justify-content: start;
 }
 
 .date-picker-anchor {
   position: relative;
+  width: 156px;
   min-width: 0;
 }
 
@@ -191,7 +209,7 @@ button {
 .mini-close-btn,
 .mini-today-btn {
   border: 1px solid var(--border-strong);
-  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  background: var(--panel-2);
   color: var(--text);
   transition:
     border-color 0.16s ease,
@@ -202,23 +220,23 @@ button {
 
 .icon-btn,
 .nav-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   cursor: pointer;
-  font-size: 17px;
-  box-shadow: var(--shadow-sm);
+  font-size: 16px;
+  box-shadow: none;
 }
 
 .today-btn {
-  min-height: 34px;
-  padding: 0 12px;
-  border-radius: 11px;
+  min-height: 32px;
+  padding: 0 13px;
+  border-radius: 9px;
   cursor: pointer;
   font-size: 13px;
   font-weight: 800;
-  color: var(--accent-strong);
-  box-shadow: var(--shadow-sm);
+  color: var(--text);
+  box-shadow: none;
 }
 
 .icon-btn:hover,
@@ -229,7 +247,7 @@ button {
 .mini-close-btn:hover,
 .mini-today-btn:hover {
   border-color: var(--accent);
-  box-shadow: 0 6px 14px rgba(124, 89, 71, 0.12);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .icon-btn:active,
@@ -244,8 +262,8 @@ button {
 
 .date-picker-toggle {
   width: 100%;
-  min-height: 56px;
-  border-radius: 14px;
+  min-height: 70px;
+  border-radius: 10px;
   padding: 10px 12px;
   cursor: pointer;
   display: flex;
@@ -262,7 +280,7 @@ button {
 }
 
 .date-picker-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -270,7 +288,7 @@ button {
 }
 
 .date-picker-value {
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.25;
   font-weight: 840;
   color: var(--text);
@@ -392,7 +410,7 @@ button {
   height: 31px;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  background: var(--panel-solid);
   color: var(--text);
   font-size: 12px;
   font-weight: 800;
@@ -410,7 +428,7 @@ button {
 
 .mini-day.selected {
   border-color: var(--accent);
-  background: linear-gradient(180deg, var(--accent-soft-strong), var(--accent-soft));
+  background: var(--accent-soft);
   color: var(--accent-strong);
 }
 
@@ -459,20 +477,20 @@ button {
   font-size: 12px;
   font-weight: 800;
   color: var(--accent-strong);
-  background: linear-gradient(180deg, var(--accent-soft-strong), var(--accent-soft));
+  background: var(--accent-soft);
 }
 
 .weekday-strip {
-  margin-bottom: 8px;
-  padding: 6px 8px;
-  border-radius: 15px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  margin-bottom: 12px;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .weekday-row,
 .calendar-grid {
-  gap: 7px;
+  gap: 8px;
 }
 
 .weekday-row div {
@@ -491,12 +509,10 @@ button {
   position: relative;
   min-height: 0;
   height: 100%;
-  padding: 8px 9px 7px;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 55%),
-    var(--panel-2);
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -506,19 +522,20 @@ button {
     border-color 0.14s ease,
     box-shadow 0.14s ease,
     background-color 0.14s ease;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  box-shadow: none;
 }
 
 .day:hover {
   border-color: var(--accent);
-  box-shadow: 0 8px 16px rgba(124, 89, 71, 0.08);
+  background: var(--accent-soft);
+  box-shadow: none;
 }
 
 .day-j {
   align-self: flex-end;
   text-align: right;
-  font-size: 18px;
-  font-weight: 850;
+  font-size: 16px;
+  font-weight: 750;
   line-height: 1.05;
   color: var(--text);
 }
@@ -539,34 +556,43 @@ button {
 
 .day.selected {
   border-color: var(--accent);
-  box-shadow:
-    inset 0 0 0 2px var(--accent),
-    0 8px 18px rgba(124, 89, 71, 0.08);
-  background:
-    linear-gradient(180deg, var(--accent-soft), transparent 56%),
-    var(--panel-2);
+  box-shadow: 0 9px 18px rgba(47, 128, 237, 0.28);
+  background: var(--accent);
+}
+
+.day.selected .day-j,
+.day.selected .day-g {
+  color: #ffffff;
 }
 
 .day.muted {
-  opacity: 0.42;
+  opacity: 0.48;
 }
 
 .day.weekend {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 55%),
-    var(--weekend-soft);
+  background: var(--weekend-soft);
 }
 
 .day.holiday-public {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 55%),
-    var(--holiday-public-soft);
+  background: var(--holiday-public-soft);
 }
 
 .day.holiday-observance {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 55%),
-    var(--holiday-observance-soft);
+  background: var(--holiday-observance-soft);
+}
+
+.day.selected,
+.day.selected.weekend,
+.day.selected.holiday-public,
+.day.selected.holiday-observance {
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 9px 18px rgba(47, 128, 237, 0.28);
+}
+
+.day.selected .day-j,
+.day.selected .day-g {
+  color: #ffffff;
 }
 
 .holiday-marker-row {
@@ -604,26 +630,27 @@ button {
 
 .side-card {
   min-height: 0;
-  padding: 12px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
 }
 
 .side-card-tehran {
   flex: 0 0 auto;
-  background:
-    linear-gradient(180deg, var(--accent-soft), transparent 100%),
-    linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  background: var(--panel-solid);
 }
 
 .tehran-row {
   display: grid;
   gap: 8px;
+  justify-items: end;
+  text-align: right;
 }
 
 .tehran-time-block {
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
   gap: 10px;
 }
 
@@ -635,13 +662,13 @@ button {
   height: 34px;
   border-radius: 999px;
   font-size: 17px;
-  background: linear-gradient(180deg, var(--accent-soft-strong), var(--accent-soft));
+  background: var(--accent-soft);
   box-shadow: var(--shadow-sm);
   flex: 0 0 auto;
 }
 
 .topbar-tehran-time {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 850;
   letter-spacing: 0;
   line-height: 1;
@@ -652,6 +679,7 @@ button {
 .tehran-copy-block {
   display: grid;
   gap: 2px;
+  justify-items: end;
 }
 
 .topbar-tehran-date,
@@ -677,7 +705,7 @@ button {
 }
 
 .section-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 850;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -709,9 +737,9 @@ button {
 
 .detail-surface {
   padding: 12px 13px;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  border-radius: 12px;
+  border: 1px solid var(--convert-jalali-border);
+  background: var(--convert-jalali-bg);
 }
 
 .date-stack {
@@ -721,10 +749,10 @@ button {
 }
 
 .detail-primary {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 850;
   line-height: 1.45;
-  color: var(--text);
+  color: var(--accent-strong);
 }
 
 .detail-secondary {
@@ -734,10 +762,10 @@ button {
 }
 
 .status-card {
-  border-radius: 14px;
-  border: 1px solid var(--border);
+  border-radius: 12px;
+  border: 0;
   background: var(--status-neutral-bg);
-  padding: 10px 12px;
+  padding: 9px 12px;
 }
 
 .status-line {
@@ -777,7 +805,7 @@ button {
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 6px 10px;
-  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  background: var(--panel-solid);
   font-size: 11px;
   font-weight: 800;
   color: var(--text);
@@ -808,7 +836,7 @@ button {
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 9px 10px;
-  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
+  background: var(--panel-solid);
   direction: rtl;
   text-align: right;
 }
@@ -880,9 +908,9 @@ button {
 
 .convert-card {
   min-height: 0;
-  padding: 16px;
+  padding: 20px;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   background: var(--panel);
   box-shadow: var(--shadow-lg);
   display: grid;
@@ -893,13 +921,14 @@ button {
 .convert-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
+  text-align: right;
 }
 
 .convert-head h1 {
   margin: 3px 0 0;
-  font-size: 20px;
+  font-size: 22px;
   line-height: 1.2;
 }
 
@@ -924,9 +953,9 @@ button {
 .convert-field input,
 .convert-field select {
   width: 100%;
-  min-height: 38px;
+  min-height: 42px;
   border: 1px solid var(--border-strong);
-  border-radius: 11px;
+  border-radius: 10px;
   background: var(--panel-2);
   color: var(--text);
   padding: 8px 10px;
@@ -955,9 +984,39 @@ button {
   gap: 12px;
   min-height: 62px;
   border: 1px solid var(--border);
-  border-radius: 14px;
-  background: linear-gradient(180deg, var(--panel-2), var(--panel-3));
-  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--panel-solid);
+  padding: 12px 14px;
+}
+
+.convert-result-row:nth-child(1) {
+  background: var(--convert-jalali-bg);
+  border-color: var(--convert-jalali-border);
+}
+
+.convert-result-row:nth-child(2) {
+  background: var(--convert-gregorian-bg);
+  border-color: var(--convert-gregorian-border);
+}
+
+.convert-result-row:nth-child(3) {
+  background: var(--convert-hijri-bg);
+  border-color: var(--convert-hijri-border);
+}
+
+.convert-result-row:nth-child(1) .convert-result-label,
+.convert-result-row:nth-child(1) .copy-btn {
+  color: var(--convert-jalali-accent);
+}
+
+.convert-result-row:nth-child(2) .convert-result-label,
+.convert-result-row:nth-child(2) .copy-btn {
+  color: var(--convert-gregorian-accent);
+}
+
+.convert-result-row:nth-child(3) .convert-result-label,
+.convert-result-row:nth-child(3) .copy-btn {
+  color: var(--convert-hijri-accent);
 }
 
 .convert-result-row strong {
@@ -969,11 +1028,11 @@ button {
 }
 
 .copy-btn {
-  min-width: 62px;
-  min-height: 34px;
-  border: 1px solid var(--border-strong);
-  border-radius: 11px;
-  background: var(--panel-2);
+  min-width: 36px;
+  min-height: 32px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
   color: var(--accent-strong);
   cursor: pointer;
   font: inherit;
@@ -1070,10 +1129,13 @@ input:focus-visible,
 }
 
 :root.dark .day.selected {
-  background:
-    linear-gradient(180deg, var(--accent-soft), transparent 62%),
-    var(--panel-2);
-  box-shadow: inset 0 0 0 2px var(--accent);
+  background: var(--accent);
+  box-shadow: 0 8px 16px rgba(90, 162, 255, 0.22);
+}
+
+:root.dark .day.selected .day-j,
+:root.dark .day.selected .day-g {
+  color: #071932;
 }
 
 :root.dark .day.today {
@@ -1085,15 +1147,11 @@ input:focus-visible,
 }
 
 :root.dark .day.holiday-public {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 60%),
-    var(--holiday-public-soft);
+  background: var(--holiday-public-soft);
 }
 
 :root.dark .day.holiday-observance {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 60%),
-    var(--holiday-observance-soft);
+  background: var(--holiday-observance-soft);
 }
 
 :root.dark .holiday-item-tag {
@@ -1110,7 +1168,11 @@ input:focus-visible,
   box-shadow: var(--shadow-lg);
 }
 
-:root.dark .tab-btn.active,
+:root.dark .tab-btn.active {
+  background: var(--accent);
+  color: #062523;
+}
+
 :root.dark .today-badge {
   background: var(--accent-soft);
 }
