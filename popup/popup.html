@@ -120,12 +120,15 @@
 
             <div
               id="miniDatePicker"
-              class="mini-picker hidden"
+              class="mini-picker jump-picker hidden"
               role="dialog"
-              aria-label="Select a date"
+              aria-label="Jump to Jalali date"
             >
               <div class="mini-picker-top">
-                <div class="mini-picker-eyebrow">Select a day</div>
+                <div>
+                  <div class="mini-picker-eyebrow">Jump to Jalali date</div>
+                  <div class="mini-picker-helper">Choose a year, month, and optional day.</div>
+                </div>
                 <button
                   id="miniPickerClose"
                   class="mini-close-btn"
@@ -136,58 +139,65 @@
                 </button>
               </div>
 
-              <div class="mini-picker-nav">
-                <button
-                  id="miniPrevMonth"
-                  class="mini-nav-btn"
-                  type="button"
-                  aria-label="Previous month"
-                >
-                  ‹
-                </button>
-                <div class="mini-picker-title-wrap">
+              <form id="jumpDateForm" class="jump-date-form">
+                <div class="jump-field-grid">
+                  <label class="jump-field jump-field-year">
+                    <span>Year</span>
+                    <input
+                      id="jumpYearInput"
+                      class="jump-input rtl-text"
+                      type="text"
+                      inputmode="numeric"
+                      pattern="[0-9۰-۹٠-٩]*"
+                      lang="fa"
+                      dir="rtl"
+                      autocomplete="off"
+                    />
+                  </label>
+
+                  <label class="jump-field jump-field-month">
+                    <span>Month</span>
+                    <select
+                      id="jumpMonthSelect"
+                      class="jump-select rtl-text"
+                      lang="fa"
+                      dir="rtl"
+                    ></select>
+                  </label>
+
+                  <label class="jump-field jump-field-day">
+                    <span>Day</span>
+                    <select id="jumpDaySelect" class="jump-select"></select>
+                  </label>
+                </div>
+
+                <div id="jumpDateError" class="jump-date-error hidden" role="alert"></div>
+
+                <div class="jump-date-preview" aria-live="polite">
                   <div
-                    id="miniPickerTitle"
-                    class="mini-picker-title rtl-text"
+                    id="jumpDatePreviewJalali"
+                    class="jump-preview-primary rtl-text"
                     lang="fa"
                     dir="rtl"
                   ></div>
                   <div
-                    id="miniPickerSubtitle"
-                    class="mini-picker-subtitle ltr-text"
+                    id="jumpDatePreviewGregorian"
+                    class="jump-preview-secondary ltr-text"
                     lang="en"
                     dir="ltr"
                   ></div>
                 </div>
-                <button
-                  id="miniNextMonth"
-                  class="mini-nav-btn"
-                  type="button"
-                  aria-label="Next month"
-                >
-                  ›
-                </button>
-              </div>
 
-              <div
-                id="miniWeekdayRow"
-                class="mini-weekday-row"
-                role="row"
-              ></div>
-              <div
-                id="miniCalendarGrid"
-                class="mini-calendar-grid"
-                role="grid"
-                aria-label="Mini calendar"
-              ></div>
-
-              <div class="mini-picker-actions">
-                <button id="miniGoToday" class="mini-today-btn" type="button">
-                  Go to today
-                </button>
-              </div>
-            </div>
-          </div>
+                <div class="mini-picker-actions jump-picker-actions">
+                  <button id="miniGoToday" class="mini-today-btn" type="button">
+                    Today
+                  </button>
+                  <button id="jumpDateGo" class="jump-go-btn" type="submit">
+                    Go
+                  </button>
+                </div>
+              </form>
+            </div>          </div>
 
           <div class="weekday-strip">
             <div id="weekdayRow" class="weekday-row" role="row"></div>

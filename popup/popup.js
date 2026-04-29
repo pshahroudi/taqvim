@@ -44,12 +44,14 @@ const datePickerValueEl = document.getElementById("datePickerValue");
 const datePickerMetaEl = document.getElementById("datePickerMeta");
 const miniDatePickerEl = document.getElementById("miniDatePicker");
 const miniPickerCloseEl = document.getElementById("miniPickerClose");
-const miniPrevMonthBtn = document.getElementById("miniPrevMonth");
-const miniNextMonthBtn = document.getElementById("miniNextMonth");
-const miniPickerTitleEl = document.getElementById("miniPickerTitle");
-const miniPickerSubtitleEl = document.getElementById("miniPickerSubtitle");
-const miniWeekdayRowEl = document.getElementById("miniWeekdayRow");
-const miniCalendarGridEl = document.getElementById("miniCalendarGrid");
+const jumpDateFormEl = document.getElementById("jumpDateForm");
+const jumpYearInputEl = document.getElementById("jumpYearInput");
+const jumpMonthSelectEl = document.getElementById("jumpMonthSelect");
+const jumpDaySelectEl = document.getElementById("jumpDaySelect");
+const jumpDateErrorEl = document.getElementById("jumpDateError");
+const jumpDatePreviewJalaliEl = document.getElementById("jumpDatePreviewJalali");
+const jumpDatePreviewGregorianEl = document.getElementById("jumpDatePreviewGregorian");
+const jumpDateGoBtn = document.getElementById("jumpDateGo");
 const miniGoTodayBtn = document.getElementById("miniGoToday");
 
 const weekdayRowEl = document.getElementById("weekdayRow");
@@ -114,7 +116,8 @@ const state = {
   datePicker: {
     open: false,
     jy: todayJalali.jy,
-    jm: todayJalali.jm
+    jm: todayJalali.jm,
+    jd: todayJalali.jd
   },
   converter: {
     lastValidCopy: {
@@ -717,6 +720,125 @@ function renderDatePickerToggle() {
   datePickerMetaEl.textContent = formatGregorianMonthYear(state.view.jy, state.view.jm);
 }
 
+function parseIntegerInput(value) {
+  const normalized = String(value ?? "")
+    .trim()
+    .replace(/[۰-۹]/g, (digit) => "۰۱۲۳۴۵۶۷۸۹".indexOf(digit))
+    .replace(/[٠-٩]/g, (digit) => "٠١٢٣٤٥٦٧٨٩".indexOf(digit));
+
+  if (!normalized || !/^-?\d+$/.test(normalized)) {
+    return Number.NaN;
+  }
+
+  return Number(normalized);
+}
+
+function normalizePersianDigitString(value) {
+  return String(value ?? "")
+    .replace(/[0-9]/g, (digit) => "۰۱۲۳۴۵۶۷۸۹"[Number(digit)])
+    .replace(/[٠-٩]/g, (digit) => "۰۱۲۳۴۵۶۷۸۹"["٠١٢٣٤٥٦٧٨٩".indexOf(digit)]);
+}
+
+function normalizeJumpYearInputDisplay() {
+  const rawValue = String(jumpYearInputEl.value ?? "").trim();
+
+  if (!rawValue) {
+    jumpYearInputEl.value = "";
+    return;
+  }
+
+  const parsedYear = parseIntegerInput(rawValue);
+
+  if (Number.isInteger(parsedYear)) {
+    jumpYearInputEl.value = formatNumber(parsedYear);
+    return;
+  }
+
+  jumpYearInputEl.value = normalizePersianDigitString(rawValue);
+}
+
+function populateJumpMonthOptions() {
+  if (jumpMonthSelectEl.options.length === 12) return;
+
+  jumpMonthSelectEl.innerHTML = JALALI_MONTH_NAMES.map((monthName, index) => {
+    const month = index + 1;
+    return `<option value="${month}">${escapeHtml(monthName)}</option>`;
+  }).join("");
+}
+
+function getJumpPickerInput() {
+  return {
+    jy: parseIntegerInput(jumpYearInputEl.value),
+    jm: Number(jumpMonthSelectEl.value),
+    jd: Number(jumpDaySelectEl.value)
+  };
+}
+
+function validateJumpPickerDate({ jy, jm, jd }) {
+  if (!Number.isInteger(jy) || !isSupportedJalaliYear(jy)) {
+    return "Enter a supported Jalali year.";
+  }
+
+  if (!Number.isInteger(jm) || jm < 1 || jm > 12) {
+    return "Choose a Jalali month.";
+  }
+
+  const maxDay = getJalaliMonthLength(jy, jm);
+  if (!Number.isInteger(jd) || jd < 1 || jd > maxDay) {
+    return `Choose a day between 1 and ${maxDay}.`;
+  }
+
+  return "";
+}
+
+function populateJumpDayOptions(preferredDay = state.datePicker.jd) {
+  const jy = parseIntegerInput(jumpYearInputEl.value);
+  const jm = Number(jumpMonthSelectEl.value);
+  const maxDay = Number.isInteger(jy) && isSupportedJalaliYear(jy) && jm >= 1 && jm <= 12
+    ? getJalaliMonthLength(jy, jm)
+    : 31;
+  const selectedDay = Math.min(Math.max(Number(preferredDay) || 1, 1), maxDay);
+
+  jumpDaySelectEl.innerHTML = Array.from({ length: maxDay }, (_item, index) => {
+    const day = index + 1;
+    const selected = day === selectedDay ? " selected" : "";
+    return `<option value="${day}"${selected}>${formatNumber(day)}</option>`;
+  }).join("");
+}
+
+function renderJumpPickerPreview() {
+  const input = getJumpPickerInput();
+  const error = validateJumpPickerDate(input);
+
+  jumpDateErrorEl.textContent = error;
+  jumpDateErrorEl.classList.toggle("hidden", !error);
+  jumpDateGoBtn.disabled = Boolean(error);
+
+  if (error) {
+    jumpDatePreviewJalaliEl.textContent = "Select a valid Jalali date";
+    jumpDatePreviewGregorianEl.textContent = "";
+    return;
+  }
+
+  const date = toDisplayDateFromJalali(input.jy, input.jm, input.jd);
+  jumpDatePreviewJalaliEl.textContent = formatPersianOrderedDate(date);
+  jumpDatePreviewGregorianEl.textContent = gregorianFullFormatter.format(date);
+}
+
+function refreshJumpPickerFromInputs() {
+  populateJumpDayOptions(jumpDaySelectEl.value || state.datePicker.jd);
+  renderJumpPickerPreview();
+}
+
+function renderJumpPickerForm() {
+  populateJumpMonthOptions();
+
+  jumpYearInputEl.value = formatNumber(state.datePicker.jy);
+  jumpMonthSelectEl.value = String(state.datePicker.jm);
+  populateJumpDayOptions(state.datePicker.jd);
+  renderJumpPickerPreview();
+}
+
 function renderMiniDatePicker() {
   datePickerToggleEl.setAttribute("aria-expanded", String(state.datePicker.open));
   miniDatePickerEl.classList.toggle("hidden", !state.datePicker.open);
@@ -725,39 +847,7 @@ function renderMiniDatePicker() {
     return;
   }
 
-  miniPickerTitleEl.textContent = formatJalaliMonthYear(state.datePicker.jy, state.datePicker.jm);
-  miniPickerSubtitleEl.textContent = formatGregorianMonthYear(state.datePicker.jy, state.datePicker.jm);
-  renderWeekdayLabels(miniWeekdayRowEl);
-
-  const { jy, jm } = state.datePicker;
-  const daysInMonth = getJalaliMonthLength(jy, jm);
-  const firstG = toGregorian(jy, jm, 1);
-  const firstDate = createLocalDate(firstG.gy, firstG.gm, firstG.gd);
-  const firstWeekdayIndex = getWeekIndex(firstDate.getDay());
-  const prev = previousJalaliMonth(jy, jm);
-  const next = nextJalaliMonth(jy, jm);
-  const prevMonthLength = getJalaliMonthLength(prev.jy, prev.jm);
-  const totalCells = Math.ceil((firstWeekdayIndex + daysInMonth) / 7) * 7;
-
-  let html = "";
-  for (let cellIndex = 0; cellIndex < totalCells; cellIndex += 1) {
-    if (cellIndex < firstWeekdayIndex) {
-      const jd = prevMonthLength - firstWeekdayIndex + cellIndex + 1;
-      html += buildMiniDayCell(prev.jy, prev.jm, jd, true);
-      continue;
-    }
-
-    const currentIndex = cellIndex - firstWeekdayIndex + 1;
-    if (currentIndex <= daysInMonth) {
-      html += buildMiniDayCell(jy, jm, currentIndex, false);
-      continue;
-    }
-
-    const jd = currentIndex - daysInMonth;
-    html += buildMiniDayCell(next.jy, next.jm, jd, true);
-  }
-
-  miniCalendarGridEl.innerHTML = html;
+  renderJumpPickerForm();
 }
 
 function renderMonth() {
@@ -772,7 +862,9 @@ function renderMonth() {
   const next = nextJalaliMonth(jy, jm);
   const prevMonthLength = getJalaliMonthLength(prev.jy, prev.jm);
 
-  const totalCells = Math.ceil((firstWeekdayIndex + daysInMonth) / 7) * 7;
+  // Always render six calendar rows so day cells keep the same visual size
+  // when switching between Jalali months.
+  const totalCells = 42;
   let html = "";
 
   for (let cellIndex = 0; cellIndex < totalCells; cellIndex += 1) {
@@ -817,8 +909,11 @@ async function cycleTheme() {
 }
 
 function syncDatePickerToView() {
+  const maxDay = getJalaliMonthLength(state.view.jy, state.view.jm);
+
   state.datePicker.jy = state.view.jy;
   state.datePicker.jm = state.view.jm;
+  state.datePicker.jd = Math.min(state.selected.jd || 1, maxDay);
 }
 
 function openDatePicker() {
@@ -1032,24 +1127,37 @@ miniPickerCloseEl.addEventListener("click", () => {
   closeDatePicker();
 });
 
-miniPrevMonthBtn.addEventListener("click", () => {
-  const prev = previousJalaliMonth(state.datePicker.jy, state.datePicker.jm);
-  if (!isSupportedJalaliYear(prev.jy)) return;
-  state.datePicker.jy = prev.jy;
-  state.datePicker.jm = prev.jm;
-  render();
+jumpYearInputEl.addEventListener("input", () => {
+  normalizeJumpYearInputDisplay();
+  refreshJumpPickerFromInputs();
 });
 
-miniNextMonthBtn.addEventListener("click", () => {
-  const next = nextJalaliMonth(state.datePicker.jy, state.datePicker.jm);
-  if (!isSupportedJalaliYear(next.jy)) return;
-  state.datePicker.jy = next.jy;
-  state.datePicker.jm = next.jm;
-  render();
+jumpYearInputEl.addEventListener("change", () => {
+  normalizeJumpYearInputDisplay();
+  refreshJumpPickerFromInputs();
+});
+
+jumpYearInputEl.addEventListener("blur", normalizeJumpYearInputDisplay);
+
+jumpMonthSelectEl.addEventListener("input", refreshJumpPickerFromInputs);
+jumpMonthSelectEl.addEventListener("change", refreshJumpPickerFromInputs);
+
+jumpDaySelectEl.addEventListener("change", renderJumpPickerPreview);
+
+jumpDateFormEl.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const input = getJumpPickerInput();
+  if (validateJumpPickerDate(input)) {
+    renderJumpPickerPreview();
+    return;
+  }
+
+  selectJalaliDate(input.jy, input.jm, input.jd, { focusSelected: true });
 });
 
 miniGoTodayBtn.addEventListener("click", () => {
-  selectJalaliDate(todayJalali.jy, todayJalali.jm, todayJalali.jd);
+  selectJalaliDate(todayJalali.jy, todayJalali.jm, todayJalali.jd, { focusSelected: true });
 });
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
@@ -1092,17 +1200,6 @@ calendarGridEl.addEventListener("click", (event) => {
     Number(cell.dataset.jy),
     Number(cell.dataset.jm),
     Number(cell.dataset.jd)
-  );
-});
-
-miniCalendarGridEl.addEventListener("click", (event) => {
-  const cell = event.target.closest("[data-mini-jy][data-mini-jm][data-mini-jd]");
-  if (!cell) return;
-
-  selectJalaliDate(
-    Number(cell.dataset.miniJy),
-    Number(cell.dataset.miniJm),
-    Number(cell.dataset.miniJd)
   );
 });
 

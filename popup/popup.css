@@ -105,7 +105,8 @@ body {
 }
 
 button,
-select {
+select,
+input {
   font: inherit;
 }
 
@@ -240,7 +241,8 @@ button {
 .date-picker-toggle,
 .mini-nav-btn,
 .mini-close-btn,
-.mini-today-btn {
+.mini-today-btn,
+.jump-go-btn {
   border: 1px solid var(--border-strong);
   background: var(--panel-2);
   color: var(--text);
@@ -322,7 +324,8 @@ button {
 .date-picker-toggle:hover,
 .mini-nav-btn:hover,
 .mini-close-btn:hover,
-.mini-today-btn:hover {
+.mini-today-btn:hover,
+.jump-go-btn:hover {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
@@ -334,7 +337,8 @@ button {
 .date-picker-toggle:active,
 .mini-nav-btn:active,
 .mini-close-btn:active,
-.mini-today-btn:active {
+.mini-today-btn:active,
+.jump-go-btn:active {
   transform: translateY(1px);
 }
 
@@ -427,9 +431,127 @@ button {
   font-weight: 600;
   text-transform: uppercase;
   display: flex;
-  justify-content: center; /* Horizontal */
-  align-items: center; /* Vertical */
+  justify-content: flex-start;
+  align-items: center;
   color: var(--text-soft);
+}
+
+.mini-picker-helper {
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+.jump-date-form {
+  display: grid;
+  gap: 10px;
+}
+
+.jump-field-grid {
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) 64px;
+  gap: 8px;
+  align-items: end;
+}
+
+.jump-field {
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+
+.jump-field span {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-soft);
+}
+
+.jump-input,
+.jump-select {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--border-strong);
+  border-radius: 11px;
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.jump-input {
+  padding: 0 10px;
+}
+
+.jump-select {
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.jump-input:focus,
+.jump-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.jump-date-error {
+  margin-top: -2px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: var(--holiday-public-soft);
+  color: var(--holiday-public);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.jump-date-preview {
+  display: grid;
+  gap: 3px;
+  min-height: 52px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: var(--calendar-board);
+}
+
+.jump-preview-primary {
+  font-size: 14px;
+  line-height: 1.35;
+  font-weight: 850;
+  color: var(--text);
+}
+
+.jump-preview-secondary {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-soft);
+}
+
+.jump-picker-actions {
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0;
+}
+
+.jump-go-btn {
+  min-height: 30px;
+  padding: 0 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #ffffff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.jump-go-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .mini-close-btn,
@@ -616,6 +738,7 @@ button {
   flex: 1 1 auto;
   min-height: 0;
   align-content: stretch;
+  grid-template-rows: repeat(6, minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
   padding: 8px 24px 24px;
   border-radius: 0 0 16px 16px;
@@ -825,7 +948,7 @@ button {
 
 .topbar-tehran-time {
   font-size: 34px;
-  font-weight: 850;
+  font-weight: 600;
   letter-spacing: 0;
   line-height: 1;
   color: var(--text);
@@ -1259,7 +1382,8 @@ input:focus-visible,
 :root.dark .today-btn,
 :root.dark .mini-nav-btn,
 :root.dark .mini-close-btn,
-:root.dark .mini-today-btn {
+:root.dark .mini-today-btn,
+:root.dark .jump-go-btn {
   background: var(--panel-2);
 }
 
@@ -1301,6 +1425,20 @@ input:focus-visible,
   color: var(--text);
 }
 
+:root.dark .jump-input,
+:root.dark .jump-select,
+:root.dark .jump-date-preview {
+  background: var(--panel-2);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+:root.dark .jump-go-btn {
+  color: #071932;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
 :root.dark .icon-btn:hover,
 :root.dark .utility-btn:hover,
 :root.dark .nav-btn:hover,
@@ -1308,7 +1446,8 @@ input:focus-visible,
 :root.dark .date-picker-toggle:hover,
 :root.dark .mini-nav-btn:hover,
 :root.dark .mini-close-btn:hover,
-:root.dark .mini-today-btn:hover {
+:root.dark .mini-today-btn:hover,
+:root.dark .jump-go-btn:hover {
   border-color: var(--accent);
   box-shadow: 0 0 0 1px var(--accent-soft-strong);
 }
