@@ -8,10 +8,23 @@
 </head>
 <body>
   <div class="app-shell">
-    <nav class="tab-bar" role="tablist" aria-label="Taqvim views">
-      <button id="calendarTab" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="calendarPanel">Calendar</button>
-      <button id="convertTab" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="convertPanel">Convert</button>
-    </nav>
+    <header class="app-topbar">
+      <nav class="tab-bar" role="tablist" aria-label="Taqvim views">
+        <button id="calendarTab" class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="calendarPanel">Calendar</button>
+        <button id="convertTab" class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="convertPanel">Convert</button>
+      </nav>
+
+      <div class="compact-head-actions" aria-label="Popup actions">
+        <button id="themeToggle" class="utility-btn" title="Cycle theme" aria-label="Theme: system" type="button">
+          <span id="themeToggleIcon" class="utility-icon" aria-hidden="true">◐</span>
+          <span class="utility-label">Theme</span>
+        </button>
+        <button id="openSettings" class="utility-btn" title="Open settings" aria-label="Open settings" type="button">
+          <span class="utility-icon" aria-hidden="true">⚙</span>
+          <span class="utility-label">Settings</span>
+        </button>
+      </div>
+    </header>
 
     <main id="calendarPanel" class="workspace workspace-two-column tab-panel" role="tabpanel" aria-labelledby="calendarTab">
       <section class="calendar-shell" aria-label="Calendar panel">
@@ -63,10 +76,6 @@
             <button id="nextMonth" class="nav-btn" type="button" aria-label="Next month">›</button>
           </div>
 
-          <div class="compact-head-actions" aria-label="Popup actions">
-            <button id="themeToggle" class="icon-btn" title="Cycle theme" aria-label="Cycle theme">◐</button>
-            <button id="openSettings" class="icon-btn" title="Open settings" aria-label="Open settings">⚙</button>
-          </div>
         </div>
 
         <div class="weekday-strip">

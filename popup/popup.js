@@ -36,6 +36,7 @@ const calendarPanelEl = document.getElementById("calendarPanel");
 const convertPanelEl = document.getElementById("convertPanel");
 
 const themeToggle = document.getElementById("themeToggle");
+const themeToggleIcon = document.getElementById("themeToggleIcon");
 const openSettings = document.getElementById("openSettings");
 
 const datePickerToggleEl = document.getElementById("datePickerToggle");
@@ -219,7 +220,9 @@ function isWeekend(date) {
 function updateThemeToggleIcon() {
   if (!themeToggle) return;
 
-  themeToggle.textContent = getThemeIcon(state.settings.theme);
+  if (themeToggleIcon) {
+    themeToggleIcon.textContent = getThemeIcon(state.settings.theme);
+  }
   themeToggle.title = `Theme: ${state.settings.theme}`;
   themeToggle.setAttribute("aria-label", `Theme: ${state.settings.theme}`);
 }

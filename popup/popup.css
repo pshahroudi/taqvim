@@ -8,6 +8,7 @@
   --panel-2: #f8fafc;
   --panel-3: #eef2f7;
   --panel-4: #e4e9f2;
+  --calendar-board: #f5f7fb;
   --text: #071932;
   --text-soft: #52627a;
   --muted: #9aa6b8;
@@ -49,6 +50,7 @@
   --panel-2: #1b2431;
   --panel-3: #222d3c;
   --panel-4: #2b384b;
+  --calendar-board: #192230;
   --text: #f5f8ff;
   --text-soft: #b8c4d6;
   --muted: #8794a8;
@@ -93,7 +95,7 @@ body {
   overflow: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-family: Quicksand, Nunito, "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
@@ -117,23 +119,35 @@ button {
   gap: 10px;
 }
 
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: var(--shadow-sm);
+}
+
 .tab-bar {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   width: fit-content;
   padding: 4px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--panel-solid);
-  box-shadow: var(--shadow-sm);
+  border: 0;
+  border-radius: 12px;
+  background: var(--panel-3);
+  box-shadow: none;
 }
 
 .tab-btn {
   min-width: 86px;
-  height: 32px;
+  height: 36px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   background: transparent;
   color: var(--text-soft);
   cursor: pointer;
@@ -144,7 +158,7 @@ button {
 .tab-btn.active {
   background: var(--accent);
   color: #ffffff;
-  box-shadow: 0 6px 12px rgba(47, 128, 237, 0.24);
+  box-shadow: 0 7px 14px rgba(47, 128, 237, 0.25);
 }
 
 .tab-panel {
@@ -165,7 +179,7 @@ button {
 .mini-picker {
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: var(--shadow-lg);
   backdrop-filter: none;
 }
@@ -174,22 +188,22 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  padding: 18px 18px 20px;
 }
 
 .controls-row {
   position: relative;
   display: grid;
-  grid-template-columns: 156px auto auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: 12px;
+  margin-bottom: 18px;
   justify-content: start;
 }
 
 .date-picker-anchor {
   position: relative;
-  width: 156px;
+  width: 100%;
   min-width: 0;
 }
 
@@ -197,11 +211,24 @@ button {
 .calendar-nav {
   display: flex;
   align-items: center;
-  gap: 8px;
   flex: 0 0 auto;
 }
 
+.calendar-nav {
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.compact-head-actions {
+  gap: 8px;
+  margin-left: auto;
+}
+
 .icon-btn,
+.utility-btn,
 .nav-btn,
 .today-btn,
 .date-picker-toggle,
@@ -220,26 +247,66 @@ button {
 
 .icon-btn,
 .nav-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
   cursor: pointer;
   font-size: 16px;
   box-shadow: none;
 }
 
-.today-btn {
-  min-height: 32px;
-  padding: 0 13px;
-  border-radius: 9px;
+.utility-btn {
+  width: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 850;
   box-shadow: none;
 }
 
+.utility-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  border-radius: 999px;
+  color: var(--text-soft);
+  background: transparent;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.utility-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.today-btn {
+  min-height: 42px;
+  padding: 0 22px;
+  border-radius: 13px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 8px 16px rgba(47, 128, 237, 0.24);
+}
+
 .icon-btn:hover,
+.utility-btn:hover,
 .nav-btn:hover,
 .today-btn:hover,
 .date-picker-toggle:hover,
@@ -251,6 +318,7 @@ button {
 }
 
 .icon-btn:active,
+.utility-btn:active,
 .nav-btn:active,
 .today-btn:active,
 .date-picker-toggle:active,
@@ -262,9 +330,9 @@ button {
 
 .date-picker-toggle {
   width: 100%;
-  min-height: 70px;
-  border-radius: 10px;
-  padding: 10px 12px;
+  min-height: 44px;
+  border-radius: 12px;
+  padding: 9px 14px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -280,7 +348,7 @@ button {
 }
 
 .date-picker-label {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -295,7 +363,7 @@ button {
 }
 
 .date-picker-meta {
-  font-size: 11px;
+  display: none;
   line-height: 1.35;
   color: var(--text-soft);
 }
@@ -311,9 +379,12 @@ button {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  width: min(318px, calc(100vw - 24px));
-  padding: 12px;
+  width: min(330px, calc(100vw - 24px));
+  padding: 14px;
   z-index: 10;
+  border-radius: 16px;
+  background: var(--panel);
+  box-shadow: var(--shadow-xl);
 }
 
 .mini-picker-top {
@@ -336,7 +407,7 @@ button {
 .mini-nav-btn {
   width: 32px;
   height: 32px;
-  border-radius: 11px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 15px;
   box-shadow: var(--shadow-sm);
@@ -359,7 +430,7 @@ button {
   font-size: 15px;
   font-weight: 800;
   line-height: 1.3;
-  color: var(--text);
+  color: var(--accent-strong);
 }
 
 .mini-picker-subtitle {
@@ -380,11 +451,14 @@ button {
 
 .mini-weekday-row,
 .mini-calendar-grid {
-  gap: 5px;
+  gap: 6px;
 }
 
 .mini-weekday-row {
-  margin-bottom: 7px;
+  margin-bottom: 0;
+  padding: 10px 8px 6px;
+  border-radius: 12px 12px 0 0;
+  background: var(--calendar-board);
 }
 
 .mini-weekday-row div,
@@ -402,6 +476,9 @@ button {
 
 .mini-calendar-grid {
   grid-auto-rows: 31px;
+  padding: 6px 8px 10px;
+  border-radius: 0 0 12px 12px;
+  background: var(--calendar-board);
 }
 
 .mini-day {
@@ -409,13 +486,13 @@ button {
   width: 100%;
   height: 31px;
   border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--panel-solid);
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--text);
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 }
 
 .mini-day:hover {
@@ -428,8 +505,9 @@ button {
 
 .mini-day.selected {
   border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 8px 14px rgba(47, 128, 237, 0.26);
 }
 
 .mini-day.today::after {
@@ -481,16 +559,16 @@ button {
 }
 
 .weekday-strip {
-  margin-bottom: 12px;
-  padding: 2px 6px;
+  margin-bottom: 0;
+  padding: 24px 24px 8px;
   border: 0;
-  border-radius: 0;
-  background: transparent;
+  border-radius: 16px 16px 0 0;
+  background: var(--calendar-board);
 }
 
 .weekday-row,
 .calendar-grid {
-  gap: 8px;
+  gap: 10px 16px;
 }
 
 .weekday-row div {
@@ -503,6 +581,9 @@ button {
   min-height: 0;
   align-content: stretch;
   grid-auto-rows: minmax(0, 1fr);
+  padding: 8px 24px 24px;
+  border-radius: 0 0 16px 16px;
+  background: var(--calendar-board);
 }
 
 .day {
@@ -511,7 +592,7 @@ button {
   height: 100%;
   padding: 8px;
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 13px;
   background: transparent;
   display: flex;
   flex-direction: column;
@@ -587,7 +668,7 @@ button {
 .day.selected.holiday-observance {
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 9px 18px rgba(47, 128, 237, 0.28);
+  box-shadow: 0 12px 22px rgba(47, 128, 237, 0.30);
 }
 
 .day.selected .day-j,
@@ -637,7 +718,27 @@ button {
 
 .side-card-tehran {
   flex: 0 0 auto;
-  background: var(--panel-solid);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 14px 26px rgba(47, 128, 237, 0.26);
+}
+
+.side-card-tehran .section-label,
+.side-card-tehran .topbar-tehran-date,
+.side-card-tehran .topbar-tehran-persian,
+.side-card-tehran .topbar-tehran-time {
+  color: #ffffff;
+}
+
+.side-card-tehran .section-label,
+.side-card-tehran .topbar-tehran-date {
+  opacity: 0.86;
+}
+
+.side-card-tehran .tehran-phase-icon {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .tehran-row {
@@ -1074,7 +1175,6 @@ input:focus-visible,
 :root.dark .calendar-shell,
 :root.dark .side-card,
 :root.dark .merged-side-card,
-:root.dark .side-card-tehran,
 :root.dark .mini-picker {
   background: var(--panel);
 }
@@ -1088,6 +1188,7 @@ input:focus-visible,
 :root.dark .mini-day,
 :root.dark .day,
 :root.dark .icon-btn,
+:root.dark .utility-btn,
 :root.dark .nav-btn,
 :root.dark .today-btn,
 :root.dark .mini-nav-btn,
@@ -1108,7 +1209,24 @@ input:focus-visible,
   background: var(--accent-soft);
 }
 
+:root.dark .side-card-tehran {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+:root.dark .today-btn {
+  color: #071932;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+:root.dark .side-card-tehran .tehran-phase-icon {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
 :root.dark .icon-btn:hover,
+:root.dark .utility-btn:hover,
 :root.dark .nav-btn:hover,
 :root.dark .today-btn:hover,
 :root.dark .date-picker-toggle:hover,
@@ -1175,6 +1293,11 @@ input:focus-visible,
 
 :root.dark .today-badge {
   background: var(--accent-soft);
+}
+
+:root.dark .utility-icon {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
 }
 
 :root.dark .convert-result-row,
