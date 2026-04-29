@@ -718,7 +718,7 @@ button {
 
 .weekday-strip {
   margin-bottom: 0;
-  padding: 24px 24px 8px;
+  padding: 22px 14px 6px;
   border: 0;
   border-radius: 16px 16px 0 0;
   background: var(--calendar-board);
@@ -726,7 +726,7 @@ button {
 
 .weekday-row,
 .calendar-grid {
-  gap: 10px 16px;
+  gap: 6px 8px;
 }
 
 .weekday-row div {
@@ -740,7 +740,7 @@ button {
   align-content: stretch;
   grid-template-rows: repeat(6, minmax(0, 1fr));
   grid-auto-rows: minmax(0, 1fr);
-  padding: 8px 24px 24px;
+  padding: 8px 14px 18px;
   border-radius: 0 0 16px 16px;
   background: var(--calendar-board);
 }
@@ -749,10 +749,10 @@ button {
   position: relative;
   min-height: 0;
   height: 100%;
-  padding: 7px 8px 11px;
+  padding: 8px 9px 12px;
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: 13px;
+  border-radius: 14px;
   background: transparent;
   display: flex;
   flex-direction: column;
@@ -777,7 +777,7 @@ button {
   z-index: 1;
   align-self: flex-end;
   text-align: right;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 750;
   line-height: 1.05;
   color: var(--text);
@@ -788,7 +788,7 @@ button {
   z-index: 1;
   align-self: flex-start;
   text-align: left;
-  font-size: 10px;
+  font-size: 10.5px;
   font-weight: 700;
   line-height: 1;
   color: var(--text-soft);

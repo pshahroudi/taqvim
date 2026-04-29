@@ -514,7 +514,7 @@ function buildDayCell(jy, jm, jd, isMuted) {
       ${ariaCurrent}
     >
       <span class="day-j">${formatNumber(jd)}</span>
-      <span class="day-g">${formatNumber(gDay)}</span>
+      <span class="day-g ltr-text" lang="en" dir="ltr">${String(gDay)}</span>
       <span class="holiday-marker-row">${markers.join("")}</span>
     </button>
   `;
