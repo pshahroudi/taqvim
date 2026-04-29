@@ -842,7 +842,7 @@ button {
 
 .holiday-marker-row {
   position: absolute;
-  left: 50%;
+  left: 65%;
   bottom: 4px;
   z-index: 2;
   display: flex;
