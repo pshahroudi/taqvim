@@ -626,7 +626,8 @@ button {
   position: relative;
   min-height: 0;
   height: 100%;
-  padding: 8px;
+  padding: 7px 8px 11px;
+  overflow: hidden;
   border: 1px solid transparent;
   border-radius: 13px;
   background: transparent;
@@ -649,6 +650,8 @@ button {
 }
 
 .day-j {
+  position: relative;
+  z-index: 1;
   align-self: flex-end;
   text-align: right;
   font-size: 16px;
@@ -658,6 +661,8 @@ button {
 }
 
 .day-g {
+  position: relative;
+  z-index: 1;
   align-self: flex-start;
   text-align: left;
   font-size: 10px;
@@ -713,17 +718,29 @@ button {
 }
 
 .holiday-marker-row {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  z-index: 2;
   display: flex;
   align-items: center;
-  gap: 5px;
-  align-self: flex-start;
-  min-height: 8px;
+  justify-content: center;
+  gap: 4px;
+  min-height: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
 }
 
 .holiday-marker {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
   border-radius: 999px;
+  box-shadow: 0 0 0 1px var(--calendar-board);
+}
+
+.day.selected .holiday-marker {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.65);
 }
 
 .holiday-marker.public,
