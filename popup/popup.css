@@ -370,25 +370,20 @@ button {
 }
 
 .date-picker-value {
-  grid-column: 1 / -1;
-
   width: 100%;
-  min-height: 38px;
-
+  min-height: 0;
   box-sizing: border-box;
-
-  padding: 8px 12px;
-  border: 1px solid #d3dbe8;
-  border-radius: 12px;
-  background: #f6f8fb;
-
-  font-size: 16px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 19px;
   line-height: 1.25;
-  font-weight: 840;
+  font-weight: 860;
   color: var(--text);
   display: flex;
-  justify-content: center; /* Horizontal */
-  align-items: center; /* Vertical */
+  justify-content: center;
+  align-items: center;
 }
 
 .date-picker-meta {
@@ -718,10 +713,32 @@ button {
 
 .weekday-strip {
   margin-bottom: 0;
-  padding: 22px 14px 6px;
+  padding: 14px 14px 6px;
   border: 0;
   border-radius: 16px 16px 0 0;
   background: var(--calendar-board);
+}
+
+.calendar-month-header {
+  position: relative;
+  margin-bottom: 12px;
+  padding: 2px 8px 14px;
+}
+
+.calendar-month-header::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--border-strong) 14%,
+    var(--border-strong) 86%,
+    transparent 100%
+  );
 }
 
 .weekday-row,
@@ -1245,11 +1262,13 @@ button {
 }
 
 .holiday-list {
-  display: grid;
+  flex-direction: column;
+  align-items: flex-end; /* This pushes children to the right */
   gap: 8px;
   min-height: 0;
   overflow: auto;
-  padding-right: 2px;
+  text-align: right;
+  direction: rtl;
 }
 
 .holiday-item {
@@ -1718,7 +1737,6 @@ input:focus-visible,
     width: 700px;
   }
 }
-
 
 /* ===== Jump to date panel redesign ===== */
 .mini-picker.jump-picker {
