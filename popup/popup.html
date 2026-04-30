@@ -225,7 +225,7 @@
             <div class="section-label section-label-tight">
               زمان به وقت تهران
             </div>
-
+            <div class="selected-date-divider" aria-hidden="true"></div>
             <div class="tehran-row">
               <div class="tehran-time-block">
                 <span
@@ -238,16 +238,17 @@
                   --:--
                 </div>
               </div>
+              <div class="selected-date-divider" aria-hidden="true"></div>
               <div class="tehran-copy-block">
-                <div id="tehranDate" class="topbar-tehran-date ltr-text">
-                  Asia/Tehran
-                </div>
                 <div
                   id="tehranPersianDate"
                   class="topbar-tehran-persian rtl-text"
                   lang="fa"
                   dir="rtl"
                 ></div>
+                <div id="tehranDate" class="topbar-tehran-date">
+                  Asia/Tehran
+                </div>
               </div>
             </div>
           </section>
@@ -256,49 +257,77 @@
             class="side-card merged-side-card"
             aria-label="Selected day details"
           >
-            <div class="detail-heading">
-              <div class="section-label">روز انتخاب شده</div>
-              <!-- <span id="selectedTodayBadge" class="today-badge hidden"
-                >Today</span 
-              >-->
-            </div>
+            <div class="selected-day-shell">
+              <div class="detail-surface detail-surface-selected">
+                <div class="date-stack">
+                  <div class="selected-day-title" lang="fa" dir="rtl">
+                    روز انتخاب شده
+                  </div>
+                  <div class="selected-date-divider" aria-hidden="true"></div>
+                  <div
+                    id="selectedJalali"
+                    class="detail-primary rtl-text"
+                    lang="fa"
+                    dir="rtl"
+                  ></div>
 
-            <div class="detail-surface">
-              <div class="date-stack">
+                  <div class="selected-date-divider" aria-hidden="true"></div>
+
+                  <div
+                    id="selectedHijri"
+                    class="detail-secondary ltr-text hidden"
+                    lang="en"
+                    dir="ltr"
+                  ></div>
+
+                  <div
+                    id="selectedHolidayStatus"
+                    class="selected-holiday-status rtl-text"
+                    lang="fa"
+                    dir="rtl"
+                  >
+                    Loading…
+                  </div>
+
+                  <div
+                    id="selectedHolidayChips"
+                    class="chip-row hidden"
+                    lang="fa"
+                    dir="rtl"
+                  ></div>
+                  <div
+                    id="selectedHolidayList"
+                    class="holiday-list hidden"
+                  ></div>
+                  <div class="selected-date-divider" aria-hidden="true"></div>
+                  <div
+                    id="selectedGregorian"
+                    class="detail-secondary ltr-text"
+                    lang="en"
+                    dir="ltr"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- <div class="selected-status-card">
                 <div
-                  id="selectedJalali"
-                  class="detail-primary rtl-text"
+                  id="selectedHolidayStatus"
+                  class="selected-holiday-status rtl-text"
+                  lang="fa"
+                  dir="rtl"
+                >
+                  Loading…
+                </div>
+
+                <div
+                  id="selectedHolidayChips"
+                  class="chip-row hidden"
                   lang="fa"
                   dir="rtl"
                 ></div>
-                <div
-                  id="selectedGregorian"
-                  class="detail-secondary ltr-text"
-                  lang="en"
-                  dir="ltr"
-                ></div>
-                <div
-                  id="selectedHijri"
-                  class="detail-secondary ltr-text hidden"
-                  lang="en"
-                  dir="ltr"
-                ></div>
-              </div>
+                <div id="selectedHolidayList" class="holiday-list hidden"></div>
+              </div> -->
             </div>
-
-            <div class="status-card">
-              <div id="selectedHolidayStatus" class="status-line ltr-text">
-                Loading…
-              </div>
-            </div>
-
-            <div
-              id="selectedHolidayChips"
-              class="chip-row hidden"
-              lang="fa"
-              dir="rtl"
-            ></div>
-            <div id="selectedHolidayList" class="holiday-list hidden"></div>
 
             <div class="today-data-cache hidden" aria-hidden="true">
               <div id="todayJalali"></div>
