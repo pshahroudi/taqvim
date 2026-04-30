@@ -6,15 +6,22 @@ import {
   previousJalaliMonth,
   sameJalaliDate,
   toGregorian,
-  toJalali
+  toJalali,
 } from "../src/calendar/jalali.js";
-import { convertDate, getCalendarMonthLength } from "../src/calendar/converter.js";
+import {
+  convertDate,
+  getCalendarMonthLength,
+} from "../src/calendar/converter.js";
 import { formatHijriFull, getHijriParts } from "../src/calendar/hijri.js";
-import { getSettings, normalizeSettings, saveSettingsPatch } from "../src/ui/storage.js";
+import {
+  getSettings,
+  normalizeSettings,
+  saveSettingsPatch,
+} from "../src/ui/storage.js";
 import {
   applyTheme as applyThemeClass,
   getNextTheme,
-  getThemeIcon
+  getThemeIcon,
 } from "../src/ui/theme.js";
 import { TEHRAN_TIME_ZONE } from "../src/utils/dates.js";
 import {
@@ -26,7 +33,7 @@ import {
   formatNumber as formatDisplayNumber,
   formatPersianOrderedDate as formatOrderedPersianDate,
   padNumber,
-  toPersianDigits
+  toPersianDigits,
 } from "../src/utils/format.js";
 
 const root = document.documentElement;
@@ -50,8 +57,12 @@ const jumpYearInputEl = document.getElementById("jumpYearInput");
 const jumpMonthSelectEl = document.getElementById("jumpMonthSelect");
 const jumpDaySelectEl = document.getElementById("jumpDaySelect");
 const jumpDateErrorEl = document.getElementById("jumpDateError");
-const jumpDatePreviewJalaliEl = document.getElementById("jumpDatePreviewJalali");
-const jumpDatePreviewGregorianEl = document.getElementById("jumpDatePreviewGregorian");
+const jumpDatePreviewJalaliEl = document.getElementById(
+  "jumpDatePreviewJalali",
+);
+const jumpDatePreviewGregorianEl = document.getElementById(
+  "jumpDatePreviewGregorian",
+);
 const jumpDateGoBtn = document.getElementById("jumpDateGo");
 const miniGoTodayBtn = document.getElementById("miniGoToday");
 
@@ -73,7 +84,9 @@ const selectedJalaliEl = document.getElementById("selectedJalali");
 const selectedGregorianEl = document.getElementById("selectedGregorian");
 const selectedHijriEl = document.getElementById("selectedHijri");
 const selectedTodayBadgeEl = document.getElementById("selectedTodayBadge");
-const selectedHolidayStatusEl = document.getElementById("selectedHolidayStatus");
+const selectedHolidayStatusEl = document.getElementById(
+  "selectedHolidayStatus",
+);
 const selectedHolidayChipsEl = document.getElementById("selectedHolidayChips");
 const selectedHolidayListEl = document.getElementById("selectedHolidayList");
 
@@ -96,7 +109,7 @@ todayDate.setHours(12, 0, 0, 0);
 const todayJalali = toJalali(
   todayDate.getFullYear(),
   todayDate.getMonth() + 1,
-  todayDate.getDate()
+  todayDate.getDate(),
 );
 
 const LAST_VIEW_STORAGE_KEY = "taqvimLastView";
@@ -107,25 +120,25 @@ const state = {
   activeTab: "calendar",
   view: {
     jy: todayJalali.jy,
-    jm: todayJalali.jm
+    jm: todayJalali.jm,
   },
   selected: {
     jy: todayJalali.jy,
     jm: todayJalali.jm,
-    jd: todayJalali.jd
+    jd: todayJalali.jd,
   },
   datePicker: {
     open: false,
     jy: todayJalali.jy,
     jm: todayJalali.jm,
-    jd: todayJalali.jd
+    jd: todayJalali.jd,
   },
   converter: {
     lastValidCopy: {
       jalali: "",
       gregorian: "",
-      hijri: ""
-    }
+      hijri: "",
+    },
   },
   settings: {
     theme: "system",
@@ -136,29 +149,29 @@ const state = {
     holidayTypes: {
       officialIran: true,
       cultural: true,
-      islamic: false
+      islamic: false,
     },
     highlightWeekends: true,
-    autoJumpToTodayOnOpen: true
+    autoJumpToTodayOnOpen: true,
   },
   holidayData: {
     officialIran: [],
     cultural: [],
-    islamic: []
+    islamic: [],
   },
-  tehranClockInterval: null
+  tehranClockInterval: null,
 };
 
 const gregorianFullFormatter = new Intl.DateTimeFormat("en-US", {
   weekday: "long",
   year: "numeric",
   month: "long",
-  day: "numeric"
+  day: "numeric",
 });
 
 const gregorianMonthYearFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
-  month: "long"
+  month: "long",
 });
 
 const tehranTimeFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -166,26 +179,26 @@ const tehranTimeFormatter = new Intl.DateTimeFormat("en-GB", {
   hour: "2-digit",
   minute: "2-digit",
   second: "2-digit",
-  hour12: false
+  hour12: false,
 });
 
 const tehranDateFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: TEHRAN_TIME_ZONE,
   weekday: "short",
   month: "short",
-  day: "numeric"
+  day: "numeric",
 });
 
 const tehranHourFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: TEHRAN_TIME_ZONE,
   hour: "2-digit",
-  hour12: false
+  hour12: false,
 });
 
 function formatPersianOrderedDate(date, { timeZone } = {}) {
   return formatOrderedPersianDate(date, {
     usePersianNumerals: state.settings.usePersianNumerals,
-    timeZone
+    timeZone,
   });
 }
 
@@ -194,7 +207,9 @@ function formatNumber(value) {
 }
 
 function formatTehranClockTime(date) {
-  const [hourText, minuteText, secondText] = tehranTimeFormatter.format(date).split(":");
+  const [hourText, minuteText, secondText] = tehranTimeFormatter
+    .format(date)
+    .split(":");
   const hour24 = Number(hourText) === 24 ? 0 : Number(hourText);
   const hour12 = hour24 % 12 || 12;
   const meridiemLabel = hour24 < 12 ? "ق.ظ" : "ب.ظ";
@@ -254,12 +269,19 @@ function updateTehranClock() {
 
   tehranTimeEl.innerHTML = formatTehranClockTime(now);
   tehranDateEl.textContent = `${tehranDateFormatter.format(now)} · ${TEHRAN_TIME_ZONE}`;
-  tehranPersianDateEl.textContent = formatPersianOrderedDate(now, { timeZone: TEHRAN_TIME_ZONE });
+  tehranPersianDateEl.textContent = formatPersianOrderedDate(now, {
+    timeZone: TEHRAN_TIME_ZONE,
+  });
 
   if (tehranPhaseIconEl) {
     tehranPhaseIconEl.textContent = isAmInTehran ? "☀" : "☾";
-    tehranPhaseIconEl.setAttribute("aria-label", isAmInTehran ? "صبح در تهران" : "بعدازظهر در تهران");
-    tehranPhaseIconEl.title = isAmInTehran ? "صبح در تهران" : "بعدازظهر در تهران";
+    tehranPhaseIconEl.setAttribute(
+      "aria-label",
+      isAmInTehran ? "صبح در تهران" : "بعدازظهر در تهران",
+    );
+    tehranPhaseIconEl.title = isAmInTehran
+      ? "صبح در تهران"
+      : "بعدازظهر در تهران";
   }
 }
 
@@ -289,26 +311,28 @@ function formatGregorianMonthYear(jy, jm) {
 function isHolidayRecordValid(record, expectedCategory) {
   return Boolean(
     record &&
-      typeof record.id === "string" &&
-      record.id.trim() &&
-      VALID_HOLIDAY_CALENDARS.includes(record.calendar) &&
-      Number.isInteger(record.month) &&
-      record.month >= 1 &&
-      record.month <= 12 &&
-      Number.isInteger(record.day) &&
-      record.day >= 1 &&
-      record.day <= 31 &&
-      typeof record.title === "string" &&
-      record.title.trim() &&
-      VALID_HOLIDAY_CATEGORIES.includes(record.category) &&
-      record.category === expectedCategory &&
-      typeof record.isHoliday === "boolean"
+    typeof record.id === "string" &&
+    record.id.trim() &&
+    VALID_HOLIDAY_CALENDARS.includes(record.calendar) &&
+    Number.isInteger(record.month) &&
+    record.month >= 1 &&
+    record.month <= 12 &&
+    Number.isInteger(record.day) &&
+    record.day >= 1 &&
+    record.day <= 31 &&
+    typeof record.title === "string" &&
+    record.title.trim() &&
+    VALID_HOLIDAY_CATEGORIES.includes(record.category) &&
+    record.category === expectedCategory &&
+    typeof record.isHoliday === "boolean",
   );
 }
 
 function normalizeHolidayDataset(records, expectedCategory) {
   if (!Array.isArray(records)) {
-    console.warn(`Taqvim holiday dataset for ${expectedCategory} is not an array.`);
+    console.warn(
+      `Taqvim holiday dataset for ${expectedCategory} is not an array.`,
+    );
     return [];
   }
 
@@ -335,23 +359,32 @@ function normalizeHolidayDataset(records, expectedCategory) {
 
 async function loadHolidayData() {
   const [officialIran, cultural, islamic] = await Promise.all([
-    fetch(chrome.runtime.getURL("src/data/holidays-ir.json")).then((response) => response.json()),
-    fetch(chrome.runtime.getURL("src/data/holidays-cultural.json")).then((response) => response.json()),
-    fetch(chrome.runtime.getURL("src/data/holidays-islamic.json")).then((response) => response.json())
+    fetch(chrome.runtime.getURL("src/data/holidays-ir.json")).then((response) =>
+      response.json(),
+    ),
+    fetch(chrome.runtime.getURL("src/data/holidays-cultural.json")).then(
+      (response) => response.json(),
+    ),
+    fetch(chrome.runtime.getURL("src/data/holidays-islamic.json")).then(
+      (response) => response.json(),
+    ),
   ]);
 
   state.holidayData = {
     officialIran: normalizeHolidayDataset(officialIran, "officialIran"),
     cultural: normalizeHolidayDataset(cultural, "cultural"),
-    islamic: normalizeHolidayDataset(islamic, "islamic")
+    islamic: normalizeHolidayDataset(islamic, "islamic"),
   };
 }
 
 function getActiveDatasets() {
   const active = [];
-  if (state.settings.holidayTypes?.officialIran) active.push(...state.holidayData.officialIran);
-  if (state.settings.holidayTypes?.cultural) active.push(...state.holidayData.cultural);
-  if (state.settings.holidayTypes?.islamic) active.push(...state.holidayData.islamic);
+  if (state.settings.holidayTypes?.officialIran)
+    active.push(...state.holidayData.officialIran);
+  if (state.settings.holidayTypes?.cultural)
+    active.push(...state.holidayData.cultural);
+  if (state.settings.holidayTypes?.islamic)
+    active.push(...state.holidayData.islamic);
   return active;
 }
 
@@ -386,7 +419,9 @@ function hasObservance(records) {
 function dedupeHolidayRecords(records) {
   const seen = new Set();
   return records.filter((record) => {
-    const key = record.id || `${record.category}:${record.calendar}:${record.month}:${record.day}:${record.title}`;
+    const key =
+      record.id ||
+      `${record.category}:${record.calendar}:${record.month}:${record.day}:${record.title}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -399,7 +434,7 @@ function getHolidayStatus(records, forToday = false) {
   }
 
   if (!records.length) {
-    return forToday ? "No holiday today" : "No holiday on this day";
+    return forToday ? "No holiday today" : "این روز تعطیل نیست";
   }
 
   if (hasPublicHoliday(records) && hasObservance(records)) {
@@ -407,10 +442,10 @@ function getHolidayStatus(records, forToday = false) {
   }
 
   if (hasPublicHoliday(records)) {
-    return "Public holiday";
+    return "تعطیل رسمی";
   }
 
-  return "Observance";
+  return "مناسبت فرهنگی";
 }
 
 function getHolidayStatusTone(records) {
@@ -422,7 +457,8 @@ function getHolidayStatusTone(records) {
 }
 
 function renderWeekdayLabels(target) {
-  const labels = WEEKDAY_LABELS[state.settings.weekStart] || WEEKDAY_LABELS.saturday;
+  const labels =
+    WEEKDAY_LABELS[state.settings.weekStart] || WEEKDAY_LABELS.saturday;
   target.innerHTML = labels
     .map((label) => `<div class="rtl-text" dir="rtl">${label}</div>`)
     .join("");
@@ -467,15 +503,18 @@ function renderSelectedHolidayList(records) {
     .map((record) => {
       const dotClass = record.isHoliday ? "public" : "observance";
       const category = escapeHtml(getHolidayCategoryLabel(record.category));
-      const description = record.description ? `<div class="holiday-item-body">${escapeHtml(record.description)}</div>` : "";
-      const note = record.note ? `<div class="holiday-item-note">${escapeHtml(record.note)}</div>` : "";
+      const description = record.description
+        ? `<div class="holiday-item-body">${escapeHtml(record.description)}</div>`
+        : "";
+      const note = record.note
+        ? `<div class="holiday-item-note">${escapeHtml(record.note)}</div>`
+        : "";
 
       return `
         <div class="holiday-item" lang="fa" dir="rtl">
           <div class="holiday-item-head">
             <span class="holiday-item-dot ${dotClass}"></span>
             <div class="holiday-item-title">${escapeHtml(record.title)}</div>
-            <div class="holiday-item-tag">${category}</div>
           </div>
           ${description}
           ${note}
@@ -505,10 +544,14 @@ function buildDayCell(jy, jm, jd, isMuted) {
 
   const markers = [];
   if (hasPublicHoliday(records)) {
-    markers.push('<span class="holiday-marker public" title="Public holiday"></span>');
+    markers.push(
+      '<span class="holiday-marker public" title="Public holiday"></span>',
+    );
   }
   if (hasObservance(records)) {
-    markers.push('<span class="holiday-marker observance" title="Observance"></span>');
+    markers.push(
+      '<span class="holiday-marker observance" title="Observance"></span>',
+    );
   }
 
   const ariaCurrent = isToday ? ' aria-current="date"' : "";
@@ -578,9 +621,12 @@ function renderSelectedDetails() {
   const selectedDate = toDisplayDateFromJalali(
     state.selected.jy,
     state.selected.jm,
-    state.selected.jd
+    state.selected.jd,
   );
-  const selectedRecords = getHolidayRecordsForDate(selectedDate, state.selected);
+  const selectedRecords = getHolidayRecordsForDate(
+    selectedDate,
+    state.selected,
+  );
   const uniqueRecords = dedupeHolidayRecords(selectedRecords);
 
   selectedJalaliEl.textContent = formatPersianOrderedDate(selectedDate);
@@ -589,10 +635,13 @@ function renderSelectedDetails() {
   selectedHijriEl.classList.toggle("hidden", !state.settings.showHijri);
   selectedTodayBadgeEl?.classList.toggle(
     "hidden",
-    !sameJalaliDate(state.selected, todayJalali)
+    !sameJalaliDate(state.selected, todayJalali),
   );
 
-  selectedHolidayStatusEl.textContent = getHolidayStatus(selectedRecords, false);
+  selectedHolidayStatusEl.textContent = getHolidayStatus(
+    selectedRecords,
+    false,
+  );
   selectedHolidayStatusEl.dataset.tone = getHolidayStatusTone(selectedRecords);
 
   if (uniqueRecords.length > 1) {
@@ -627,7 +676,8 @@ function setActiveTab(tab) {
 }
 
 function setConverterFromSelectedDate() {
-  if (!convertSourceEl || !convertYearEl || !convertMonthEl || !convertDayEl) return;
+  if (!convertSourceEl || !convertYearEl || !convertMonthEl || !convertDayEl)
+    return;
 
   convertSourceEl.value = "jalali";
   convertYearEl.value = String(state.selected.jy);
@@ -637,7 +687,8 @@ function setConverterFromSelectedDate() {
 }
 
 function updateConverterInputBounds() {
-  if (!convertSourceEl || !convertYearEl || !convertMonthEl || !convertDayEl) return;
+  if (!convertSourceEl || !convertYearEl || !convertMonthEl || !convertDayEl)
+    return;
 
   convertMonthEl.min = "1";
   convertMonthEl.max = "12";
@@ -661,7 +712,7 @@ function setConverterResults(result) {
   state.converter.lastValidCopy = {
     jalali: jalaliNumeric,
     gregorian: gregorianNumeric,
-    hijri: hijriNumeric
+    hijri: hijriNumeric,
   };
 
   convertJalaliEl.textContent = `${jalaliNumeric} · ${formatPersianOrderedDate(result.date)}`;
@@ -677,7 +728,7 @@ function clearConverterResults() {
   state.converter.lastValidCopy = {
     jalali: "",
     gregorian: "",
-    hijri: ""
+    hijri: "",
   };
 
   convertJalaliEl.textContent = "--";
@@ -690,14 +741,15 @@ function clearConverterResults() {
 }
 
 function renderConverter() {
-  if (!convertSourceEl || !convertYearEl || !convertMonthEl || !convertDayEl) return;
+  if (!convertSourceEl || !convertYearEl || !convertMonthEl || !convertDayEl)
+    return;
 
   updateConverterInputBounds();
 
   const hasMissingInput = [
     convertYearEl.value,
     convertMonthEl.value,
-    convertDayEl.value
+    convertDayEl.value,
   ].some((value) => !String(value).trim());
 
   if (hasMissingInput) {
@@ -711,7 +763,7 @@ function renderConverter() {
     source: convertSourceEl.value,
     year: convertYearEl.value,
     month: convertMonthEl.value,
-    day: convertDayEl.value
+    day: convertDayEl.value,
   });
 
   if (result.error) {
@@ -727,8 +779,14 @@ function renderConverter() {
 }
 
 function renderDatePickerToggle() {
-  datePickerValueEl.textContent = formatJalaliMonthYear(state.view.jy, state.view.jm);
-  datePickerMetaEl.textContent = formatGregorianMonthYear(state.view.jy, state.view.jm);
+  datePickerValueEl.textContent = formatJalaliMonthYear(
+    state.view.jy,
+    state.view.jm,
+  );
+  datePickerMetaEl.textContent = formatGregorianMonthYear(
+    state.view.jy,
+    state.view.jm,
+  );
 }
 
 function parseIntegerInput(value) {
@@ -781,7 +839,7 @@ function getJumpPickerInput() {
   return {
     jy: parseIntegerInput(jumpYearInputEl.value),
     jm: Number(jumpMonthSelectEl.value),
-    jd: Number(jumpDaySelectEl.value)
+    jd: Number(jumpDaySelectEl.value),
   };
 }
 
@@ -805,9 +863,10 @@ function validateJumpPickerDate({ jy, jm, jd }) {
 function populateJumpDayOptions(preferredDay = state.datePicker.jd) {
   const jy = parseIntegerInput(jumpYearInputEl.value);
   const jm = Number(jumpMonthSelectEl.value);
-  const maxDay = Number.isInteger(jy) && isSupportedJalaliYear(jy) && jm >= 1 && jm <= 12
-    ? getJalaliMonthLength(jy, jm)
-    : 31;
+  const maxDay =
+    Number.isInteger(jy) && isSupportedJalaliYear(jy) && jm >= 1 && jm <= 12
+      ? getJalaliMonthLength(jy, jm)
+      : 31;
   const selectedDay = Math.min(Math.max(Number(preferredDay) || 1, 1), maxDay);
 
   jumpDaySelectEl.innerHTML = Array.from({ length: maxDay }, (_item, index) => {
@@ -851,7 +910,10 @@ function renderJumpPickerForm() {
 }
 
 function renderMiniDatePicker() {
-  datePickerToggleEl.setAttribute("aria-expanded", String(state.datePicker.open));
+  datePickerToggleEl.setAttribute(
+    "aria-expanded",
+    String(state.datePicker.open),
+  );
   miniDatePickerEl.classList.toggle("hidden", !state.datePicker.open);
 
   if (!state.datePicker.open) {
@@ -954,7 +1016,10 @@ function isValidJalaliDate(jalaliDate) {
     return false;
   }
 
-  return jalaliDate.jd >= 1 && jalaliDate.jd <= getJalaliMonthLength(jalaliDate.jy, jalaliDate.jm);
+  return (
+    jalaliDate.jd >= 1 &&
+    jalaliDate.jd <= getJalaliMonthLength(jalaliDate.jy, jalaliDate.jm)
+  );
 }
 
 function normalizeLastView(value) {
@@ -964,12 +1029,12 @@ function normalizeLastView(value) {
   const selected = value.selected || {};
   const normalizedView = {
     jy: Number(view.jy),
-    jm: Number(view.jm)
+    jm: Number(view.jm),
   };
   const normalizedSelected = {
     jy: Number(selected.jy),
     jm: Number(selected.jm),
-    jd: Number(selected.jd)
+    jd: Number(selected.jd),
   };
 
   if (
@@ -984,7 +1049,7 @@ function normalizeLastView(value) {
 
   return {
     view: normalizedView,
-    selected: normalizedSelected
+    selected: normalizedSelected,
   };
 }
 
@@ -1005,8 +1070,8 @@ function persistLastView() {
     .set({
       [LAST_VIEW_STORAGE_KEY]: {
         view: state.view,
-        selected: state.selected
-      }
+        selected: state.selected,
+      },
     })
     .catch((error) => {
       console.warn("Taqvim could not save the last popup date:", error);
@@ -1027,7 +1092,7 @@ function goToMonth(jy, jm) {
   state.selected = {
     jy,
     jm,
-    jd: Math.min(state.selected.jd, maxDay)
+    jd: Math.min(state.selected.jd, maxDay),
   };
   syncDatePickerToView();
   closeDatePicker(false);
@@ -1056,32 +1121,35 @@ function moveSelectedByDays(amount) {
   const date = toDisplayDateFromJalali(
     state.selected.jy,
     state.selected.jm,
-    state.selected.jd
+    state.selected.jd,
   );
   date.setDate(date.getDate() + amount);
 
   const next = toJalali(
     date.getFullYear(),
     date.getMonth() + 1,
-    date.getDate()
+    date.getDate(),
   );
 
   selectJalaliDate(next.jy, next.jm, next.jd, { focusSelected: true });
 }
 
 function moveSelectedToMonthDay(day) {
-  const jd = day === "end"
-    ? getJalaliMonthLength(state.selected.jy, state.selected.jm)
-    : 1;
+  const jd =
+    day === "end"
+      ? getJalaliMonthLength(state.selected.jy, state.selected.jm)
+      : 1;
 
-  selectJalaliDate(state.selected.jy, state.selected.jm, jd, { focusSelected: true });
+  selectJalaliDate(state.selected.jy, state.selected.jm, jd, {
+    focusSelected: true,
+  });
 }
 
 function getCopyValue(targetId) {
   const keyMap = {
     convertJalali: "jalali",
     convertGregorian: "gregorian",
-    convertHijri: "hijri"
+    convertHijri: "hijri",
   };
   const key = keyMap[targetId];
 
@@ -1168,14 +1236,18 @@ jumpDateFormEl.addEventListener("submit", (event) => {
 });
 
 miniGoTodayBtn.addEventListener("click", () => {
-  selectJalaliDate(todayJalali.jy, todayJalali.jm, todayJalali.jd, { focusSelected: true });
+  selectJalaliDate(todayJalali.jy, todayJalali.jm, todayJalali.jd, {
+    focusSelected: true,
+  });
 });
 
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-  if (state.settings.theme === "system") {
-    applyTheme("system");
-  }
-});
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", () => {
+    if (state.settings.theme === "system") {
+      applyTheme("system");
+    }
+  });
 
 prevMonthBtn.addEventListener("click", () => {
   const prev = previousJalaliMonth(state.view.jy, state.view.jm);
@@ -1191,10 +1263,12 @@ goTodayBtn.addEventListener("click", () => {
   selectJalaliDate(todayJalali.jy, todayJalali.jm, todayJalali.jd);
 });
 
-[convertSourceEl, convertYearEl, convertMonthEl, convertDayEl].forEach((element) => {
-  element.addEventListener("input", renderConverter);
-  element.addEventListener("change", renderConverter);
-});
+[convertSourceEl, convertYearEl, convertMonthEl, convertDayEl].forEach(
+  (element) => {
+    element.addEventListener("input", renderConverter);
+    element.addEventListener("change", renderConverter);
+  },
+);
 
 document.querySelectorAll(".copy-btn").forEach((button) => {
   button.addEventListener("click", async () => {
@@ -1210,7 +1284,7 @@ calendarGridEl.addEventListener("click", (event) => {
   selectJalaliDate(
     Number(cell.dataset.jy),
     Number(cell.dataset.jm),
-    Number(cell.dataset.jd)
+    Number(cell.dataset.jd),
   );
 });
 
@@ -1240,7 +1314,7 @@ document.addEventListener("keydown", (event) => {
     ArrowLeft: -1,
     ArrowRight: 1,
     ArrowUp: -7,
-    ArrowDown: 7
+    ArrowDown: 7,
   };
 
   if (event.key in movement) {
@@ -1274,7 +1348,11 @@ async function init() {
 
   if (state.settings.autoJumpToTodayOnOpen) {
     state.view = { jy: todayJalali.jy, jm: todayJalali.jm };
-    state.selected = { jy: todayJalali.jy, jm: todayJalali.jm, jd: todayJalali.jd };
+    state.selected = {
+      jy: todayJalali.jy,
+      jm: todayJalali.jm,
+      jd: todayJalali.jd,
+    };
   } else {
     const restored = await loadLastView();
     if (restored) {
