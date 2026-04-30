@@ -922,48 +922,88 @@ button {
 .tehran-row {
   display: grid;
   gap: 8px;
-  justify-items: end;
+  justify-items: stretch;
   text-align: right;
+  min-width: 0;
 }
 
 .tehran-time-block {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   flex-direction: row-reverse;
-  gap: 10px;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
 }
 
 .tehran-phase-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 999px;
-  font-size: 17px;
+  font-size: 15px;
   background: var(--accent-soft);
   box-shadow: var(--shadow-sm);
-  flex: 0 0 auto;
+  flex: 0 0 30px;
 }
 
 .topbar-tehran-time {
-  font-size: 34px;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 4px;
+  width: min(166px, calc(100% - 38px));
+  min-width: 0;
+  overflow: hidden;
+  direction: ltr;
+  text-align: right;
+  font-size: 28px;
+  font-weight: 650;
   letter-spacing: 0;
   line-height: 1;
   color: var(--text);
   white-space: nowrap;
 }
 
+.tehran-time-number {
+  display: inline-block;
+  min-width: 138px;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings:
+    "tnum" 1,
+    "lnum" 1;
+}
+
+.tehran-time-meridiem {
+  display: inline-block;
+  min-width: 24px;
+  text-align: right;
+  direction: rtl;
+  font-size: 0.58em;
+  font-weight: 800;
+  line-height: 1;
+  transform: translateY(-0.18em);
+}
+
 .tehran-copy-block {
   display: grid;
   gap: 2px;
   justify-items: end;
+  min-width: 0;
+  width: 100%;
 }
 
 .topbar-tehran-date,
 .topbar-tehran-persian {
-  font-size: 12px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
   line-height: 1.4;
 }
 
@@ -1054,7 +1094,7 @@ button {
   display: flex;
   justify-content: center; /* Horizontal */
   align-items: center; /* Vertical */
-  color: var(--status-neutral-text);
+  color: var(--text);
 }
 
 .status-line[data-tone="public"] {
@@ -1167,7 +1207,7 @@ button {
 .holiday-item-note {
   font-size: 11px;
   line-height: 1.5;
-  color: #000000;
+  color: var(--text);
   margin-top: 10px;
 }
 
@@ -1468,7 +1508,7 @@ input:focus-visible,
 
 :root.dark .day.selected .day-j,
 :root.dark .day.selected .day-g {
-  color: #071932;
+  color: #dadada;
 }
 
 :root.dark .day.today {

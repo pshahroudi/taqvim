@@ -25,7 +25,8 @@ import {
   formatJalaliNumeric,
   formatNumber as formatDisplayNumber,
   formatPersianOrderedDate as formatOrderedPersianDate,
-  padNumber
+  padNumber,
+  toPersianDigits
 } from "../src/utils/format.js";
 
 const root = document.documentElement;
@@ -192,6 +193,16 @@ function formatNumber(value) {
   return formatDisplayNumber(value, state.settings.usePersianNumerals);
 }
 
+function formatTehranClockTime(date) {
+  const [hourText, minuteText, secondText] = tehranTimeFormatter.format(date).split(":");
+  const hour24 = Number(hourText) === 24 ? 0 : Number(hourText);
+  const hour12 = hour24 % 12 || 12;
+  const meridiemLabel = hour24 < 12 ? "ق.ظ" : "ب.ظ";
+  const timeText = `${toPersianDigits(padNumber(hour12))}:${toPersianDigits(minuteText)}:${toPersianDigits(secondText)}`;
+
+  return `<span class="tehran-time-number">${timeText}</span><span class="tehran-time-meridiem">${meridiemLabel}</span>`;
+}
+
 function getHolidayCategoryLabel(category) {
   switch (category) {
     case "officialIran":
@@ -241,14 +252,14 @@ function updateTehranClock() {
   const tehranHour = formattedHour === 24 ? 0 : formattedHour;
   const isAmInTehran = tehranHour < 12;
 
-  tehranTimeEl.textContent = tehranTimeFormatter.format(now);
+  tehranTimeEl.innerHTML = formatTehranClockTime(now);
   tehranDateEl.textContent = `${tehranDateFormatter.format(now)} · ${TEHRAN_TIME_ZONE}`;
   tehranPersianDateEl.textContent = formatPersianOrderedDate(now, { timeZone: TEHRAN_TIME_ZONE });
 
   if (tehranPhaseIconEl) {
     tehranPhaseIconEl.textContent = isAmInTehran ? "☀" : "☾";
-    tehranPhaseIconEl.setAttribute("aria-label", isAmInTehran ? "AM in Tehran" : "PM in Tehran");
-    tehranPhaseIconEl.title = isAmInTehran ? "AM in Tehran" : "PM in Tehran";
+    tehranPhaseIconEl.setAttribute("aria-label", isAmInTehran ? "صبح در تهران" : "بعدازظهر در تهران");
+    tehranPhaseIconEl.title = isAmInTehran ? "صبح در تهران" : "بعدازظهر در تهران";
   }
 }
 
