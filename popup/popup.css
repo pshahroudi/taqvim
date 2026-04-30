@@ -1718,3 +1718,244 @@ input:focus-visible,
     width: 700px;
   }
 }
+
+
+/* ===== Jump to date panel redesign ===== */
+.mini-picker.jump-picker {
+  top: calc(100% + 10px);
+  left: 0;
+  width: min(352px, calc(100vw - 24px));
+  max-height: calc(100vh - 132px);
+  padding: 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: 0 22px 44px rgba(30, 49, 82, 0.16);
+  overflow: hidden;
+}
+
+.mini-picker.jump-picker .mini-picker-top {
+  margin: -14px -14px 0;
+  padding: 14px;
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.mini-picker.jump-picker .mini-picker-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mini-picker.jump-picker .mini-picker-brand {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.mini-picker.jump-picker .mini-picker-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.mini-picker.jump-picker .mini-picker-heading {
+  min-width: 0;
+}
+
+.mini-picker.jump-picker .mini-picker-eyebrow {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-transform: none;
+  color: #ffffff;
+}
+
+.mini-picker.jump-picker .mini-picker-helper {
+  margin-top: 6px;
+  max-width: 220px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.mini-picker.jump-picker .mini-close-btn {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 12px;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.mini-picker.jump-picker .mini-close-btn:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+.mini-picker.jump-picker .jump-date-form {
+  gap: 14px;
+  padding-top: 14px;
+}
+
+.mini-picker.jump-picker .jump-form-card {
+  display: grid;
+  gap: 14px;
+}
+
+.mini-picker.jump-picker .jump-form-section {
+  display: grid;
+  gap: 10px;
+}
+
+.mini-picker.jump-picker .jump-section-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.mini-picker.jump-picker .jump-field-grid {
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.24fr) minmax(0, 0.92fr);
+  gap: 10px;
+}
+
+.mini-picker.jump-picker .jump-field {
+  gap: 7px;
+}
+
+.mini-picker.jump-picker .jump-field-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--text-soft);
+}
+
+.mini-picker.jump-picker .jump-input,
+.mini-picker.jump-picker .jump-select {
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border-color: var(--border);
+  background: var(--panel-2);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.mini-picker.jump-picker .jump-date-error {
+  margin-top: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 45, 85, 0.15);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.mini-picker.jump-picker .jump-date-preview {
+  gap: 5px;
+  min-height: 88px;
+  padding: 16px;
+  border-radius: 16px;
+  border-color: var(--border);
+  background: var(--calendar-board);
+  text-align: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.mini-picker.jump-picker .jump-preview-primary {
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 900;
+}
+
+.mini-picker.jump-picker .jump-preview-secondary {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-soft);
+}
+
+.mini-picker.jump-picker .jump-picker-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 0;
+}
+
+.mini-picker.jump-picker .mini-today-btn,
+.mini-picker.jump-picker .jump-go-btn {
+  min-height: 44px;
+  width: 100%;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  justify-content: center;
+}
+
+.mini-picker.jump-picker .mini-today-btn {
+  color: var(--text);
+  background: var(--panel-2);
+  border-color: var(--border-strong);
+}
+
+.mini-picker.jump-picker .jump-go-btn {
+  box-shadow: 0 10px 20px rgba(47, 128, 237, 0.22);
+}
+
+:root.dark .mini-picker.jump-picker {
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.34);
+}
+
+:root.dark .mini-picker.jump-picker .mini-picker-top {
+  background: var(--accent);
+}
+
+:root.dark .mini-picker.jump-picker .mini-picker-helper {
+  color: rgba(7, 25, 50, 0.78);
+}
+
+:root.dark .mini-picker.jump-picker .mini-picker-eyebrow,
+:root.dark .mini-picker.jump-picker .mini-picker-icon,
+:root.dark .mini-picker.jump-picker .mini-close-btn {
+  color: #071932;
+}
+
+:root.dark .mini-picker.jump-picker .mini-picker-icon {
+  background: rgba(255, 255, 255, 0.34);
+}
+
+:root.dark .mini-picker.jump-picker .mini-close-btn {
+  background: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+:root.dark .mini-picker.jump-picker .mini-close-btn:hover {
+  border-color: rgba(255, 255, 255, 0.56);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 540px) {
+  .mini-picker.jump-picker {
+    width: min(100%, calc(100vw - 24px));
+  }
+
+  .mini-picker.jump-picker .jump-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mini-picker.jump-picker .jump-field-day {
+    grid-column: 1 / -1;
+  }
+}
