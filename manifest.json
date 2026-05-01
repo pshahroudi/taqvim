@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Taqvim",
   "version": "0.1.1",
-  "description": "Fast Jalali calendar with holidays and today\u2019s Persian date in your browser.",
+  "description": "Persian/Jalali calendar with holidays, date conversion, themes, Tehran time, and a local day badge.",
   "action": {
     "default_title": "Taqvim",
     "default_popup": "popup/popup.html",
