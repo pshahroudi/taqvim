@@ -2,7 +2,7 @@ import {
   DEFAULT_SETTINGS,
   getSettings,
   saveSettingsPatch,
-  setSettings
+  setSettings,
 } from "../src/ui/storage.js";
 import { applyTheme } from "../src/ui/theme.js";
 
@@ -13,34 +13,48 @@ const resetDefaultsBtn = document.getElementById("resetDefaultsBtn");
 
 const controls = {
   theme: findControl(["#theme", "#themeSelect", "select[name='theme']"]),
-  showHijri: findControl(["#showHijri", "#showHijriDate", "input[name='showHijri']"]),
-  usePersianNumerals: findControl(["#usePersianNumerals", "input[name='usePersianNumerals']"]),
-  weekStart: findControl(["#weekStart", "#weekStartsOn", "select[name='weekStart']"]),
+  showHijri: findControl([
+    "#showHijri",
+    "#showHijriDate",
+    "input[name='showHijri']",
+  ]),
+  usePersianNumerals: findControl([
+    "#usePersianNumerals",
+    "input[name='usePersianNumerals']",
+  ]),
+  weekStart: findControl([
+    "#weekStart",
+    "#weekStartsOn",
+    "select[name='weekStart']",
+  ]),
   showHolidays: findControl(["#showHolidays", "input[name='showHolidays']"]),
-  highlightWeekends: findControl(["#highlightWeekends", "input[name='highlightWeekends']"]),
+  highlightWeekends: findControl([
+    "#highlightWeekends",
+    "input[name='highlightWeekends']",
+  ]),
   autoJumpToTodayOnOpen: findControl([
     "#autoJumpToTodayOnOpen",
     "#autoJumpToToday",
-    "input[name='autoJumpToTodayOnOpen']"
+    "input[name='autoJumpToTodayOnOpen']",
   ]),
   holidayOfficialIran: findControl([
     "#holidayOfficialIran",
     "#officialIran",
     "input[name='holidayOfficialIran']",
-    "input[name='officialIran']"
+    "input[name='officialIran']",
   ]),
   holidayCultural: findControl([
     "#holidayCultural",
     "#cultural",
     "input[name='holidayCultural']",
-    "input[name='cultural']"
+    "input[name='cultural']",
   ]),
   holidayIslamic: findControl([
     "#holidayIslamic",
     "#islamic",
     "input[name='holidayIslamic']",
-    "input[name='islamic']"
-  ])
+    "input[name='islamic']",
+  ]),
 };
 
 let statusTimer = null;
@@ -78,7 +92,7 @@ function setVersion() {
   try {
     appVersionEl.textContent = chrome.runtime.getManifest().version;
   } catch {
-    appVersionEl.textContent = "0.1.0";
+    appVersionEl.textContent = "0.1.1";
   }
 }
 
@@ -86,11 +100,13 @@ function updateHolidayCategoryState(showHolidays) {
   [
     controls.holidayOfficialIran,
     controls.holidayCultural,
-    controls.holidayIslamic
+    controls.holidayIslamic,
   ].forEach((element) => {
     if (!element) return;
     element.disabled = !showHolidays;
-    element.closest(".setting-row")?.classList.toggle("disabled-setting", !showHolidays);
+    element
+      .closest(".setting-row")
+      ?.classList.toggle("disabled-setting", !showHolidays);
   });
 }
 
@@ -101,8 +117,14 @@ function applyControls(settings) {
   setValueIfPresent(controls.weekStart, settings.weekStart);
   setValueIfPresent(controls.showHolidays, settings.showHolidays);
   setValueIfPresent(controls.highlightWeekends, settings.highlightWeekends);
-  setValueIfPresent(controls.autoJumpToTodayOnOpen, settings.autoJumpToTodayOnOpen);
-  setValueIfPresent(controls.holidayOfficialIran, settings.holidayTypes.officialIran);
+  setValueIfPresent(
+    controls.autoJumpToTodayOnOpen,
+    settings.autoJumpToTodayOnOpen,
+  );
+  setValueIfPresent(
+    controls.holidayOfficialIran,
+    settings.holidayTypes.officialIran,
+  );
   setValueIfPresent(controls.holidayCultural, settings.holidayTypes.cultural);
   setValueIfPresent(controls.holidayIslamic, settings.holidayTypes.islamic);
 
@@ -184,12 +206,14 @@ async function init() {
 
   resetDefaultsBtn?.addEventListener("click", resetDefaults);
 
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", async () => {
-    const settings = await getSettings();
-    if (settings.theme === "system") {
-      applyTheme("system", root);
-    }
-  });
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", async () => {
+      const settings = await getSettings();
+      if (settings.theme === "system") {
+        applyTheme("system", root);
+      }
+    });
 
   chrome.storage.onChanged.addListener(async (_changes, areaName) => {
     if (areaName !== "sync") return;
