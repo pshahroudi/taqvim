@@ -75,8 +75,16 @@
                 aria-expanded="false"
                 aria-controls="miniDatePicker"
               >
+                <span class="date-picker-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <rect x="4" y="5" width="16" height="15" rx="3"></rect>
+                    <path d="M8 3v4M16 3v4M4 10h16"></path>
+                  </svg>
+                </span>
                 <span class="date-picker-copy">
-                  <span class="date-picker-label">Jump to date</span>
+                  <span class="date-picker-label rtl-text" lang="fa" dir="rtl"
+                    >پرش به تاریخ</span
+                  >
 
                   <span
                     id="datePickerMeta"
@@ -85,7 +93,7 @@
                     dir="ltr"
                   ></span>
                 </span>
-                <span class="date-picker-caret" aria-hidden="true">▾</span>
+                <!-- <span class="date-picker-caret" aria-hidden="true">⌄</span> -->
               </button>
             </div>
 
@@ -99,7 +107,13 @@
                 ‹
               </button>
               <button id="goToday" class="today-btn" type="button">
-                Today
+                <span class="today-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" focusable="false">
+                    <rect x="4" y="5" width="16" height="15" rx="3"></rect>
+                    <path d="M8 3v4M16 3v4M4 10h16"></path>
+                  </svg>
+                </span>
+                <span lang="fa" dir="rtl">امروز</span>
               </button>
               <button
                 id="nextMonth"
@@ -202,10 +216,10 @@
 
                 <div class="mini-picker-actions jump-picker-actions">
                   <button id="miniGoToday" class="mini-today-btn" type="button">
-                    Today
+                    امروز
                   </button>
                   <button id="jumpDateGo" class="jump-go-btn" type="submit">
-                    Go
+                    برو
                   </button>
                 </div>
               </form>

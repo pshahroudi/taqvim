@@ -1,6 +1,5 @@
 import { updateBadge } from "../src/ui/badge.js";
 import { DEFAULT_SETTINGS, normalizeSettings, setSettings } from "../src/ui/storage.js";
-import { getNextTehranMidnightTimestamp } from "../src/utils/dates.js";
 
 const MIDNIGHT_ALARM = "taqvim-midnight-refresh";
 
@@ -21,9 +20,10 @@ async function ensureDefaultSettings() {
 }
 
 function getNextMidnightTimestamp() {
-  // The badge intentionally reflects the Tehran calendar date, so refresh at
-  // Tehran midnight rather than the browser machine's local midnight.
-  return getNextTehranMidnightTimestamp();
+  const tomorrow = new Date();
+  tomorrow.setHours(24, 0, 5, 0);
+
+  return tomorrow.getTime();
 }
 
 async function scheduleNextMidnightRefresh() {

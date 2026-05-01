@@ -1,5 +1,4 @@
 import { toJalali } from "../calendar/jalali.js";
-import { TEHRAN_TIME_ZONE, getDatePartsInTimeZone } from "../utils/dates.js";
 import { formatNumber, formatPersianOrderedDate } from "../utils/format.js";
 import { DEFAULT_SETTINGS } from "./storage.js";
 
@@ -8,10 +7,9 @@ function getBadgeText(jalaliDate, usePersianNumerals) {
 }
 
 function formatTitle(now, usePersianNumerals) {
-  return `${formatPersianOrderedDate(now, {
+  return formatPersianOrderedDate(now, {
     usePersianNumerals,
-    timeZone: TEHRAN_TIME_ZONE,
-  })}`;
+  });
 }
 
 export async function updateBadge() {
@@ -20,13 +18,16 @@ export async function updateBadge() {
   const usePersianNumerals =
     settings.usePersianNumerals ?? DEFAULT_SETTINGS.usePersianNumerals;
   const now = new Date();
-  const tehranDate = getDatePartsInTimeZone(now, TEHRAN_TIME_ZONE);
 
   await chrome.action.setBadgeBackgroundColor({ color: "#000000" });
   await chrome.action.setBadgeTextColor({ color: "#ffffff" });
 
   try {
-    const jalali = toJalali(tehranDate.year, tehranDate.month, tehranDate.day);
+    const jalali = toJalali(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      now.getDate()
+    );
 
     await chrome.action.setBadgeText({
       text: getBadgeText(jalali, usePersianNumerals),
