@@ -201,7 +201,7 @@ button {
   align-items: start;
   column-gap: 12px;
   row-gap: 8px;
-  margin-bottom: 14px;
+  margin-bottom: 5px;
   justify-content: stretch;
 }
 
@@ -2003,7 +2003,7 @@ input:focus-visible,
 }
 
 .calendar-shell {
-  padding: 14px;
+  padding: 5px;
   border-radius: 24px;
   background: linear-gradient(
     180deg,
@@ -2018,12 +2018,12 @@ input:focus-visible,
   align-items: center;
   column-gap: 14px;
   row-gap: 10px;
-  margin-bottom: 14px;
+  margin-bottom: 5px;
 }
 
 .date-picker-toggle {
   min-height: 50px;
-  padding: 0 7px;
+  padding: 0 25px;
   border-radius: 17px;
   border-color: var(--control-border);
   background: var(--control-surface);
@@ -2120,7 +2120,7 @@ input:focus-visible,
     var(--toolbar-primary-strong) 100%
   );
   box-shadow: var(--toolbar-shadow);
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 900;
   letter-spacing: -0.01em;
 }
@@ -2142,7 +2142,7 @@ input:focus-visible,
 }
 
 .weekday-strip {
-  padding: 14px 18px 6px;
+  padding: 5px 18px 0px;
   border: 1px solid var(--border);
   border-bottom: 0;
   border-radius: 22px 22px 0 0;
