@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Taqvim",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fast Jalali calendar with holidays and today\u2019s Persian date in your browser.",
   "action": {
     "default_title": "Taqvim",
@@ -15,10 +15,7 @@
     "service_worker": "background/service-worker.js",
     "type": "module"
   },
-  "permissions": [
-    "storage",
-    "alarms"
-  ],
+  "permissions": ["storage", "alarms"],
   "options_page": "options/options.html",
   "icons": {
     "16": "assets/icons/icon16.png",

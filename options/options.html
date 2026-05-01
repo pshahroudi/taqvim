@@ -1,178 +1,220 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taqvim Settings</title>
-  <link rel="stylesheet" href="options.css" />
-</head>
-<body>
-  <main class="page">
-    <header class="hero card">
-      <div>
-        <p class="eyebrow">Taqvim</p>
-        <h1>Settings</h1>
-        <p class="hero-copy">
-          Control how the calendar is displayed, which holiday layers are visible,
-          and how Taqvim behaves in the popup and toolbar.
-        </p>
-      </div>
-
-      <div class="hero-actions">
-        <button id="resetDefaultsBtn" class="btn btn-secondary" type="button">Reset to defaults</button>
-      </div>
-    </header>
-
-    <div id="saveStatus" class="save-status" aria-live="polite"></div>
-
-    <section class="grid">
-      <form id="settingsForm" class="settings-grid">
-        <section class="card section-card">
-          <div class="section-head">
-            <h2>Display</h2>
-            <p>Adjust what Taqvim shows in the popup.</p>
-          </div>
-
-          <label class="setting-row switch-row">
-            <span>
-              <strong>Show Hijri date</strong>
-              <small>Display Hijri dates in the Today card and selected day details.</small>
-            </span>
-            <input id="showHijri" name="showHijri" type="checkbox" />
-          </label>
-
-          <label class="setting-row switch-row">
-            <span>
-              <strong>Use Persian numerals</strong>
-              <small>Use Persian digits in calendar labels, the Today card, and the badge.</small>
-            </span>
-            <input id="usePersianNumerals" name="usePersianNumerals" type="checkbox" />
-          </label>
-
-          <label class="setting-row">
-            <span>
-              <strong>Theme</strong>
-              <small>Choose how Taqvim looks in the popup.</small>
-            </span>
-            <select id="theme" name="theme">
-              <option value="system">System</option>
-              <option value="light">Light</option>
-              <option value="dark">Dark</option>
-            </select>
-          </label>
-        </section>
-
-        <section class="card section-card">
-          <div class="section-head">
-            <h2>Calendar behavior</h2>
-            <p>Control layout and navigation in the popup.</p>
-          </div>
-
-          <label class="setting-row">
-            <span>
-              <strong>Week starts on</strong>
-              <small>Change weekday order in the month grid.</small>
-            </span>
-            <select id="weekStart" name="weekStart">
-              <option value="saturday">Saturday</option>
-              <option value="sunday">Sunday</option>
-              <option value="monday">Monday</option>
-            </select>
-          </label>
-
-          <label class="setting-row switch-row">
-            <span>
-              <strong>Show holidays</strong>
-              <small>Show holiday markers in the grid and details in the day panel.</small>
-            </span>
-            <input id="showHolidays" name="showHolidays" type="checkbox" />
-          </label>
-
-          <label class="setting-row switch-row">
-            <span>
-              <strong>Auto-jump to today on open</strong>
-              <small>Open the popup on the current month instead of the last viewed one.</small>
-            </span>
-            <input id="autoJumpToToday" name="autoJumpToToday" type="checkbox" />
-          </label>
-
-          <label class="setting-row switch-row">
-            <span>
-              <strong>Highlight weekends</strong>
-              <small>Apply a subtle weekend style in the month grid.</small>
-            </span>
-            <input id="highlightWeekends" name="highlightWeekends" type="checkbox" />
-          </label>
-        </section>
-
-        <section class="card section-card">
-          <div class="section-head">
-            <h2>Holiday layers</h2>
-            <p>Choose which built-in holiday datasets are active.</p>
-          </div>
-
-          <label class="setting-row switch-row nested-row">
-            <span>
-              <strong>Iran official holidays</strong>
-              <small>Public holidays and official closures.</small>
-            </span>
-            <input id="holidayOfficialIran" name="holidayOfficialIran" type="checkbox" />
-          </label>
-
-          <label class="setting-row switch-row nested-row">
-            <span>
-              <strong>Cultural observances</strong>
-              <small>Nowruz-related and seasonal Persian observances.</small>
-            </span>
-            <input id="holidayCultural" name="holidayCultural" type="checkbox" />
-          </label>
-
-          <label class="setting-row switch-row nested-row">
-            <span>
-              <strong>Islamic holidays</strong>
-              <small>Lunar-calendar observances. Some dates can shift based on official moon sighting.</small>
-            </span>
-            <input id="holidayIslamic" name="holidayIslamic" type="checkbox" />
-          </label>
-        </section>
-      </form>
-
-      <aside class="side-column">
-        <section class="card about-card">
-          <h2>About Taqvim</h2>
-          <dl class="meta-list">
-            <div>
-              <dt>Version</dt>
-              <dd id="appVersion">0.1.0</dd>
-            </div>
-            <div>
-              <dt>Product</dt>
-              <dd>Persian calendar for Chrome</dd>
-            </div>
-          </dl>
-        </section>
-
-        <section class="card note-card">
-          <h2>Privacy</h2>
-          <p>
-            Taqvim stores preferences locally using Chrome extension storage. It does not
-            require sign-in and does not depend on an external API for holiday data in v1.
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taqvim Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero card">
+        <div>
+          <p class="eyebrow">Taqvim</p>
+          <h1>Settings</h1>
+          <p class="hero-copy">
+            Control how the calendar is displayed, which holiday layers are
+            visible, and how Taqvim behaves in the popup and toolbar.
           </p>
-        </section>
+        </div>
 
-        <section class="card note-card">
-          <h2>What this page controls</h2>
-          <ul>
-            <li>Popup theme and numeral style</li>
-            <li>Week start and weekend highlighting</li>
-            <li>Holiday visibility and category filtering</li>
-            <li>How the popup opens day-to-day</li>
-          </ul>
-        </section>
-      </aside>
-    </section>
-  </main>
+        <div class="hero-actions">
+          <button id="resetDefaultsBtn" class="btn btn-secondary" type="button">
+            Reset to defaults
+          </button>
+        </div>
+      </header>
 
-  <script type="module" src="options.js"></script>
-</body>
+      <div id="saveStatus" class="save-status" aria-live="polite"></div>
+
+      <section class="grid">
+        <form id="settingsForm" class="settings-grid">
+          <section class="card section-card">
+            <div class="section-head">
+              <h2>Display</h2>
+              <p>Adjust what Taqvim shows in the popup.</p>
+            </div>
+
+            <label class="setting-row switch-row">
+              <span>
+                <strong>Show Hijri date</strong>
+                <small
+                  >Display Hijri dates in the Today card and selected day
+                  details.</small
+                >
+              </span>
+              <input id="showHijri" name="showHijri" type="checkbox" />
+            </label>
+
+            <label class="setting-row switch-row">
+              <span>
+                <strong>Use Persian numerals</strong>
+                <small
+                  >Use Persian digits in calendar labels, the Today card, and
+                  the badge.</small
+                >
+              </span>
+              <input
+                id="usePersianNumerals"
+                name="usePersianNumerals"
+                type="checkbox"
+              />
+            </label>
+
+            <label class="setting-row">
+              <span>
+                <strong>Theme</strong>
+                <small>Choose how Taqvim looks in the popup.</small>
+              </span>
+              <select id="theme" name="theme">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
+          </section>
+
+          <section class="card section-card">
+            <div class="section-head">
+              <h2>Calendar behavior</h2>
+              <p>Control layout and navigation in the popup.</p>
+            </div>
+
+            <label class="setting-row">
+              <span>
+                <strong>Week starts on</strong>
+                <small>Change weekday order in the month grid.</small>
+              </span>
+              <select id="weekStart" name="weekStart">
+                <option value="saturday">Saturday</option>
+                <option value="sunday">Sunday</option>
+                <option value="monday">Monday</option>
+              </select>
+            </label>
+
+            <label class="setting-row switch-row">
+              <span>
+                <strong>Show holidays</strong>
+                <small
+                  >Show holiday markers in the grid and details in the day
+                  panel.</small
+                >
+              </span>
+              <input id="showHolidays" name="showHolidays" type="checkbox" />
+            </label>
+
+            <label class="setting-row switch-row">
+              <span>
+                <strong>Auto-jump to today on open</strong>
+                <small
+                  >Open the popup on the current month instead of the last
+                  viewed one.</small
+                >
+              </span>
+              <input
+                id="autoJumpToToday"
+                name="autoJumpToToday"
+                type="checkbox"
+              />
+            </label>
+
+            <label class="setting-row switch-row">
+              <span>
+                <strong>Highlight weekends</strong>
+                <small>Apply a subtle weekend style in the month grid.</small>
+              </span>
+              <input
+                id="highlightWeekends"
+                name="highlightWeekends"
+                type="checkbox"
+              />
+            </label>
+          </section>
+
+          <section class="card section-card">
+            <div class="section-head">
+              <h2>Holiday layers</h2>
+              <p>Choose which built-in holiday datasets are active.</p>
+            </div>
+
+            <label class="setting-row switch-row nested-row">
+              <span>
+                <strong>Iran official holidays</strong>
+                <small>Public holidays and official closures.</small>
+              </span>
+              <input
+                id="holidayOfficialIran"
+                name="holidayOfficialIran"
+                type="checkbox"
+              />
+            </label>
+
+            <label class="setting-row switch-row nested-row">
+              <span>
+                <strong>Cultural observances</strong>
+                <small>Nowruz-related and seasonal Persian observances.</small>
+              </span>
+              <input
+                id="holidayCultural"
+                name="holidayCultural"
+                type="checkbox"
+              />
+            </label>
+
+            <label class="setting-row switch-row nested-row">
+              <span>
+                <strong>Islamic holidays</strong>
+                <small
+                  >Lunar-calendar observances. Some dates can shift based on
+                  official moon sighting.</small
+                >
+              </span>
+              <input
+                id="holidayIslamic"
+                name="holidayIslamic"
+                type="checkbox"
+              />
+            </label>
+          </section>
+        </form>
+
+        <aside class="side-column">
+          <section class="card about-card">
+            <h2>About Taqvim</h2>
+            <dl class="meta-list">
+              <div>
+                <dt>Version</dt>
+                <dd id="appVersion">0.1.1</dd>
+              </div>
+              <div>
+                <dt>Product</dt>
+                <dd>Persian calendar for Chrome</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="card note-card">
+            <h2>Privacy</h2>
+            <p>
+              Taqvim stores preferences locally using Chrome extension storage.
+              It does not require sign-in and does not depend on an external API
+              for holiday data in v1.
+            </p>
+          </section>
+
+          <section class="card note-card">
+            <h2>What this page controls</h2>
+            <ul>
+              <li>Popup theme and numeral style</li>
+              <li>Week start and weekend highlighting</li>
+              <li>Holiday visibility and category filtering</li>
+              <li>How the popup opens day-to-day</li>
+            </ul>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="options.js"></script>
+  </body>
 </html>
