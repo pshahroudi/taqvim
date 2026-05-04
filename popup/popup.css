@@ -2326,3 +2326,148 @@ input:focus-visible,
     flex: 1 1 auto;
   }
 }
+
+/* ===== User font size preference ===== */
+:root {
+  --taqvim-font-scale: 1;
+}
+
+:root.font-small {
+  --taqvim-font-scale: 0.92;
+}
+
+:root.font-medium {
+  --taqvim-font-scale: 1;
+}
+
+:root.font-large {
+  --taqvim-font-scale: 1.1;
+}
+
+body {
+  font-size: calc(13px * var(--taqvim-font-scale));
+}
+
+.font-size-toggle .font-size-icon {
+  font-family: "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  font-size: calc(13px * var(--taqvim-font-scale)) !important;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+}
+
+.tab-btn,
+.utility-btn {
+  font-size: calc(12px * var(--taqvim-font-scale)) !important;
+}
+
+.utility-icon {
+  font-size: calc(17px * var(--taqvim-font-scale)) !important;
+}
+
+.today-btn {
+  font-size: calc(15px * var(--taqvim-font-scale)) !important;
+}
+
+.date-picker-label,
+.section-label,
+.selected-day-title,
+.convert-error,
+.copy-btn,
+.mini-picker.jump-picker .mini-picker-helper {
+  font-size: calc(12px * var(--taqvim-font-scale)) !important;
+}
+
+.date-picker-value {
+  font-size: calc(25px * var(--taqvim-font-scale)) !important;
+}
+
+.mini-picker-eyebrow,
+.mini-picker.jump-picker .mini-picker-eyebrow,
+.mini-picker.jump-picker .jump-section-label,
+.mini-picker.jump-picker .jump-field-label,
+.convert-field span,
+.convert-result-label,
+.holiday-item-body,
+.holiday-item-note,
+.chip {
+  font-size: calc(11px * var(--taqvim-font-scale)) !important;
+}
+
+.mini-picker.jump-picker .mini-picker-icon {
+  font-size: calc(18px * var(--taqvim-font-scale)) !important;
+}
+
+.date-picker-caret,
+.jump-preview-primary,
+.holiday-item-title {
+  font-size: calc(16px * var(--taqvim-font-scale)) !important;
+}
+
+.mini-picker-title,
+.jump-preview-secondary,
+.detail-secondary,
+.selected-holiday-status,
+.weekday-row div,
+.mini-picker.jump-picker .jump-input,
+.mini-picker.jump-picker .jump-select {
+  font-size: calc(14px * var(--taqvim-font-scale)) !important;
+}
+
+.mini-picker-subtitle,
+.mini-weekday-row div,
+.jump-field span,
+.today-badge,
+.holiday-item-tag {
+  font-size: calc(10px * var(--taqvim-font-scale)) !important;
+}
+
+.jump-input,
+.jump-select,
+.mini-picker.jump-picker .mini-today-btn,
+.mini-picker.jump-picker .jump-go-btn {
+  font-size: calc(13px * var(--taqvim-font-scale)) !important;
+}
+
+.jump-go-btn,
+.mini-today-btn {
+  font-size: calc(11.5px * var(--taqvim-font-scale)) !important;
+}
+
+.mini-close-btn,
+.mini-nav-btn,
+.mini-day {
+  font-size: calc(15px * var(--taqvim-font-scale)) !important;
+}
+
+.day-j {
+  font-size: calc(21px * var(--taqvim-font-scale)) !important;
+}
+
+.day-g {
+  font-size: calc(11px * var(--taqvim-font-scale)) !important;
+}
+
+.tehran-phase-icon {
+  font-size: calc(15px * var(--taqvim-font-scale)) !important;
+}
+
+.topbar-tehran-time {
+  font-size: calc(28px * var(--taqvim-font-scale)) !important;
+}
+
+.topbar-tehran-date,
+.topbar-tehran-persian {
+  font-size: calc(11.5px * var(--taqvim-font-scale)) !important;
+}
+
+.detail-primary {
+  font-size: calc(18px * var(--taqvim-font-scale)) !important;
+}
+
+.convert-head h1 {
+  font-size: calc(22px * var(--taqvim-font-scale)) !important;
+}
+
+.convert-result-row strong {
+  font-size: calc(17px * var(--taqvim-font-scale)) !important;
+}

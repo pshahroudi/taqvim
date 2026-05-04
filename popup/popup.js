@@ -19,6 +19,12 @@ import {
   saveSettingsPatch,
 } from "../src/ui/storage.js";
 import {
+  applyFontSize as applyFontSizeClass,
+  getFontSizeIcon,
+  getFontSizeLabel,
+  getNextFontSize,
+} from "../src/ui/font-size.js";
+import {
   applyTheme as applyThemeClass,
   getNextTheme,
   getThemeIcon,
@@ -43,6 +49,8 @@ const convertTabBtn = document.getElementById("convertTab");
 const calendarPanelEl = document.getElementById("calendarPanel");
 const convertPanelEl = document.getElementById("convertPanel");
 
+const fontSizeToggle = document.getElementById("fontSizeToggle");
+const fontSizeToggleIcon = document.getElementById("fontSizeToggleIcon");
 const themeToggle = document.getElementById("themeToggle");
 const themeToggleIcon = document.getElementById("themeToggleIcon");
 const openSettings = document.getElementById("openSettings");
@@ -142,6 +150,7 @@ const state = {
   },
   settings: {
     theme: "system",
+    fontSize: "medium",
     showHijri: false,
     usePersianNumerals: true,
     weekStart: "saturday",
@@ -254,6 +263,29 @@ function updateThemeToggleIcon() {
   }
   themeToggle.title = `Theme: ${state.settings.theme}`;
   themeToggle.setAttribute("aria-label", `Theme: ${state.settings.theme}`);
+}
+
+function updateFontSizeToggle() {
+  if (!fontSizeToggle) return;
+
+  const label = getFontSizeLabel(state.settings.fontSize);
+  const nextLabel = getFontSizeLabel(getNextFontSize(state.settings.fontSize));
+
+  if (fontSizeToggleIcon) {
+    fontSizeToggleIcon.textContent = getFontSizeIcon(state.settings.fontSize);
+  }
+
+  fontSizeToggle.title = `Font size: ${label}`;
+  fontSizeToggle.setAttribute(
+    "aria-label",
+    `Font size: ${label}. Click to switch to ${nextLabel}.`,
+  );
+}
+
+function applyFontSize(fontSize) {
+  const normalized = applyFontSizeClass(fontSize, root);
+  state.settings = normalizeSettings({ ...state.settings, fontSize: normalized });
+  updateFontSizeToggle();
 }
 
 function applyTheme(theme) {
@@ -962,6 +994,7 @@ function renderMonth() {
 
 function render() {
   applyTheme(state.settings.theme);
+  applyFontSize(state.settings.fontSize);
   renderTabs();
   updateTehranClock();
   renderWeekdayLabels(weekdayRowEl);
@@ -979,6 +1012,17 @@ async function cycleTheme() {
   state.settings = normalizeSettings({ ...state.settings, theme: nextTheme });
   await saveSettingsPatch({ theme: nextTheme });
   applyTheme(state.settings.theme);
+}
+
+async function cycleFontSize() {
+  const nextFontSize = getNextFontSize(state.settings.fontSize);
+
+  state.settings = normalizeSettings({
+    ...state.settings,
+    fontSize: nextFontSize,
+  });
+  await saveSettingsPatch({ fontSize: nextFontSize });
+  applyFontSize(state.settings.fontSize);
 }
 
 function syncDatePickerToView() {
@@ -1186,6 +1230,8 @@ calendarTabBtn.addEventListener("click", () => {
 convertTabBtn.addEventListener("click", () => {
   setActiveTab("convert");
 });
+
+fontSizeToggle?.addEventListener("click", cycleFontSize);
 
 themeToggle.addEventListener("click", cycleTheme);
 

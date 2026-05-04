@@ -283,3 +283,55 @@ input:focus-visible {
     align-items: flex-start;
   }
 }
+
+/* ===== User font size preference ===== */
+:root {
+  --taqvim-font-scale: 1;
+}
+
+:root.font-small {
+  --taqvim-font-scale: 0.92;
+}
+
+:root.font-medium {
+  --taqvim-font-scale: 1;
+}
+
+:root.font-large {
+  --taqvim-font-scale: 1.1;
+}
+
+body {
+  font-size: calc(16px * var(--taqvim-font-scale));
+}
+
+.eyebrow {
+  font-size: calc(12px * var(--taqvim-font-scale));
+}
+
+h1 {
+  font-size: calc(30px * var(--taqvim-font-scale));
+}
+
+h2 {
+  font-size: calc(20px * var(--taqvim-font-scale));
+}
+
+.save-status {
+  font-size: calc(14px * var(--taqvim-font-scale));
+}
+
+.meta-list dt {
+  font-size: calc(13px * var(--taqvim-font-scale));
+}
+
+.setting-row select,
+.btn,
+.setting-row strong,
+.setting-row small,
+.hero-copy,
+.note-card p,
+.note-card li,
+.meta-list dd {
+  font-size: calc(16px * var(--taqvim-font-scale));
+}

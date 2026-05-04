@@ -4,6 +4,7 @@ import {
   saveSettingsPatch,
   setSettings,
 } from "../src/ui/storage.js";
+import { applyFontSize } from "../src/ui/font-size.js";
 import { applyTheme } from "../src/ui/theme.js";
 
 const root = document.documentElement;
@@ -13,6 +14,7 @@ const resetDefaultsBtn = document.getElementById("resetDefaultsBtn");
 
 const controls = {
   theme: findControl(["#theme", "#themeSelect", "select[name='theme']"]),
+  fontSize: findControl(["#fontSize", "select[name='fontSize']"]),
   showHijri: findControl([
     "#showHijri",
     "#showHijriDate",
@@ -112,6 +114,7 @@ function updateHolidayCategoryState(showHolidays) {
 
 function applyControls(settings) {
   setValueIfPresent(controls.theme, settings.theme);
+  setValueIfPresent(controls.fontSize, settings.fontSize);
   setValueIfPresent(controls.showHijri, settings.showHijri);
   setValueIfPresent(controls.usePersianNumerals, settings.usePersianNumerals);
   setValueIfPresent(controls.weekStart, settings.weekStart);
@@ -130,6 +133,7 @@ function applyControls(settings) {
 
   updateHolidayCategoryState(settings.showHolidays);
   applyTheme(settings.theme, root);
+  applyFontSize(settings.fontSize, root);
 }
 
 async function savePatch(patch, message = "Saved") {
@@ -166,6 +170,10 @@ async function init() {
 
   bindSelect(controls.theme, async (value) => {
     await savePatch({ theme: value });
+  });
+
+  bindSelect(controls.fontSize, async (value) => {
+    await savePatch({ fontSize: value });
   });
 
   bindCheckbox(controls.showHijri, async (checked) => {
