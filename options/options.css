@@ -2,8 +2,11 @@
 
 :root {
   color-scheme: light;
-  --taqvim-font-ui: "Vazirmatn", "Noto Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
-  --taqvim-font-symbol: "Segoe UI Symbol", "Noto Sans Symbols", "Segoe UI", Tahoma, Arial, sans-serif;
+  --taqvim-font-ui:
+    "Vazirmatn", "Noto Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+  --taqvim-font-symbol:
+    "Segoe UI Symbol", "Noto Sans Symbols", "Segoe UI", Tahoma, Arial,
+    sans-serif;
   --bg: #f4f6fa;
   --panel: #ffffff;
   --panel-alt: #f8fafc;
@@ -23,7 +26,7 @@
   --panel-alt: #1b2431;
   --text: #f5f8ff;
   --muted: #b8c4d6;
-  --border: rgba(255, 255, 255, 0.10);
+  --border: rgba(255, 255, 255, 0.1);
   --accent: #5aa2ff;
   --accent-soft: rgba(90, 162, 255, 0.14);
   --success: #83b9ff;
@@ -351,19 +354,19 @@ h2 {
   font-size: calc(16px * var(--taqvim-font-scale));
 }
 
-/* Patch 8: match popup font scale after the Segoe font update. */
+/* Patch 10: wider A-/A/A+ difference for Vazirmatn. */
 :root {
   --taqvim-font-scale: 0.9;
 }
 
 :root.font-small {
-  --taqvim-font-scale: 0.84;
-}
-
-:root.font-medium {
   --taqvim-font-scale: 0.9;
 }
 
+:root.font-medium {
+  --taqvim-font-scale: 1;
+}
+
 :root.font-large {
-  --taqvim-font-scale: 0.97;
+  --taqvim-font-scale: 1.1;
 }

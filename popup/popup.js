@@ -296,7 +296,10 @@ function updateFontSizeToggle() {
 
 function applyFontSize(fontSize) {
   const normalized = applyFontSizeClass(fontSize, root);
-  state.settings = normalizeSettings({ ...state.settings, fontSize: normalized });
+  state.settings = normalizeSettings({
+    ...state.settings,
+    fontSize: normalized,
+  });
   updateFontSizeToggle();
 }
 
@@ -498,7 +501,7 @@ function getHolidayStatus(records, forToday = false) {
   }
 
   if (!records.length) {
-    return forToday ? "No holiday today" : "این روز تعطیل نیست";
+    return forToday ? "No holiday today" : "این روز تعطیل رسمی نیست";
   }
 
   if (hasPublicHoliday(records) && hasObservance(records)) {
