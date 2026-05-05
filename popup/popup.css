@@ -303,7 +303,7 @@ button {
   justify-content: center;
   width: 18px;
   height: 18px;
-  border-radius: 999px;
+  border-radius: 5px;
   color: var(--text-soft);
   background: transparent;
   font-family: var(--taqvim-font-symbol);
@@ -688,7 +688,7 @@ button {
   width: 4px;
   height: 4px;
   margin-left: -2px;
-  border-radius: 999px;
+  border-radius: 5px;
   background: var(--today-ring);
 }
 
@@ -700,7 +700,7 @@ button {
   right: 4px;
   width: 4px;
   height: 4px;
-  border-radius: 999px;
+  border-radius: 5px;
 }
 
 .mini-day.holiday-public::before {
@@ -892,7 +892,7 @@ button {
   width: 5px;
   height: 5px;
   flex: 0 0 auto;
-  border-radius: 999px;
+  border-radius: 5px;
   box-shadow: 0 0 0 1px var(--calendar-board);
 }
 
@@ -916,7 +916,6 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
   overflow-y: auto;
   padding-right: 2px;
 }
@@ -961,6 +960,7 @@ button {
   justify-items: stretch;
   text-align: right;
   min-width: 0;
+  padding-top: 5px;
 }
 
 .tehran-time-block {
@@ -979,7 +979,7 @@ button {
   justify-content: center;
   width: 30px;
   height: 30px;
-  border-radius: 999px;
+  border-radius: 5px;
   font-size: 15px;
   background: var(--accent-soft);
   box-shadow: var(--shadow-sm);
@@ -1106,7 +1106,7 @@ button {
 .today-badge,
 .selected-today-badge {
   border: 1px solid var(--today-ring);
-  border-radius: 999px;
+  border-radius: 5px;
   padding: 5px 8px;
   color: var(--accent-strong);
   background: var(--accent-soft);
@@ -1224,7 +1224,7 @@ button {
   content: "";
   width: 7px;
   height: 7px;
-  border-radius: 999px;
+  border-radius: 5px;
   background: #c9d4e2;
   position: relative;
   z-index: 1;
@@ -1272,7 +1272,7 @@ button {
   display: block;
   width: 8px;
   height: 8px;
-  border-radius: 999px;
+  border-radius: 5px;
   flex: 0 0 auto;
   background: #cbd5e1;
 }
@@ -1320,7 +1320,7 @@ button {
   gap: 6px;
   max-width: 100%;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 5px;
   padding: 6px 10px;
   background: var(--panel-solid);
   font-size: 11px;
@@ -1337,7 +1337,7 @@ button {
 .chip-dot {
   width: 8px;
   height: 8px;
-  border-radius: 999px;
+  border-radius: 5px;
   flex: 0 0 auto;
 }
 
@@ -1375,7 +1375,7 @@ button {
   display: block;
   width: 8px;
   height: 8px;
-  border-radius: 999px;
+  border-radius: 5px;
   flex: 0 0 auto;
 }
 
@@ -1460,6 +1460,7 @@ button {
   display: grid;
   grid-template-columns: minmax(160px, 1.25fr) repeat(3, minmax(0, 1fr));
   gap: 10px;
+  text-align: center;
 }
 
 .convert-field {
@@ -2596,7 +2597,7 @@ body {
   min-height: 32px;
   padding: 7px 11px;
   border: 1px solid rgba(45, 82, 137, 0.18);
-  border-radius: 999px;
+  border-radius: 5px;
   background: var(--accent-soft);
   color: var(--accent-strong);
   cursor: pointer;
@@ -2783,7 +2784,6 @@ body {
 }
 
 .sidebar-shell {
-  gap: 8px;
   padding-right: 0;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -2937,4 +2937,36 @@ body {
 .sidebar-shell {
   width: 100%;
   overflow-x: hidden;
+}
+
+/* Patch 11: Tehran clock alignment.
+   Keep the phase icon and AM/PM on the right, but make the numeric
+   Tehran time start from the left side of its row. */
+.side-card-tehran .tehran-time-block {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.side-card-tehran .topbar-tehran-time {
+  display: flex;
+  flex: 1 1 auto;
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.side-card-tehran .tehran-time-number {
+  flex: 0 0 8ch;
+  width: 8ch;
+  min-width: 8ch;
+  text-align: left;
+}
+
+.side-card-tehran .tehran-time-meridiem {
+  flex: 0 0 22px;
+  min-width: 22px;
+  text-align: right;
 }
