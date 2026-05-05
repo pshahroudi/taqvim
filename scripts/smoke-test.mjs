@@ -80,6 +80,20 @@ function checkJalaliConversions() {
   }
 }
 
+async function checkPopupDomReferences() {
+  const popupHtml = await readFile(join(rootDir, "popup/popup.html"), "utf8");
+  const popupJs = await readFile(join(rootDir, "popup/popup.js"), "utf8");
+  const idMatches = [...popupHtml.matchAll(/id=["']([^"']+)["']/g)].map((match) => match[1]);
+  const ids = new Set(idMatches);
+  const referencedIds = [...popupJs.matchAll(/document\.getElementById\(["']([^"']+)["']\)/g)].map(
+    (match) => match[1]
+  );
+
+  for (const id of referencedIds) {
+    assert(ids.has(id), `popup: missing element with id ${id}`);
+  }
+}
+
 async function checkManifest() {
   const manifest = await readJson("manifest.json");
   assert(manifest.manifest_version === 3, "manifest: manifest_version must be 3");
@@ -107,6 +121,7 @@ function checkImportantJsParses() {
 await checkHolidayData();
 checkJalaliConversions();
 await checkManifest();
+await checkPopupDomReferences();
 checkImportantJsParses();
 
 console.log("Smoke checks passed.");

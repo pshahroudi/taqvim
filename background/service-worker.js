@@ -33,10 +33,28 @@ async function scheduleNextMidnightRefresh() {
   });
 }
 
+async function ensureMidnightRefreshScheduled() {
+  const alarm = await chrome.alarms.get(MIDNIGHT_ALARM);
+
+  if (!alarm || alarm.scheduledTime <= Date.now()) {
+    await scheduleNextMidnightRefresh();
+  }
+}
+
 async function refreshBadge() {
   await updateBadge();
   await scheduleNextMidnightRefresh();
 }
+
+async function initializeWorker() {
+  await ensureDefaultSettings();
+  await updateBadge();
+  await ensureMidnightRefreshScheduled();
+}
+
+initializeWorker().catch((error) => {
+  console.warn("Taqvim background initialization skipped:", error);
+});
 
 chrome.runtime.onInstalled.addListener(async () => {
   await ensureDefaultSettings();

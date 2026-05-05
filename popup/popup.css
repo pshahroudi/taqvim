@@ -1068,23 +1068,32 @@ button {
   min-width: 0;
 }
 
-.selected-day-title {
+.selected-detail-head {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.selected-day-title {
   text-align: center;
   color: var(--text-soft);
   font-size: 12px;
   font-weight: 750;
 }
 
-.today-badge {
+.today-badge,
+.selected-today-badge {
   border: 1px solid var(--today-ring);
   border-radius: 999px;
-  padding: 9px;
+  padding: 5px 8px;
   color: var(--accent-strong);
   background: var(--accent-soft);
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 750;
   line-height: 1;
+  white-space: nowrap;
 }
 
 .detail-surface {
@@ -1716,7 +1725,8 @@ input:focus-visible,
   color: #062523;
 }
 
-:root.dark .today-badge {
+:root.dark .today-badge,
+:root.dark .selected-today-badge {
   background: var(--accent-soft);
 }
 
@@ -2417,6 +2427,7 @@ body {
 .mini-weekday-row div,
 .jump-field span,
 .today-badge,
+.selected-today-badge,
 .holiday-item-tag {
   font-size: calc(10px * var(--taqvim-font-scale)) !important;
 }

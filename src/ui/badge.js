@@ -20,7 +20,10 @@ export async function updateBadge() {
   const now = new Date();
 
   await chrome.action.setBadgeBackgroundColor({ color: "#000000" });
-  await chrome.action.setBadgeTextColor({ color: "#ffffff" });
+
+  if (typeof chrome.action.setBadgeTextColor === "function") {
+    await chrome.action.setBadgeTextColor({ color: "#ffffff" });
+  }
 
   try {
     const jalali = toJalali(
