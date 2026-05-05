@@ -1108,8 +1108,8 @@ button {
   border: 1px solid var(--today-ring);
   border-radius: 5px;
   padding: 5px 8px;
-  color: var(--accent-strong);
-  background: var(--accent-soft);
+  color: #ffffff;
+  background: var(--accent-strong);
   font-size: 10px;
   font-weight: 750;
   line-height: 1;
