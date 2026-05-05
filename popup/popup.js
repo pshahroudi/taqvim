@@ -263,8 +263,12 @@ function getWeekIndex(jsDay) {
   }
 }
 
+function isIranWeeklyHoliday(date) {
+  return date.getDay() === 5;
+}
+
 function isWeekend(date) {
-  return state.settings.highlightWeekends && date.getDay() === 5;
+  return state.settings.highlightWeekends && isIranWeeklyHoliday(date);
 }
 
 function updateThemeToggleIcon() {
@@ -296,10 +300,7 @@ function updateFontSizeToggle() {
 
 function applyFontSize(fontSize) {
   const normalized = applyFontSizeClass(fontSize, root);
-  state.settings = normalizeSettings({
-    ...state.settings,
-    fontSize: normalized,
-  });
+  state.settings = normalizeSettings({ ...state.settings, fontSize: normalized });
   updateFontSizeToggle();
 }
 
@@ -495,31 +496,42 @@ function dedupeHolidayRecords(records) {
   });
 }
 
-function getHolidayStatus(records, forToday = false) {
+function getHolidayStatus(records, forToday = false, options = {}) {
   if (!state.settings.showHolidays) {
     return "Holiday layer hidden";
   }
 
+  const isWeeklyHoliday = Boolean(options.isWeeklyHoliday);
+
   if (!records.length) {
+    if (isWeeklyHoliday) return "تعطیل رسمی هفتگی";
     return forToday ? "No holiday today" : "این روز تعطیل رسمی نیست";
   }
 
   if (hasPublicHoliday(records) && hasObservance(records)) {
-    return "Public holiday and observances";
+    return "تعطیل رسمی و مناسبت";
   }
 
   if (hasPublicHoliday(records)) {
     return "تعطیل رسمی";
   }
 
+  if (isWeeklyHoliday) {
+    return "تعطیل رسمی هفتگی";
+  }
+
   return "مناسبت فرهنگی";
 }
 
-function getHolidayStatusTone(records) {
+function getHolidayStatusTone(records, options = {}) {
   if (!state.settings.showHolidays) return "muted";
-  if (!records.length) return "empty";
+
+  const isWeeklyHoliday = Boolean(options.isWeeklyHoliday);
+
   if (hasPublicHoliday(records) && hasObservance(records)) return "mixed";
   if (hasPublicHoliday(records)) return "public";
+  if (isWeeklyHoliday) return "weekly";
+  if (!records.length) return "empty";
   return "observance";
 }
 
@@ -680,14 +692,19 @@ function buildMiniDayCell(jy, jm, jd, isMuted) {
 function renderTodayCard() {
   const todayRecords = getHolidayRecordsForDate(todayDate, todayJalali);
   const uniqueRecords = dedupeHolidayRecords(todayRecords);
+  const isTodayWeeklyHoliday = isIranWeeklyHoliday(todayDate);
 
   todayJalaliEl.textContent = formatPersianOrderedDate(todayDate);
   todayGregorianEl.textContent = gregorianFullFormatter.format(todayDate);
   todayHijriEl.textContent = formatHijriFull(todayDate);
   todayHijriEl.classList.toggle("hidden", !state.settings.showHijri);
 
-  todayHolidayStatusEl.textContent = getHolidayStatus(uniqueRecords, true);
-  todayHolidayStatusEl.dataset.tone = getHolidayStatusTone(uniqueRecords);
+  todayHolidayStatusEl.textContent = getHolidayStatus(uniqueRecords, true, {
+    isWeeklyHoliday: isTodayWeeklyHoliday,
+  });
+  todayHolidayStatusEl.dataset.tone = getHolidayStatusTone(uniqueRecords, {
+    isWeeklyHoliday: isTodayWeeklyHoliday,
+  });
   renderHolidayChips(todayHolidayChipsEl, uniqueRecords);
 }
 
@@ -702,6 +719,7 @@ function renderSelectedDetails() {
     state.selected,
   );
   const uniqueRecords = dedupeHolidayRecords(selectedRecords);
+  const isSelectedWeeklyHoliday = isIranWeeklyHoliday(selectedDate);
 
   selectedJalaliEl.textContent = formatPersianOrderedDate(selectedDate);
   selectedGregorianEl.textContent = gregorianFullFormatter.format(selectedDate);
@@ -712,11 +730,12 @@ function renderSelectedDetails() {
     !sameJalaliDate(state.selected, todayJalali),
   );
 
-  selectedHolidayStatusEl.textContent = getHolidayStatus(
-    selectedRecords,
-    false,
-  );
-  selectedHolidayStatusEl.dataset.tone = getHolidayStatusTone(selectedRecords);
+  selectedHolidayStatusEl.textContent = getHolidayStatus(uniqueRecords, false, {
+    isWeeklyHoliday: isSelectedWeeklyHoliday,
+  });
+  selectedHolidayStatusEl.dataset.tone = getHolidayStatusTone(uniqueRecords, {
+    isWeeklyHoliday: isSelectedWeeklyHoliday,
+  });
 
   selectedHolidayChipsEl.innerHTML = "";
   selectedHolidayChipsEl.classList.add("hidden");

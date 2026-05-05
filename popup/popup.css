@@ -303,7 +303,7 @@ button {
   justify-content: center;
   width: 18px;
   height: 18px;
-  border-radius: 5px;
+  border-radius: 999px;
   color: var(--text-soft);
   background: transparent;
   font-family: var(--taqvim-font-symbol);
@@ -688,7 +688,7 @@ button {
   width: 4px;
   height: 4px;
   margin-left: -2px;
-  border-radius: 5px;
+  border-radius: 999px;
   background: var(--today-ring);
 }
 
@@ -700,7 +700,7 @@ button {
   right: 4px;
   width: 4px;
   height: 4px;
-  border-radius: 5px;
+  border-radius: 999px;
 }
 
 .mini-day.holiday-public::before {
@@ -892,7 +892,7 @@ button {
   width: 5px;
   height: 5px;
   flex: 0 0 auto;
-  border-radius: 5px;
+  border-radius: 999px;
   box-shadow: 0 0 0 1px var(--calendar-board);
 }
 
@@ -971,7 +971,6 @@ button {
   gap: 8px;
   min-width: 0;
   width: 100%;
-  margin-top: 5px;
 }
 
 .tehran-phase-icon {
@@ -980,7 +979,7 @@ button {
   justify-content: center;
   width: 30px;
   height: 30px;
-  border-radius: 5px;
+  border-radius: 999px;
   font-size: 15px;
   background: var(--accent-soft);
   box-shadow: var(--shadow-sm);
@@ -1107,7 +1106,7 @@ button {
 .today-badge,
 .selected-today-badge {
   border: 1px solid var(--today-ring);
-  border-radius: 5px;
+  border-radius: 999px;
   padding: 5px 8px;
   color: var(--accent-strong);
   background: var(--accent-soft);
@@ -1225,7 +1224,7 @@ button {
   content: "";
   width: 7px;
   height: 7px;
-  border-radius: 5px;
+  border-radius: 999px;
   background: #c9d4e2;
   position: relative;
   z-index: 1;
@@ -1273,7 +1272,7 @@ button {
   display: block;
   width: 8px;
   height: 8px;
-  border-radius: 5px;
+  border-radius: 999px;
   flex: 0 0 auto;
   background: #cbd5e1;
 }
@@ -1282,7 +1281,8 @@ button {
   color: var(--holiday-public);
 }
 
-.selected-holiday-status[data-tone="public"]::before {
+.selected-holiday-status[data-tone="public"]::before,
+.selected-holiday-status[data-tone="weekly"]::before {
   background: var(--holiday-public);
 }
 
@@ -1320,7 +1320,7 @@ button {
   gap: 6px;
   max-width: 100%;
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: 999px;
   padding: 6px 10px;
   background: var(--panel-solid);
   font-size: 11px;
@@ -1337,7 +1337,7 @@ button {
 .chip-dot {
   width: 8px;
   height: 8px;
-  border-radius: 5px;
+  border-radius: 999px;
   flex: 0 0 auto;
 }
 
@@ -1346,12 +1346,11 @@ button {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  min-height: 0;
+  min-height: 68px;
   width: 100%;
   overflow: auto;
   text-align: center;
   direction: rtl;
-  min-height: 68px;
 }
 
 .holiday-item {
@@ -1376,7 +1375,7 @@ button {
   display: block;
   width: 8px;
   height: 8px;
-  border-radius: 5px;
+  border-radius: 999px;
   flex: 0 0 auto;
 }
 
@@ -1466,7 +1465,6 @@ button {
 .convert-field {
   display: grid;
   gap: 6px;
-  text-align: center;
 }
 
 .convert-field span,
@@ -2598,7 +2596,7 @@ body {
   min-height: 32px;
   padding: 7px 11px;
   border: 1px solid rgba(45, 82, 137, 0.18);
-  border-radius: 5px;
+  border-radius: 999px;
   background: var(--accent-soft);
   color: var(--accent-strong);
   cursor: pointer;
@@ -2833,30 +2831,20 @@ body {
   font-size: calc(13.5px * var(--taqvim-font-scale)) !important;
 }
 
-.tehran-time-block {
-  justify-content: flex-end;
-}
-
 .topbar-tehran-time {
-  flex: 1 1 auto;
-  width: auto;
-  max-width: none;
-  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   gap: 3px;
-  justify-content: space-between;
-  text-align: left;
   font-size: calc(25.5px * var(--taqvim-font-scale)) !important;
 }
 
 .tehran-time-number {
   min-width: 0;
   width: 8ch;
-  text-align: left;
 }
 
 .tehran-time-meridiem {
   min-width: 18px;
-  text-align: right;
 }
 
 .topbar-tehran-date,
