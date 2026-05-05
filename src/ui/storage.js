@@ -18,12 +18,32 @@ function isPlainObject(value) {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
+function toBooleanSetting(value, fallback) {
+  if (value === undefined || value === null) return fallback;
+  if (typeof value === "boolean") return value;
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === "true") return true;
+    if (normalized === "false") return false;
+  }
+  return Boolean(value);
+}
+
 function normalizeHolidayTypes(value) {
   const source = isPlainObject(value) ? value : {};
   return {
-    officialIran: source.officialIran ?? DEFAULT_SETTINGS.holidayTypes.officialIran,
-    cultural: source.cultural ?? DEFAULT_SETTINGS.holidayTypes.cultural,
-    islamic: source.islamic ?? DEFAULT_SETTINGS.holidayTypes.islamic
+    officialIran: toBooleanSetting(
+      source.officialIran,
+      DEFAULT_SETTINGS.holidayTypes.officialIran
+    ),
+    cultural: toBooleanSetting(
+      source.cultural,
+      DEFAULT_SETTINGS.holidayTypes.cultural
+    ),
+    islamic: toBooleanSetting(
+      source.islamic,
+      DEFAULT_SETTINGS.holidayTypes.islamic
+    )
   };
 }
 
@@ -39,20 +59,26 @@ export function normalizeSettings(input = {}) {
     fontSize: ["small", "medium", "large"].includes(source.fontSize)
       ? source.fontSize
       : DEFAULT_SETTINGS.fontSize,
-    showHijri: Boolean(source.showHijri ?? DEFAULT_SETTINGS.showHijri),
-    usePersianNumerals: Boolean(
-      source.usePersianNumerals ?? DEFAULT_SETTINGS.usePersianNumerals
+    showHijri: toBooleanSetting(source.showHijri, DEFAULT_SETTINGS.showHijri),
+    usePersianNumerals: toBooleanSetting(
+      source.usePersianNumerals,
+      DEFAULT_SETTINGS.usePersianNumerals
     ),
     weekStart: ["saturday", "sunday", "monday"].includes(source.weekStart)
       ? source.weekStart
       : DEFAULT_SETTINGS.weekStart,
-    showHolidays: Boolean(source.showHolidays ?? DEFAULT_SETTINGS.showHolidays),
-    holidayTypes: normalizeHolidayTypes(source.holidayTypes),
-    highlightWeekends: Boolean(
-      source.highlightWeekends ?? DEFAULT_SETTINGS.highlightWeekends
+    showHolidays: toBooleanSetting(
+      source.showHolidays,
+      DEFAULT_SETTINGS.showHolidays
     ),
-    autoJumpToTodayOnOpen: Boolean(
-      source.autoJumpToTodayOnOpen ?? DEFAULT_SETTINGS.autoJumpToTodayOnOpen
+    holidayTypes: normalizeHolidayTypes(source.holidayTypes),
+    highlightWeekends: toBooleanSetting(
+      source.highlightWeekends,
+      DEFAULT_SETTINGS.highlightWeekends
+    ),
+    autoJumpToTodayOnOpen: toBooleanSetting(
+      source.autoJumpToTodayOnOpen,
+      DEFAULT_SETTINGS.autoJumpToTodayOnOpen
     )
   };
 }

@@ -1,5 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap");
+
 :root {
   color-scheme: light;
+  --taqvim-font-ui: "Vazirmatn", "Noto Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+  --taqvim-font-symbol:
+    "Segoe UI Symbol", "Noto Sans Symbols", "Segoe UI", Tahoma, Arial, sans-serif;
   --bg: #f4f6fa;
   --bg-glow-1: transparent;
   --bg-glow-2: transparent;
@@ -95,9 +100,9 @@ body {
   overflow: hidden;
   background: var(--bg);
   color: var(--text);
-  font-family:
-    Quicksand, Nunito, "Segoe UI Variable", "Segoe UI", ui-sans-serif,
-    system-ui, sans-serif;
+  font-family: var(--taqvim-font-ui);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 body {
@@ -108,6 +113,15 @@ button,
 select,
 input {
   font: inherit;
+}
+
+button,
+select,
+input,
+textarea,
+[lang],
+.ltr-text {
+  font-family: var(--taqvim-font-ui);
 }
 
 button {
@@ -290,7 +304,7 @@ button {
   border-radius: 999px;
   color: var(--text-soft);
   background: transparent;
-  font-family: "Segoe UI Symbol", "Segoe UI", system-ui, sans-serif;
+  font-family: var(--taqvim-font-symbol);
   font-size: 17px;
   line-height: 18px;
   text-align: center;
@@ -900,12 +914,14 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 0px;
+  gap: 8px;
+  overflow-y: auto;
+  padding-right: 2px;
 }
 
 .side-card {
   min-height: 0;
-  padding: 16px;
+  padding: 16px 12px;
   display: flex;
   flex-direction: column;
 }
@@ -970,6 +986,7 @@ button {
 
 .topbar-tehran-time {
   display: inline-flex;
+  font-family: var(--taqvim-font-ui);
   align-items: baseline;
   justify-content: flex-end;
   gap: 4px;
@@ -988,6 +1005,7 @@ button {
 
 .tehran-time-number {
   display: inline-block;
+  font-family: var(--taqvim-font-ui);
   min-width: 138px;
   text-align: left;
   font-variant-numeric: tabular-nums;
@@ -1096,13 +1114,57 @@ button {
   white-space: nowrap;
 }
 
+.selected-convert-btn {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  margin-top: auto;
+  padding: 0;
+  border: 1px solid rgba(45, 82, 137, 0.18);
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(45, 82, 137, 0.08);
+}
+
+.selected-convert-btn:hover,
+.selected-convert-btn:focus-visible {
+  border-color: rgba(45, 82, 137, 0.35);
+  transform: translateY(-1px);
+}
+
+.selected-convert-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  line-height: 1;
+}
+
+.selected-convert-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.85;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .detail-surface {
   width: 100%;
   box-sizing: border-box;
 }
 
 .detail-surface-selected {
-  padding: 13px;
+  padding: 13px 8px;
   border-radius: 24px;
   border: 1px solid rgba(214, 222, 235, 0.95);
   background: #ffffff;
@@ -1115,6 +1177,7 @@ button {
   gap: 10px;
   align-items: center;
   text-align: center;
+  height: 100%;
 }
 
 .detail-primary {
@@ -1123,6 +1186,8 @@ button {
   font-weight: 850;
   line-height: 1.7;
   color: #0d2447;
+  white-space: nowrap;
+  letter-spacing: -0.03em;
 }
 
 .selected-date-divider {
@@ -1170,13 +1235,14 @@ button {
   color: #54739b;
   text-align: center;
   padding-top: 5px;
+  white-space: nowrap;
 }
 
 .selected-status-card {
   display: grid;
   gap: 10px;
   width: 100%;
-  padding: 15px 18px;
+  padding: 15px 10px;
   border-radius: 18px;
   border: 1px solid rgba(214, 222, 235, 0.95);
   background: #ffffff;
@@ -1185,22 +1251,23 @@ button {
 }
 
 .selected-holiday-status {
-  display: block;
+  display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  flex-direction: row-reverse;
-  gap: 10px;
-  width: 100%;
+  justify-content: center;
+  gap: 7px;
+  width: auto;
+  max-width: 100%;
   font-size: 14px;
   line-height: 1.5;
-  font-weight: 500;
+  font-weight: 750;
   color: #0d2447;
   direction: rtl;
-  text-align: right;
+  text-align: center;
 }
 
 .selected-holiday-status::before {
   content: "";
+  display: block;
   width: 8px;
   height: 8px;
   border-radius: 999px;
@@ -1272,70 +1339,67 @@ button {
 }
 
 .holiday-list {
+  display: flex;
   flex-direction: column;
-  align-items: flex-end; /* This pushes children to the right */
-  gap: 8px;
+  align-items: center;
+  gap: 6px;
   min-height: 0;
+  width: 100%;
   overflow: auto;
-  text-align: right;
+  text-align: center;
   direction: rtl;
 }
 
 .holiday-item {
-  /* border: 1px solid var(--border);
-  border-radius: 14px; */
-  /* padding: 11px 12px; */
-  background: var(--panel-solid);
+  width: 100%;
+  min-width: 0;
+  background: transparent;
   direction: rtl;
-  text-align: right;
+  text-align: center;
 }
 
 .holiday-item-head {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-areas:
-    "dot title"
-    ". tag";
+  display: inline-flex;
   align-items: center;
-  /* gap: 6px 7px; */
+  justify-content: center;
+  gap: 6px;
+  max-width: 100%;
+  min-width: 0;
+  direction: rtl;
 }
 
 .holiday-item-dot {
-  grid-area: dot;
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex: 0 0 auto;
 }
 
 .holiday-item-title {
-  grid-area: title;
   font-size: 16px;
   font-weight: 820;
   line-height: 1.4;
   color: var(--text);
   min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .holiday-item-tag {
-  grid-area: tag;
-  width: fit-content;
-  justify-self: start;
-  font-size: 10px;
-  line-height: 1;
-  color: var(--holiday-public);
-  background: var(--status-neutral-bg);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 4px 7px;
-  white-space: nowrap;
+  display: none;
 }
 
 .holiday-item-body,
 .holiday-item-note {
+  width: 100%;
   font-size: 11px;
   line-height: 1.5;
   color: var(--text);
-  margin-top: 1px;
+  margin-top: 2px;
+  text-align: center;
 }
 
 .holiday-item-note {
@@ -1500,6 +1564,11 @@ button {
 .copy-btn:disabled {
   cursor: not-allowed;
   opacity: 0.45;
+}
+
+.copy-btn.copied {
+  color: #20c997;
+  background: rgba(32, 201, 151, 0.12);
 }
 
 .tab-panel.hidden,
@@ -1728,6 +1797,15 @@ input:focus-visible,
 :root.dark .today-badge,
 :root.dark .selected-today-badge {
   background: var(--accent-soft);
+}
+
+:root.dark .side-card-today {
+  background: var(--panel-2);
+}
+
+:root.dark .copy-btn.copied {
+  color: #7dd3c7;
+  background: rgba(125, 211, 199, 0.12);
 }
 
 :root.dark .utility-icon {
@@ -2359,7 +2437,7 @@ body {
 }
 
 .font-size-toggle .font-size-icon {
-  font-family: "Segoe UI Variable", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--taqvim-font-ui);
   font-size: calc(13px * var(--taqvim-font-scale)) !important;
   font-weight: 950;
   letter-spacing: -0.03em;
@@ -2481,4 +2559,379 @@ body {
 
 .convert-result-row strong {
   font-size: calc(17px * var(--taqvim-font-scale)) !important;
+}
+
+:root.dark .selected-convert-btn {
+  border-color: rgba(131, 185, 255, 0.22);
+  background: rgba(90, 162, 255, 0.13);
+  color: #83b9ff;
+  box-shadow: none;
+}
+
+:root.dark .selected-convert-btn:hover,
+:root.dark .selected-convert-btn:focus-visible {
+  border-color: rgba(131, 185, 255, 0.42);
+}
+
+/* ===== Patch 4: converter shortcuts and large-font overflow safety ===== */
+.convert-head {
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.convert-head-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+
+.convert-quick-btn {
+  min-height: 32px;
+  padding: 7px 11px;
+  border: 1px solid rgba(45, 82, 137, 0.18);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  cursor: pointer;
+  font: inherit;
+  font-size: calc(11px * var(--taqvim-font-scale));
+  font-weight: 850;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    border-color 0.16s ease,
+    transform 0.16s ease,
+    background-color 0.16s ease;
+}
+
+.convert-quick-btn:hover,
+.convert-quick-btn:focus-visible {
+  border-color: rgba(45, 82, 137, 0.35);
+  transform: translateY(-1px);
+}
+
+.convert-quick-btn-muted {
+  background: var(--panel-2);
+  color: var(--text-soft);
+}
+
+.convert-card {
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.convert-result-row strong {
+  overflow-wrap: anywhere;
+}
+
+/* Keep the popup layout fixed across A-/A/A+; only text size changes. */
+:root.font-large .app-shell {
+  gap: 0;
+}
+
+:root.font-large .workspace {
+  min-height: 0;
+}
+
+:root.font-large .calendar-shell {
+  padding: 5px;
+}
+
+:root.font-large .weekday-strip {
+  padding: 5px 18px 0;
+}
+
+:root.font-large .calendar-month-header {
+  margin-bottom: 10px;
+  padding: 3px 8px 12px;
+}
+
+:root.font-large .weekday-row,
+:root.font-large .calendar-grid {
+  gap: 5px 8px;
+}
+
+:root.font-large .calendar-grid {
+  padding: 6px 18px 12px;
+}
+
+:root.font-large .day {
+  padding: 4px 4px 5px;
+  border-radius: 16px;
+}
+
+:root.font-large .detail-surface-selected {
+  padding: 13px 8px;
+}
+
+:root.font-large .selected-convert-btn {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+}
+
+:root.font-large .date-stack {
+  gap: 10px;
+}
+
+:root.font-large .convert-card {
+  padding: 20px;
+  gap: 14px;
+}
+
+:root.font-large .convert-grid {
+  grid-template-columns: minmax(160px, 1.25fr) repeat(3, minmax(0, 1fr));
+}
+
+:root.font-large .convert-field input,
+:root.font-large .convert-field select {
+  min-height: 42px;
+}
+
+:root.dark .convert-quick-btn {
+  border-color: rgba(131, 185, 255, 0.22);
+  background: rgba(90, 162, 255, 0.13);
+  color: #83b9ff;
+}
+
+:root.dark .convert-quick-btn:hover,
+:root.dark .convert-quick-btn:focus-visible {
+  border-color: rgba(131, 185, 255, 0.42);
+}
+
+:root.dark .convert-quick-btn-muted {
+  background: var(--panel-2);
+  color: var(--text-soft);
+}
+
+/* Patch 6: right-align selected-day holiday details. */
+.selected-holiday-status {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: right;
+}
+
+.holiday-list {
+  align-items: stretch;
+  text-align: right;
+}
+
+.holiday-item {
+  text-align: right;
+}
+
+.holiday-item-head {
+  display: flex;
+  justify-content: flex-start;
+  text-align: right;
+}
+
+.holiday-item-title,
+.holiday-item-body,
+.holiday-item-note {
+  text-align: right;
+}
+
+/* Patch 8: keep A-/A/A+ layout fixed after the Segoe font update. */
+:root {
+  --taqvim-font-scale: 0.9;
+}
+
+:root.font-small {
+  --taqvim-font-scale: 0.84;
+}
+
+:root.font-medium {
+  --taqvim-font-scale: 0.9;
+}
+
+:root.font-large {
+  --taqvim-font-scale: 0.97;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+.app-shell,
+.workspace,
+.calendar-shell,
+.sidebar-shell,
+.side-card,
+.merged-side-card,
+.detail-surface,
+.detail-surface-selected,
+.date-stack {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.workspace {
+  grid-template-columns: minmax(0, 1.56fr) minmax(244px, 0.94fr);
+  overflow: hidden;
+}
+
+.sidebar-shell {
+  gap: 8px;
+  padding-right: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.side-card-tehran {
+  height: 148px;
+  overflow: hidden;
+}
+
+.merged-side-card {
+  overflow: hidden;
+}
+
+.detail-surface-selected {
+  height: 100%;
+  overflow: hidden;
+}
+
+.selected-day-shell {
+  height: 100%;
+}
+
+.date-stack {
+  gap: 10px;
+}
+
+.date-picker-value {
+  font-size: calc(22px * var(--taqvim-font-scale)) !important;
+}
+
+.weekday-row div {
+  font-size: calc(12.5px * var(--taqvim-font-scale)) !important;
+}
+
+.day-j {
+  font-size: calc(19px * var(--taqvim-font-scale)) !important;
+}
+
+.day-g {
+  font-size: calc(10px * var(--taqvim-font-scale)) !important;
+}
+
+.today-btn {
+  font-size: calc(13.5px * var(--taqvim-font-scale)) !important;
+}
+
+.topbar-tehran-time {
+  width: 100%;
+  max-width: 100%;
+  gap: 3px;
+  font-size: calc(25.5px * var(--taqvim-font-scale)) !important;
+}
+
+.tehran-time-number {
+  min-width: 0;
+  width: 8ch;
+}
+
+.tehran-time-meridiem {
+  min-width: 18px;
+}
+
+.topbar-tehran-date,
+.topbar-tehran-persian {
+  font-size: calc(10.75px * var(--taqvim-font-scale)) !important;
+}
+
+.detail-primary {
+  font-size: calc(16px * var(--taqvim-font-scale)) !important;
+  line-height: 1.55;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+.detail-secondary {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.selected-convert-btn {
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.selected-holiday-status,
+.holiday-item-title,
+.holiday-item-body,
+.holiday-item-note {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+/* Patch 9: restore fixed Chrome popup width after font overflow adjustment.
+   Do not use max-width: 100vw in extension popups because Chrome may measure
+   the popup viewport from the current rendered content, which can collapse it. */
+html,
+body {
+  width: 720px !important;
+  min-width: 720px !important;
+  max-width: none !important;
+  height: 560px !important;
+  min-height: 560px !important;
+  max-height: 560px !important;
+  overflow: hidden !important;
+}
+
+body {
+  padding: 10px;
+}
+
+.app-shell {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.workspace {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  grid-template-columns: minmax(0, 1.56fr) minmax(244px, 0.94fr);
+  gap: 0;
+  overflow: hidden;
+}
+
+.controls-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.calendar-nav {
+  width: auto;
+  justify-content: flex-start;
+}
+
+.today-btn {
+  flex: 0 0 auto;
+}
+
+.calendar-shell,
+.sidebar-shell,
+.side-card,
+.merged-side-card,
+.detail-surface,
+.detail-surface-selected {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.sidebar-shell {
+  width: 100%;
+  overflow-x: hidden;
 }

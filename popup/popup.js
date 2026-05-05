@@ -97,12 +97,16 @@ const selectedHolidayStatusEl = document.getElementById(
 );
 const selectedHolidayChipsEl = document.getElementById("selectedHolidayChips");
 const selectedHolidayListEl = document.getElementById("selectedHolidayList");
+const convertSelectedDateBtn = document.getElementById("convertSelectedDate");
 
 const prevMonthBtn = document.getElementById("prevMonth");
 const nextMonthBtn = document.getElementById("nextMonth");
 const goTodayBtn = document.getElementById("goToday");
 
 const convertSourceEl = document.getElementById("convertSource");
+const convertUseSelectedBtn = document.getElementById("convertUseSelected");
+const convertUseTodayBtn = document.getElementById("convertUseToday");
+const convertClearBtn = document.getElementById("convertClear");
 const convertYearEl = document.getElementById("convertYear");
 const convertMonthEl = document.getElementById("convertMonth");
 const convertDayEl = document.getElementById("convertDay");
@@ -181,6 +185,14 @@ const gregorianFullFormatter = new Intl.DateTimeFormat("en-US", {
 const gregorianMonthYearFormatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "long",
+});
+
+const gregorianMonthFormatter = new Intl.DateTimeFormat("en-US", {
+  month: "long",
+});
+
+const gregorianYearFormatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
 });
 
 const tehranTimeFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -337,7 +349,27 @@ function formatJalaliMonthYear(jy, jm) {
 }
 
 function formatGregorianMonthYear(jy, jm) {
-  return gregorianMonthYearFormatter.format(toDisplayDateFromJalali(jy, jm, 1));
+  const firstDate = toDisplayDateFromJalali(jy, jm, 1);
+  const lastDate = toDisplayDateFromJalali(
+    jy,
+    jm,
+    getJalaliMonthLength(jy, jm),
+  );
+
+  const firstMonth = gregorianMonthFormatter.format(firstDate);
+  const lastMonth = gregorianMonthFormatter.format(lastDate);
+  const firstYear = gregorianYearFormatter.format(firstDate);
+  const lastYear = gregorianYearFormatter.format(lastDate);
+
+  if (firstMonth === lastMonth && firstYear === lastYear) {
+    return gregorianMonthYearFormatter.format(firstDate);
+  }
+
+  if (firstYear === lastYear) {
+    return `${firstMonth}–${lastMonth} ${firstYear}`;
+  }
+
+  return `${firstMonth} ${firstYear}–${lastMonth} ${lastYear}`;
 }
 
 function isHolidayRecordValid(record, expectedCategory) {
@@ -534,7 +566,7 @@ function renderSelectedHolidayList(records) {
   selectedHolidayListEl.innerHTML = uniqueRecords
     .map((record) => {
       const dotClass = record.isHoliday ? "public" : "observance";
-      const category = escapeHtml(getHolidayCategoryLabel(record.category));
+      const category = getHolidayCategoryLabel(record.category);
       const description = record.description
         ? `<div class="holiday-item-body">${escapeHtml(record.description)}</div>`
         : "";
@@ -543,9 +575,14 @@ function renderSelectedHolidayList(records) {
         : "";
 
       return `
-        <div class="holiday-item" lang="fa" dir="rtl">
+        <div
+          class="holiday-item"
+          lang="fa"
+          dir="rtl"
+          aria-label="${escapeHtml(`${category}: ${record.title}`)}"
+        >
           <div class="holiday-item-head">
-            <span class="holiday-item-dot ${dotClass}"></span>
+            <span class="holiday-item-dot ${dotClass}" aria-hidden="true"></span>
             <div class="holiday-item-title">${escapeHtml(record.title)}</div>
           </div>
           ${description}
@@ -639,14 +676,16 @@ function buildMiniDayCell(jy, jm, jd, isMuted) {
 
 function renderTodayCard() {
   const todayRecords = getHolidayRecordsForDate(todayDate, todayJalali);
+  const uniqueRecords = dedupeHolidayRecords(todayRecords);
 
   todayJalaliEl.textContent = formatPersianOrderedDate(todayDate);
   todayGregorianEl.textContent = gregorianFullFormatter.format(todayDate);
   todayHijriEl.textContent = formatHijriFull(todayDate);
   todayHijriEl.classList.toggle("hidden", !state.settings.showHijri);
 
-  todayHolidayStatusEl.textContent = getHolidayStatus(todayRecords, true);
-  renderHolidayChips(todayHolidayChipsEl, todayRecords);
+  todayHolidayStatusEl.textContent = getHolidayStatus(uniqueRecords, true);
+  todayHolidayStatusEl.dataset.tone = getHolidayStatusTone(uniqueRecords);
+  renderHolidayChips(todayHolidayChipsEl, uniqueRecords);
 }
 
 function renderSelectedDetails() {
@@ -676,12 +715,8 @@ function renderSelectedDetails() {
   );
   selectedHolidayStatusEl.dataset.tone = getHolidayStatusTone(selectedRecords);
 
-  if (uniqueRecords.length > 1) {
-    renderHolidayChips(selectedHolidayChipsEl, uniqueRecords);
-  } else {
-    selectedHolidayChipsEl.innerHTML = "";
-    selectedHolidayChipsEl.classList.add("hidden");
-  }
+  selectedHolidayChipsEl.innerHTML = "";
+  selectedHolidayChipsEl.classList.add("hidden");
 
   renderSelectedHolidayList(uniqueRecords);
 }
@@ -707,15 +742,39 @@ function setActiveTab(tab) {
   render();
 }
 
-function setConverterFromSelectedDate() {
+function setConverterFromJalaliDate(jalaliDate) {
   if (!convertSourceEl || !convertYearEl || !convertMonthEl || !convertDayEl)
     return;
 
   convertSourceEl.value = "jalali";
-  convertYearEl.value = String(state.selected.jy);
-  convertMonthEl.value = String(state.selected.jm);
-  convertDayEl.value = String(state.selected.jd);
+  convertYearEl.value = formatNumber(jalaliDate.jy);
+  convertMonthEl.value = formatNumber(jalaliDate.jm);
+  convertDayEl.value = formatNumber(jalaliDate.jd);
   updateConverterInputBounds();
+  renderConverter();
+}
+
+function setConverterFromSelectedDate() {
+  setConverterFromJalaliDate(state.selected);
+}
+
+function setConverterFromToday() {
+  setConverterFromJalaliDate(todayJalali);
+}
+
+function clearConverterInputs() {
+  if (!convertYearEl || !convertMonthEl || !convertDayEl) return;
+
+  convertYearEl.value = "";
+  convertMonthEl.value = "";
+  convertDayEl.value = "";
+  renderConverter();
+  convertYearEl.focus();
+}
+
+function openConverterForSelectedDate() {
+  setConverterFromSelectedDate();
+  setActiveTab("convert");
 }
 
 function updateConverterInputBounds() {
@@ -725,11 +784,12 @@ function updateConverterInputBounds() {
   convertMonthEl.min = "1";
   convertMonthEl.max = "12";
 
-  const year = Number(convertYearEl.value);
-  const month = Number(convertMonthEl.value);
-  const monthLength = Number.isInteger(year)
-    ? getCalendarMonthLength(convertSourceEl.value, year, month)
-    : 31;
+  const year = parseIntegerInput(convertYearEl.value);
+  const month = parseIntegerInput(convertMonthEl.value);
+  const monthLength =
+    Number.isInteger(year) && Number.isInteger(month)
+      ? getCalendarMonthLength(convertSourceEl.value, year, month)
+      : 31;
 
   convertDayEl.min = "1";
   convertDayEl.max = String(monthLength || 31);
@@ -751,6 +811,7 @@ function setConverterResults(result) {
   convertGregorianEl.textContent = `${gregorianNumeric} · ${gregorianFullFormatter.format(result.date)}`;
   convertHijriEl.textContent = `${hijriNumeric} · ${formatHijriFull(result.date)}`;
 
+  resetCopyButtonFeedback();
   document.querySelectorAll(".copy-btn").forEach((button) => {
     button.disabled = false;
   });
@@ -767,6 +828,7 @@ function clearConverterResults() {
   convertGregorianEl.textContent = "--";
   convertHijriEl.textContent = "--";
 
+  resetCopyButtonFeedback();
   document.querySelectorAll(".copy-btn").forEach((button) => {
     button.disabled = true;
   });
@@ -793,9 +855,9 @@ function renderConverter() {
 
   const result = convertDate({
     source: convertSourceEl.value,
-    year: convertYearEl.value,
-    month: convertMonthEl.value,
-    day: convertDayEl.value,
+    year: parseIntegerInput(convertYearEl.value),
+    month: parseIntegerInput(convertMonthEl.value),
+    day: parseIntegerInput(convertDayEl.value),
   });
 
   if (result.error) {
@@ -856,6 +918,62 @@ function normalizeJumpYearInputDisplay() {
   }
 
   jumpYearInputEl.value = normalizePersianDigitString(rawValue);
+}
+
+function normalizeConverterInputDisplay(input) {
+  const rawValue = String(input?.value ?? "").trim();
+
+  if (!input || !rawValue) {
+    if (input) input.value = "";
+    return;
+  }
+
+  const parsedValue = parseIntegerInput(rawValue);
+
+  if (Number.isInteger(parsedValue)) {
+    input.value = state.settings.usePersianNumerals
+      ? formatNumber(parsedValue)
+      : String(parsedValue);
+    return;
+  }
+
+  input.value = state.settings.usePersianNumerals
+    ? normalizePersianDigitString(rawValue)
+    : rawValue;
+}
+
+function resetCopyButtonFeedback() {
+  document.querySelectorAll(".copy-btn").forEach((button) => {
+    if (button.dataset.copyResetTimer) {
+      window.clearTimeout(Number(button.dataset.copyResetTimer));
+      delete button.dataset.copyResetTimer;
+    }
+
+    button.classList.remove("copied");
+    button.textContent = button.dataset.defaultLabel || "Copy";
+  });
+}
+
+function showCopyButtonFeedback(button) {
+  if (!button) return;
+
+  if (!button.dataset.defaultLabel) {
+    button.dataset.defaultLabel = button.textContent.trim() || "Copy";
+  }
+
+  if (button.dataset.copyResetTimer) {
+    window.clearTimeout(Number(button.dataset.copyResetTimer));
+  }
+
+  button.classList.add("copied");
+  button.textContent = "Copied";
+  button.dataset.copyResetTimer = String(
+    window.setTimeout(() => {
+      button.classList.remove("copied");
+      button.textContent = button.dataset.defaultLabel || "Copy";
+      delete button.dataset.copyResetTimer;
+    }, 1200),
+  );
 }
 
 function populateJumpMonthOptions() {
@@ -1231,6 +1349,11 @@ convertTabBtn.addEventListener("click", () => {
   setActiveTab("convert");
 });
 
+convertSelectedDateBtn?.addEventListener("click", openConverterForSelectedDate);
+convertUseSelectedBtn?.addEventListener("click", setConverterFromSelectedDate);
+convertUseTodayBtn?.addEventListener("click", setConverterFromToday);
+convertClearBtn?.addEventListener("click", clearConverterInputs);
+
 fontSizeToggle?.addEventListener("click", cycleFontSize);
 
 themeToggle.addEventListener("click", cycleTheme);
@@ -1309,17 +1432,27 @@ goTodayBtn.addEventListener("click", () => {
   selectJalaliDate(todayJalali.jy, todayJalali.jm, todayJalali.jd);
 });
 
-[convertSourceEl, convertYearEl, convertMonthEl, convertDayEl].forEach(
-  (element) => {
-    element.addEventListener("input", renderConverter);
-    element.addEventListener("change", renderConverter);
-  },
-);
+convertSourceEl.addEventListener("input", renderConverter);
+convertSourceEl.addEventListener("change", renderConverter);
+
+[convertYearEl, convertMonthEl, convertDayEl].forEach((element) => {
+  element.addEventListener("input", renderConverter);
+  element.addEventListener("change", renderConverter);
+  element.addEventListener("blur", () => {
+    normalizeConverterInputDisplay(element);
+    renderConverter();
+  });
+});
 
 document.querySelectorAll(".copy-btn").forEach((button) => {
+  button.dataset.defaultLabel = button.textContent.trim() || "Copy";
+
   button.addEventListener("click", async () => {
+    if (button.disabled) return;
+
     const targetId = button.dataset.copyTarget;
     await copyText(getCopyValue(targetId));
+    showCopyButtonFeedback(button);
   });
 });
 

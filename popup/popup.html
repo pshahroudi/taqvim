@@ -347,7 +347,9 @@
                   ></div>
                   <div
                     id="selectedHolidayList"
-                    class="selected-holiday-status rtl-text hidden"
+                    class="holiday-list hidden"
+                    lang="fa"
+                    dir="rtl"
                   ></div>
                   <div class="selected-date-divider" aria-hidden="true"></div>
                   <div
@@ -356,6 +358,23 @@
                     lang="en"
                     dir="ltr"
                   ></div>
+
+                  <button
+                    id="convertSelectedDate"
+                    class="selected-convert-btn"
+                    type="button"
+                    aria-label="Convert selected date"
+                    title="Convert selected date"
+                  >
+                    <span class="selected-convert-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" focusable="false">
+                        <path d="M16 4l4 4-4 4"></path>
+                        <path d="M20 8H6"></path>
+                        <path d="M8 20l-4-4 4-4"></path>
+                        <path d="M4 16h14"></path>
+                      </svg>
+                    </span>
+                  </button>
                 </div>
               </div>
 
@@ -402,6 +421,30 @@
               <div class="section-label">Date converter</div>
               <h1 lang="fa" dir="rtl">تبدیل تاریخ</h1>
             </div>
+
+            <div class="convert-head-actions" aria-label="Converter shortcuts">
+              <button
+                id="convertUseSelected"
+                class="convert-quick-btn"
+                type="button"
+              >
+                Use selected date
+              </button>
+              <button
+                id="convertUseToday"
+                class="convert-quick-btn"
+                type="button"
+              >
+                Today
+              </button>
+              <button
+                id="convertClear"
+                class="convert-quick-btn convert-quick-btn-muted"
+                type="button"
+              >
+                Clear
+              </button>
+            </div>
           </div>
 
           <div class="convert-grid">
@@ -416,33 +459,40 @@
 
             <label class="convert-field">
               <span>Year</span>
+
               <input
                 id="convertYear"
-                type="number"
+                type="text"
                 inputmode="numeric"
-                min="1"
+                pattern="[0-9۰-۹٠-٩]*"
+                autocomplete="off"
+                aria-describedby="convertError"
               />
             </label>
 
             <label class="convert-field">
               <span>Month</span>
+
               <input
                 id="convertMonth"
-                type="number"
+                type="text"
                 inputmode="numeric"
-                min="1"
-                max="12"
+                pattern="[0-9۰-۹٠-٩]*"
+                autocomplete="off"
+                aria-describedby="convertError"
               />
             </label>
 
             <label class="convert-field">
               <span>Day</span>
+
               <input
                 id="convertDay"
-                type="number"
+                type="text"
                 inputmode="numeric"
-                min="1"
-                max="31"
+                pattern="[0-9۰-۹٠-٩]*"
+                autocomplete="off"
+                aria-describedby="convertError"
               />
             </label>
           </div>
