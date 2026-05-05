@@ -94,7 +94,7 @@ function setVersion() {
   try {
     appVersionEl.textContent = chrome.runtime.getManifest().version;
   } catch {
-    appVersionEl.textContent = "0.1.1";
+    appVersionEl.textContent = "0.1.2";
   }
 }
 
