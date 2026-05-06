@@ -1846,7 +1846,7 @@ input:focus-visible,
 
 .mini-picker.jump-picker .mini-picker-top {
   margin: -14px -14px 0;
-  padding: 5px;
+  padding: 5px 10px 5px 5px;
   background: var(--accent);
   color: #ffffff;
 }
@@ -2659,7 +2659,7 @@ body {
 
 :root.font-large .weekday-row,
 :root.font-large .calendar-grid {
-  gap: 5px 8px;
+  gap: 3px 3px;
 }
 
 :root.font-large .calendar-grid {
