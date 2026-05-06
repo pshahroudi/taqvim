@@ -300,7 +300,10 @@ function updateFontSizeToggle() {
 
 function applyFontSize(fontSize) {
   const normalized = applyFontSizeClass(fontSize, root);
-  state.settings = normalizeSettings({ ...state.settings, fontSize: normalized });
+  state.settings = normalizeSettings({
+    ...state.settings,
+    fontSize: normalized,
+  });
   updateFontSizeToggle();
 }
 
@@ -1458,12 +1461,14 @@ convertSourceEl.addEventListener("input", renderConverter);
 convertSourceEl.addEventListener("change", renderConverter);
 
 [convertYearEl, convertMonthEl, convertDayEl].forEach((element) => {
-  element.addEventListener("input", renderConverter);
-  element.addEventListener("change", renderConverter);
-  element.addEventListener("blur", () => {
+  const normalizeAndRenderConverter = () => {
     normalizeConverterInputDisplay(element);
     renderConverter();
-  });
+  };
+
+  element.addEventListener("input", normalizeAndRenderConverter);
+  element.addEventListener("change", normalizeAndRenderConverter);
+  element.addEventListener("blur", normalizeAndRenderConverter);
 });
 
 document.querySelectorAll(".copy-btn").forEach((button) => {

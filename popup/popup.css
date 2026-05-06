@@ -1846,15 +1846,15 @@ input:focus-visible,
 
 .mini-picker.jump-picker .mini-picker-top {
   margin: -14px -14px 0;
-  padding: 14px;
+  padding: 5px;
   background: var(--accent);
   color: #ffffff;
 }
 
 .mini-picker.jump-picker .mini-picker-head {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: flex-end;
+  justify-content: end;
   gap: 12px;
 }
 
@@ -1950,6 +1950,9 @@ input:focus-visible,
   font-size: 11px;
   font-weight: 800;
   color: var(--text-soft);
+}
+.jump-field-label {
+  text-align: center;
 }
 
 .mini-picker.jump-picker .jump-input,
