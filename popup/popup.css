@@ -431,7 +431,6 @@ button {
 }
 
 .mini-picker-top {
-  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -760,7 +759,7 @@ button {
 
 .weekday-row,
 .calendar-grid {
-  gap: 6px 8px;
+  gap: 1px;
 }
 
 .weekday-row div {
@@ -783,10 +782,10 @@ button {
   position: relative;
   min-height: 0;
   height: 100%;
-  padding: 8px 9px 12px;
+  /* padding: 8px 9px 12px; */
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: 14px;
+  /* border-radius: 14px; */
   background: transparent;
   display: flex;
   flex-direction: column;
@@ -1608,7 +1607,7 @@ input:focus-visible,
   background: var(--panel);
 }
 
-:root.dark .weekday-strip,
+/* :root.dark .weekday-strip,
 :root.dark .detail-surface,
 :root.dark .status-card,
 :root.dark .holiday-item,
@@ -1625,7 +1624,7 @@ input:focus-visible,
 :root.dark .mini-today-btn,
 :root.dark .jump-go-btn {
   background: var(--panel-2);
-}
+} */
 
 :root.dark .side-card-tehran,
 :root.dark .merged-side-card,
@@ -2268,7 +2267,7 @@ input:focus-visible,
 
 .weekday-row,
 .calendar-grid {
-  gap: 5px 8px;
+  gap: 3px;
 }
 
 .weekday-row div {
