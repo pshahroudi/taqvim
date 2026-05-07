@@ -20,6 +20,10 @@ const controls = {
     "#showHijriDate",
     "input[name='showHijri']",
   ]),
+  showTehranTime: findControl([
+    "#showTehranTime",
+    "input[name='showTehranTime']",
+  ]),
   usePersianNumerals: findControl([
     "#usePersianNumerals",
     "input[name='usePersianNumerals']",
@@ -116,6 +120,7 @@ function applyControls(settings) {
   setValueIfPresent(controls.theme, settings.theme);
   setValueIfPresent(controls.fontSize, settings.fontSize);
   setValueIfPresent(controls.showHijri, settings.showHijri);
+  setValueIfPresent(controls.showTehranTime, settings.showTehranTime);
   setValueIfPresent(controls.usePersianNumerals, settings.usePersianNumerals);
   setValueIfPresent(controls.weekStart, settings.weekStart);
   setValueIfPresent(controls.showHolidays, settings.showHolidays);
@@ -178,6 +183,10 @@ async function init() {
 
   bindCheckbox(controls.showHijri, async (checked) => {
     await savePatch({ showHijri: checked });
+  });
+
+  bindCheckbox(controls.showTehranTime, async (checked) => {
+    await savePatch({ showTehranTime: checked });
   });
 
   bindCheckbox(controls.usePersianNumerals, async (checked) => {

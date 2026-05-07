@@ -2,6 +2,7 @@ const DEFAULT_SETTINGS = {
   theme: "system",
   fontSize: "medium",
   showHijri: false,
+  showTehranTime: true,
   usePersianNumerals: true,
   weekStart: "saturday",
   showHolidays: true,
@@ -60,6 +61,10 @@ export function normalizeSettings(input = {}) {
       ? source.fontSize
       : DEFAULT_SETTINGS.fontSize,
     showHijri: toBooleanSetting(source.showHijri, DEFAULT_SETTINGS.showHijri),
+    showTehranTime: toBooleanSetting(
+      source.showTehranTime,
+      DEFAULT_SETTINGS.showTehranTime
+    ),
     usePersianNumerals: toBooleanSetting(
       source.usePersianNumerals,
       DEFAULT_SETTINGS.usePersianNumerals
@@ -103,6 +108,7 @@ function toStoragePayload(settings) {
     theme: normalized.theme,
     fontSize: normalized.fontSize,
     showHijri: normalized.showHijri,
+    showTehranTime: normalized.showTehranTime,
     usePersianNumerals: normalized.usePersianNumerals,
     weekStart: normalized.weekStart,
     showHolidays: normalized.showHolidays,
@@ -120,6 +126,7 @@ function needsMigration(raw) {
     "theme",
     "fontSize",
     "showHijri",
+    "showTehranTime",
     "usePersianNumerals",
     "weekStart",
     "showHolidays",

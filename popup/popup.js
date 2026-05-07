@@ -77,6 +77,7 @@ const miniGoTodayBtn = document.getElementById("miniGoToday");
 const weekdayRowEl = document.getElementById("weekdayRow");
 const calendarGridEl = document.getElementById("calendarGrid");
 
+const tehranTimeCardEl = document.getElementById("tehranTimeCard");
 const tehranPhaseIconEl = document.getElementById("tehranPhaseIcon");
 const tehranTimeEl = document.getElementById("tehranTime");
 const tehranDateEl = document.getElementById("tehranDate");
@@ -156,6 +157,7 @@ const state = {
     theme: "system",
     fontSize: "medium",
     showHijri: false,
+    showTehranTime: true,
     usePersianNumerals: true,
     weekStart: "saturday",
     showHolidays: true,
@@ -312,7 +314,13 @@ function applyTheme(theme) {
   updateThemeToggleIcon();
 }
 
+function updateTehranTimeVisibility() {
+  tehranTimeCardEl?.classList.toggle("hidden", !state.settings.showTehranTime);
+}
+
 function updateTehranClock() {
+  if (!tehranTimeEl || !tehranDateEl || !tehranPersianDateEl) return;
+
   const now = new Date();
   const formattedHour = Number(tehranHourFormatter.format(now));
   const tehranHour = formattedHour === 24 ? 0 : formattedHour;
@@ -337,6 +345,7 @@ function updateTehranClock() {
 }
 
 function startTehranClock() {
+  updateTehranTimeVisibility();
   updateTehranClock();
 
   if (state.tehranClockInterval) {
@@ -1139,6 +1148,7 @@ function render() {
   applyTheme(state.settings.theme);
   applyFontSize(state.settings.fontSize);
   renderTabs();
+  updateTehranTimeVisibility();
   updateTehranClock();
   renderWeekdayLabels(weekdayRowEl);
   renderDatePickerToggle();

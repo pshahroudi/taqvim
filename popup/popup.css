@@ -2972,3 +2972,66 @@ body {
   min-width: 22px;
   text-align: right;
 }
+
+/* ===== Patch 12: Tehran time visibility setting + compact calendar controls ===== */
+.controls-row {
+  column-gap: 10px;
+  row-gap: 6px;
+  margin-bottom: 4px;
+}
+
+.date-picker-toggle {
+  min-height: 44px;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 14px;
+}
+
+.date-picker-icon,
+.today-icon {
+  width: 20px;
+  height: 20px;
+  flex-basis: 20px;
+}
+
+.date-picker-icon {
+  margin-right: 10px;
+}
+
+.calendar-nav {
+  gap: 8px;
+}
+
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 26px;
+}
+
+.today-btn {
+  min-height: 44px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 13px;
+  gap: 8px;
+}
+
+/* Keep previous converter header patch: Persian title on the right, shortcuts on the left. */
+.convert-head {
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+  text-align: right;
+}
+
+.convert-head > div:first-child {
+  direction: rtl;
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+.convert-head-actions {
+  justify-content: flex-start;
+}
