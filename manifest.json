@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Taqvim",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Persian/Jalali calendar with holidays, date conversion, themes, Tehran time, and a local day badge. By Pourya Shahroudi",
   "action": {
     "default_title": "Taqvim",
