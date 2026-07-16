@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS = {
   holidayTypes: {
     officialIran: true,
     cultural: true,
-    islamic: false
+    islamic: true
   },
   highlightWeekends: true,
   autoJumpToTodayOnOpen: true

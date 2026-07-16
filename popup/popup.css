@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap");
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../assets/fonts/Vazirmatn.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
 
 :root {
   color-scheme: light;
@@ -96,7 +102,11 @@
 html,
 body {
   width: 720px;
+  min-width: 720px;
+  max-width: none;
   height: 560px;
+  min-height: 560px;
+  max-height: 560px;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -776,6 +786,12 @@ button {
   padding: 8px 14px 18px;
   border-radius: 0 0 16px 16px;
   background: var(--calendar-board);
+}
+
+.day-cell {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
 }
 
 .day {
@@ -2423,11 +2439,11 @@ input:focus-visible,
 
 /* ===== User font size preference ===== */
 :root {
-  --taqvim-font-scale: 1;
+  --taqvim-font-scale: 0.9;
 }
 
 :root.font-small {
-  --taqvim-font-scale: 0.92;
+  --taqvim-font-scale: 0.9;
 }
 
 :root.font-medium {
@@ -2444,22 +2460,22 @@ body {
 
 .font-size-toggle .font-size-icon {
   font-family: var(--taqvim-font-ui);
-  font-size: calc(13px * var(--taqvim-font-scale)) !important;
+  font-size: calc(13px * var(--taqvim-font-scale));
   font-weight: 950;
   letter-spacing: -0.03em;
 }
 
 .tab-btn,
 .utility-btn {
-  font-size: calc(12px * var(--taqvim-font-scale)) !important;
+  font-size: calc(12px * var(--taqvim-font-scale));
 }
 
 .utility-icon {
-  font-size: calc(17px * var(--taqvim-font-scale)) !important;
+  font-size: calc(17px * var(--taqvim-font-scale));
 }
 
 .today-btn {
-  font-size: calc(15px * var(--taqvim-font-scale)) !important;
+  font-size: calc(15px * var(--taqvim-font-scale));
 }
 
 .date-picker-label,
@@ -2468,11 +2484,11 @@ body {
 .convert-error,
 .copy-btn,
 .mini-picker.jump-picker .mini-picker-helper {
-  font-size: calc(12px * var(--taqvim-font-scale)) !important;
+  font-size: calc(12px * var(--taqvim-font-scale));
 }
 
 .date-picker-value {
-  font-size: calc(25px * var(--taqvim-font-scale)) !important;
+  font-size: calc(25px * var(--taqvim-font-scale));
 }
 
 .mini-picker-eyebrow,
@@ -2484,17 +2500,17 @@ body {
 .holiday-item-body,
 .holiday-item-note,
 .chip {
-  font-size: calc(11px * var(--taqvim-font-scale)) !important;
+  font-size: calc(11px * var(--taqvim-font-scale));
 }
 
 .mini-picker.jump-picker .mini-picker-icon {
-  font-size: calc(18px * var(--taqvim-font-scale)) !important;
+  font-size: calc(18px * var(--taqvim-font-scale));
 }
 
 .date-picker-caret,
 .jump-preview-primary,
 .holiday-item-title {
-  font-size: calc(16px * var(--taqvim-font-scale)) !important;
+  font-size: calc(16px * var(--taqvim-font-scale));
 }
 
 .mini-picker-title,
@@ -2504,7 +2520,7 @@ body {
 .weekday-row div,
 .mini-picker.jump-picker .jump-input,
 .mini-picker.jump-picker .jump-select {
-  font-size: calc(14px * var(--taqvim-font-scale)) !important;
+  font-size: calc(14px * var(--taqvim-font-scale));
 }
 
 .mini-picker-subtitle,
@@ -2513,58 +2529,58 @@ body {
 .today-badge,
 .selected-today-badge,
 .holiday-item-tag {
-  font-size: calc(10px * var(--taqvim-font-scale)) !important;
+  font-size: calc(10px * var(--taqvim-font-scale));
 }
 
 .jump-input,
 .jump-select,
 .mini-picker.jump-picker .mini-today-btn,
 .mini-picker.jump-picker .jump-go-btn {
-  font-size: calc(13px * var(--taqvim-font-scale)) !important;
+  font-size: calc(13px * var(--taqvim-font-scale));
 }
 
 .jump-go-btn,
 .mini-today-btn {
-  font-size: calc(11.5px * var(--taqvim-font-scale)) !important;
+  font-size: calc(11.5px * var(--taqvim-font-scale));
 }
 
 .mini-close-btn,
 .mini-nav-btn,
 .mini-day {
-  font-size: calc(15px * var(--taqvim-font-scale)) !important;
+  font-size: calc(15px * var(--taqvim-font-scale));
 }
 
 .day-j {
-  font-size: calc(21px * var(--taqvim-font-scale)) !important;
+  font-size: calc(21px * var(--taqvim-font-scale));
 }
 
 .day-g {
-  font-size: calc(11px * var(--taqvim-font-scale)) !important;
+  font-size: calc(11px * var(--taqvim-font-scale));
 }
 
 .tehran-phase-icon {
-  font-size: calc(15px * var(--taqvim-font-scale)) !important;
+  font-size: calc(15px * var(--taqvim-font-scale));
 }
 
 .topbar-tehran-time {
-  font-size: calc(28px * var(--taqvim-font-scale)) !important;
+  font-size: calc(28px * var(--taqvim-font-scale));
 }
 
 .topbar-tehran-date,
 .topbar-tehran-persian {
-  font-size: calc(11.5px * var(--taqvim-font-scale)) !important;
+  font-size: calc(11.5px * var(--taqvim-font-scale));
 }
 
 .detail-primary {
-  font-size: calc(18px * var(--taqvim-font-scale)) !important;
+  font-size: calc(18px * var(--taqvim-font-scale));
 }
 
 .convert-head h1 {
-  font-size: calc(22px * var(--taqvim-font-scale)) !important;
+  font-size: calc(22px * var(--taqvim-font-scale));
 }
 
 .convert-result-row strong {
-  font-size: calc(17px * var(--taqvim-font-scale)) !important;
+  font-size: calc(17px * var(--taqvim-font-scale));
 }
 
 :root.dark .selected-convert-btn {
@@ -2579,7 +2595,7 @@ body {
   border-color: rgba(131, 185, 255, 0.42);
 }
 
-/* ===== Patch 4: converter shortcuts and large-font overflow safety ===== */
+/* ===== Converter shortcuts and large-font layout ===== */
 .convert-head {
   align-items: flex-start;
   justify-content: space-between;
@@ -2716,7 +2732,7 @@ body {
   color: var(--text-soft);
 }
 
-/* Patch 6: right-align selected-day holiday details. */
+/* ===== Selected-day RTL details ===== */
 .selected-holiday-status {
   width: 100%;
   justify-content: flex-start;
@@ -2742,29 +2758,6 @@ body {
 .holiday-item-body,
 .holiday-item-note {
   text-align: right;
-}
-
-/* Patch 10: wider A-/A/A+ difference for Vazirmatn. */
-:root {
-  --taqvim-font-scale: 0.9;
-}
-
-:root.font-small {
-  --taqvim-font-scale: 0.9;
-}
-
-:root.font-medium {
-  --taqvim-font-scale: 1;
-}
-
-:root.font-large {
-  --taqvim-font-scale: 1.1;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow: hidden;
 }
 
 .app-shell,
@@ -2814,30 +2807,30 @@ body {
 }
 
 .date-picker-value {
-  font-size: calc(22px * var(--taqvim-font-scale)) !important;
+  font-size: calc(22px * var(--taqvim-font-scale));
 }
 
 .weekday-row div {
-  font-size: calc(12.5px * var(--taqvim-font-scale)) !important;
+  font-size: calc(12.5px * var(--taqvim-font-scale));
 }
 
 .day-j {
-  font-size: calc(19px * var(--taqvim-font-scale)) !important;
+  font-size: calc(19px * var(--taqvim-font-scale));
 }
 
 .day-g {
-  font-size: calc(10px * var(--taqvim-font-scale)) !important;
+  font-size: calc(10px * var(--taqvim-font-scale));
 }
 
 .today-btn {
-  font-size: calc(13.5px * var(--taqvim-font-scale)) !important;
+  font-size: calc(13.5px * var(--taqvim-font-scale));
 }
 
 .topbar-tehran-time {
   width: 100%;
   max-width: 100%;
   gap: 3px;
-  font-size: calc(25.5px * var(--taqvim-font-scale)) !important;
+  font-size: calc(25.5px * var(--taqvim-font-scale));
 }
 
 .tehran-time-number {
@@ -2851,11 +2844,11 @@ body {
 
 .topbar-tehran-date,
 .topbar-tehran-persian {
-  font-size: calc(10.75px * var(--taqvim-font-scale)) !important;
+  font-size: calc(10.75px * var(--taqvim-font-scale));
 }
 
 .detail-primary {
-  font-size: calc(16px * var(--taqvim-font-scale)) !important;
+  font-size: calc(16px * var(--taqvim-font-scale));
   line-height: 1.55;
   white-space: normal;
   overflow-wrap: anywhere;
@@ -2878,24 +2871,6 @@ body {
 .holiday-item-note {
   max-width: 100%;
   overflow-wrap: anywhere;
-}
-
-/* Patch 9: restore fixed Chrome popup width after font overflow adjustment.
-   Do not use max-width: 100vw in extension popups because Chrome may measure
-   the popup viewport from the current rendered content, which can collapse it. */
-html,
-body {
-  width: 720px !important;
-  min-width: 720px !important;
-  max-width: none !important;
-  height: 560px !important;
-  min-height: 560px !important;
-  max-height: 560px !important;
-  overflow: hidden !important;
-}
-
-body {
-  padding: 10px;
 }
 
 .app-shell {
@@ -2941,7 +2916,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Patch 11: Tehran clock alignment.
+/* ===== Tehran clock alignment =====
    Keep the phase icon and AM/PM on the right, but make the numeric
    Tehran time start from the left side of its row. */
 .side-card-tehran .tehran-time-block {
@@ -2973,7 +2948,7 @@ body {
   text-align: right;
 }
 
-/* ===== Patch 12: Tehran time visibility setting + compact calendar controls ===== */
+/* ===== Compact calendar controls ===== */
 .controls-row {
   column-gap: 10px;
   row-gap: 6px;
@@ -3017,7 +2992,7 @@ body {
   gap: 8px;
 }
 
-/* Keep previous converter header patch: Persian title on the right, shortcuts on the left. */
+/* Keep the Persian title on the right and converter shortcuts on the left. */
 .convert-head {
   align-items: flex-start;
   justify-content: space-between;
@@ -3034,4 +3009,26 @@ body {
 
 .convert-head-actions {
   justify-content: flex-start;
+}
+
+.day-empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.nav-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root *,
+  :root *::before,
+  :root *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,7 +1,15 @@
 {
+  "name": "taqvim",
+  "version": "0.1.3",
   "private": true,
   "type": "module",
   "scripts": {
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "test": "node --test tests",
+    "check": "npm run smoke && npm test",
+    "package": "node scripts/package-extension.mjs"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

@@ -108,7 +108,6 @@
                     dir="ltr"
                   ></span>
                 </span>
-                <!-- <span class="date-picker-caret" aria-hidden="true">⌄</span> -->
               </button>
             </div>
 
@@ -144,7 +143,8 @@
               id="miniDatePicker"
               class="mini-picker jump-picker hidden"
               role="dialog"
-              aria-label="Jump to Jalali date"
+              aria-modal="false"
+              aria-labelledby="jumpDatePickerTitle"
             >
               <div class="mini-picker-top">
                 <div class="mini-picker-head">
@@ -162,7 +162,7 @@
               <form id="jumpDateForm" class="jump-date-form">
                 <div class="jump-form-card">
                   <div class="jump-form-section">
-                    <div class="jump-section-label" dir="rtl">
+                    <div id="jumpDatePickerTitle" class="jump-section-label" dir="rtl">
                       سال، ماه و روز جلالی (شمسی) انتخاب کنید
                     </div>
                     <div class="jump-field-grid">
@@ -173,7 +173,7 @@
                           class="jump-input rtl-text"
                           type="text"
                           inputmode="numeric"
-                          pattern="[0-9۰-۹٠-٩]*"
+                          pattern="[-−]?[0-9۰-۹٠-٩]*"
                           lang="fa"
                           dir="rtl"
                           autocomplete="off"
@@ -250,6 +250,8 @@
             class="calendar-grid"
             role="grid"
             aria-label="Calendar month"
+            aria-rowcount="6"
+            aria-colcount="7"
           ></div>
         </section>
 
@@ -334,12 +336,6 @@
                   </div>
 
                   <div
-                    id="selectedHolidayChips"
-                    class="chip-row hidden"
-                    lang="fa"
-                    dir="rtl"
-                  ></div>
-                  <div
                     id="selectedHolidayList"
                     class="holiday-list hidden"
                     lang="fa"
@@ -372,32 +368,6 @@
                 </div>
               </div>
 
-              <!-- <div class="selected-status-card">
-                <div
-                  id="selectedHolidayStatus"
-                  class="selected-holiday-status rtl-text"
-                  lang="fa"
-                  dir="rtl"
-                >
-                  Loading…
-                </div>
-
-                <div
-                  id="selectedHolidayChips"
-                  class="chip-row hidden"
-                  lang="fa"
-                  dir="rtl"
-                ></div>
-                <div id="selectedHolidayList" class="holiday-list hidden"></div>
-              </div> -->
-            </div>
-
-            <div class="today-data-cache hidden" aria-hidden="true">
-              <div id="todayJalali"></div>
-              <div id="todayGregorian"></div>
-              <div id="todayHijri" class="hidden"></div>
-              <div id="todayHolidayStatus"></div>
-              <div id="todayHolidayChips" class="hidden"></div>
             </div>
           </section>
         </aside>
@@ -458,7 +428,7 @@
                 class="rtl-text"
                 type="text"
                 inputmode="numeric"
-                pattern="[0-9۰-۹٠-٩]*"
+                pattern="[-−]?[0-9۰-۹٠-٩]*"
                 lang="fa"
                 dir="rtl"
                 autocomplete="off"

@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap");
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../assets/fonts/Vazirmatn.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
 
 :root {
   color-scheme: light;
@@ -304,11 +310,11 @@ input:focus-visible {
 
 /* ===== User font size preference ===== */
 :root {
-  --taqvim-font-scale: 1;
+  --taqvim-font-scale: 0.9;
 }
 
 :root.font-small {
-  --taqvim-font-scale: 0.92;
+  --taqvim-font-scale: 0.9;
 }
 
 :root.font-medium {
@@ -354,19 +360,13 @@ h2 {
   font-size: calc(16px * var(--taqvim-font-scale));
 }
 
-/* Patch 10: wider A-/A/A+ difference for Vazirmatn. */
-:root {
-  --taqvim-font-scale: 0.9;
-}
-
-:root.font-small {
-  --taqvim-font-scale: 0.9;
-}
-
-:root.font-medium {
-  --taqvim-font-scale: 1;
-}
-
-:root.font-large {
-  --taqvim-font-scale: 1.1;
+@media (prefers-reduced-motion: reduce) {
+  :root *,
+  :root *::before,
+  :root *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -18,14 +18,6 @@ function div(a, b) {
   return Math.floor(a / b);
 }
 
-function gregorianToJulianDay(year, month, day) {
-  const a = div(14 - month, 12);
-  const y = year + 4800 - a;
-  const m = month + 12 * a - 3;
-
-  return day + div(153 * m + 2, 5) + 365 * y + div(y, 4) - div(y, 100) + div(y, 400) - 32045;
-}
-
 function julianDayToGregorian(jdn) {
   const a = jdn + 32044;
   const b = div(4 * a + 3, 146097);

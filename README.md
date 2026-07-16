@@ -6,7 +6,7 @@ Taqvim is a lightweight Persian/Jalali calendar Chrome extension. It is built as
 
 - Shows the current Jalali month with Persian dates as the primary view.
 - Shows Gregorian dates as secondary labels and optional Hijri dates in details.
-- Uses local JSON holiday data only. No external APIs, Google login, or Google Calendar sync.
+- Uses bundled holiday data and fonts only. It makes no runtime requests to external APIs and does not require a Taqvim account.
 - Lets you choose theme, numerals, week start, holiday layers, weekend highlighting, and whether the popup opens to today or restores the last viewed date.
 - Shows the current Tehran time and date in a dedicated popup card.
 - Uses the computer's local date for Today, calendar highlighting, and the toolbar badge.
@@ -39,23 +39,34 @@ npm run smoke
 
 The smoke test checks holiday JSON shape and duplicate IDs, manifest/icon references, important JavaScript syntax, and Jalali conversion sanity cases.
 
-## Clean Release Zip
-
-Create the Chrome Web Store zip from a clean copy of the extension files, excluding development files and OS junk. One simple PowerShell option from the project root:
+Run the complete test suite with:
 
 ```powershell
-$release = "dist/taqvim-release"
-Remove-Item -Recurse -Force dist -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Force $release | Out-Null
-Copy-Item manifest.json,README.md -Destination $release
-Copy-Item assets,background,options,popup,src -Destination $release -Recurse
-Compress-Archive -Path "$release/*" -DestinationPath "dist/taqvim-chrome-web-store.zip" -Force
+npm test
 ```
 
-Do not zip `.git`, `node_modules`, `scripts`, `package.json`, development notes, test files, `.DS_Store`, `Thumbs.db`, or other OS-generated files.
+## Holiday Data
+
+Taqvim includes a year-specific official holiday calendar for Solar Hijri year 1405. It is sourced from the Calendar Council of the Institute of Geophysics, University of Tehran:
+
+<https://calendar.ut.ac.ir/documents/2139738/7092644/Calendar-1405.pdf>
+
+When a selected year does not have a bundled verified calendar, Taqvim falls back to recurring fixed dates and calculated Hijri dates. Calculated lunar dates can differ from official announcements.
+
+## Clean Release Zip
+
+Create a validated Chrome Web Store archive with:
+
+```powershell
+npm run package
+```
+
+The release script verifies manifest/package version consistency, required icons and fonts, and the absence of remote runtime CSS or CSP origins. It writes `dist/taqvim-<version>.zip` from an explicit production allowlist, excluding development scripts, tests, repository metadata, and OS-generated files.
+
+The GitHub Actions quality workflow runs the complete checks, builds the same archive, and uploads it as a workflow artifact on every push and pull request.
 
 ## Current Limitations
 
-- Holiday data is bundled locally and should be reviewed before publishing if completeness matters.
-- Islamic dates can shift by official moon sighting, so local calculated dates may differ from official announcements.
+- The verified official dataset currently covers Solar Hijri year 1405; other years use recurring and calculated fallback data.
+- Calculated Islamic dates can shift based on official moon sighting announcements.
 - Taqvim does not include Google Calendar sync, Google login, reminders, or scheduling features.

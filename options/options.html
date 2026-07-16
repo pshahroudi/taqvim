@@ -192,10 +192,10 @@
 
             <label class="setting-row switch-row nested-row">
               <span>
-                <strong>Islamic holidays</strong>
+                <strong>Calculated Islamic holidays</strong>
                 <small
-                  >Lunar-calendar observances. Some dates can shift based on
-                  official moon sighting.</small
+                  >Use calculated lunar dates when a verified year-specific
+                  Iranian calendar is unavailable.</small
                 >
               </span>
               <input
@@ -225,9 +225,19 @@
           <section class="card note-card">
             <h2>Privacy</h2>
             <p>
-              Taqvim stores preferences locally using Chrome extension storage.
-              It does not require sign-in and does not depend on an external API
-              for holiday data in v1.
+              Taqvim stores preferences in Chrome sync storage, so Chrome may
+              synchronize them when browser sync is enabled. Taqvim does not
+              require its own sign-in or make runtime requests to external APIs;
+              holiday data and interface fonts are bundled with the extension.
+            </p>
+          </section>
+
+          <section class="card note-card">
+            <h2>Holiday sources</h2>
+            <p>
+              Official dates for Solar Hijri year 1405 come from the Calendar
+              Council of the Institute of Geophysics, University of Tehran.
+              Other years use bundled recurring dates and calculated lunar dates.
             </p>
           </section>
 
