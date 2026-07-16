@@ -8,7 +8,9 @@ Taqvim is a lightweight Persian/Jalali calendar Chrome extension. It is built as
 - Shows Gregorian dates as secondary labels and optional Hijri dates in details.
 - Uses local JSON holiday data only. No external APIs, Google login, or Google Calendar sync.
 - Lets you choose theme, numerals, week start, holiday layers, weekend highlighting, and whether the popup opens to today or restores the last viewed date.
-- Shows the toolbar badge using the Tehran Jalali date.
+- Shows the current Tehran time and date in a dedicated popup card.
+- Uses the computer's local date for Today, calendar highlighting, and the toolbar badge.
+- Shows selected-day details and conversions for the date selected in the calendar.
 
 ## Load Unpacked In Chrome
 
