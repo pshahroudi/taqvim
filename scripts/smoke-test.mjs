@@ -148,6 +148,15 @@ async function checkPopupDomReferences() {
   for (const id of referencedIds) {
     assert(ids.has(id), `popup: missing element with id ${id}`);
   }
+
+  const inputPatterns = [...popupHtml.matchAll(/pattern=["']([^"']+)["']/g)].map(
+    (match) => match[1]
+  );
+  assert(inputPatterns.length > 0, "popup: expected numeric input patterns");
+  assert(
+    inputPatterns.every((pattern) => !pattern.includes("[-−]")),
+    "popup: raw hyphen in a character class is invalid under HTML pattern v-mode"
+  );
 }
 
 async function checkManifest() {

@@ -438,6 +438,21 @@ try {
     popup.sessionId,
     'document.querySelector(".app-shell") && document.querySelector("#selectedJalali")?.textContent.trim()',
   );
+  const invalidPatterns = await evaluate(
+    client,
+    popup.sessionId,
+    `Array.from(document.querySelectorAll("input[pattern]")).flatMap((input) => {
+      try {
+        new RegExp(input.pattern, "v");
+        return [];
+      } catch (error) {
+        return [{ id: input.id, pattern: input.pattern, error: error.message }];
+      }
+    })`,
+  );
+  if (invalidPatterns.length > 0) {
+    throw new Error(`Invalid HTML input patterns: ${JSON.stringify(invalidPatterns)}`);
+  }
   await setCaptureCss(client, popup.sessionId, POPUP_CAPTURE_CSS);
 
   await evaluate(
