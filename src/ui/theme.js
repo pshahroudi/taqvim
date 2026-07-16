@@ -1,3 +1,5 @@
+import { getIconSvg } from "./icons.js";
+
 export const THEME_ORDER = ["system", "light", "dark"];
 
 export function getResolvedTheme(theme, win = window) {
@@ -14,12 +16,12 @@ export function applyTheme(theme, root = document.documentElement, win = window)
 
 export function getThemeIcon(theme) {
   const iconMap = {
-    system: "◐",
-    light: "☀",
-    dark: "☾"
+    system: "system",
+    light: "sun",
+    dark: "moon"
   };
 
-  return iconMap[theme] || iconMap.system;
+  return getIconSvg(iconMap[theme] || iconMap.system);
 }
 
 export function getNextTheme(theme) {

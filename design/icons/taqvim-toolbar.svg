@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-labelledby="title desc">
+  <title id="title">Taqvim toolbar icon</title>
+  <desc id="desc">A simplified blue calendar with a navy crescent and golden sun.</desc>
+  <defs>
+    <clipPath id="calendar-shape">
+      <rect x="2" y="2" width="28" height="28" rx="7" />
+    </clipPath>
+  </defs>
+
+  <!-- Optical small-size variant: larger artwork, fewer details, heavier shapes. -->
+  <g clip-path="url(#calendar-shape)">
+    <rect x="2" y="2" width="28" height="28" fill="#2F6FDF" />
+    <rect x="2" y="11" width="28" height="19" fill="#FFFFFF" />
+  </g>
+  <rect x="2.5" y="2.5" width="27" height="27" rx="6.5" fill="none" stroke="#194EAF" />
+  <rect x="8" y="5" width="5" height="2" rx="1" fill="#DCEAFF" />
+  <rect x="19" y="5" width="5" height="2" rx="1" fill="#DCEAFF" />
+  <circle cx="14" cy="21" r="5.25" fill="#173A70" />
+  <circle cx="16.5" cy="18.5" r="5" fill="#FFFFFF" />
+  <circle cx="22.5" cy="17.5" r="1.9" fill="#F7B928" />
+</svg>

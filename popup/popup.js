@@ -240,7 +240,7 @@ function updateThemeToggleIcon() {
   if (!themeToggle) return;
 
   if (themeToggleIcon) {
-    themeToggleIcon.textContent = getThemeIcon(state.settings.theme);
+    themeToggleIcon.innerHTML = getThemeIcon(state.settings.theme);
   }
   themeToggle.title = `Theme: ${state.settings.theme}`;
   themeToggle.setAttribute("aria-label", `Theme: ${state.settings.theme}`);

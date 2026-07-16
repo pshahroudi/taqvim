@@ -29,14 +29,35 @@ const importantJsFiles = [
   "src/calendar/hijri.js",
   "src/calendar/holidays.js",
   "src/ui/badge.js",
+  "src/ui/icons.js",
   "src/ui/storage.js",
   "src/ui/tehran-clock.js",
   "src/ui/theme.js",
   "src/utils/dates.js",
   "src/utils/format.js",
   "src/utils/numerals.js",
-  "scripts/package-extension.mjs"
+  "scripts/package-extension.mjs",
+  "scripts/render-brand-assets.mjs",
+  "scripts/capture-store-assets.mjs"
 ];
+
+const expectedIconSizes = {
+  "assets/icons/icon16.png": 16,
+  "assets/icons/icon32.png": 32,
+  "assets/icons/icon48.png": 48,
+  "assets/icons/icon128.png": 128
+};
+
+const expectedStoreAssets = {
+  "store-assets/taqvim-store-icon-128.png": [128, 128],
+  "store-assets/taqvim-small-promo-440x280.png": [440, 280],
+  "store-assets/taqvim-marquee-1400x560.png": [1400, 560],
+  "store-assets/screenshots/01-calendar-light-1280x800.png": [1280, 800],
+  "store-assets/screenshots/02-calendar-dark-1280x800.png": [1280, 800],
+  "store-assets/screenshots/03-date-converter-1280x800.png": [1280, 800],
+  "store-assets/screenshots/04-date-picker-1280x800.png": [1280, 800],
+  "store-assets/screenshots/05-settings-1280x800.png": [1280, 800]
+};
 
 function assert(condition, message) {
   if (!condition) {
@@ -46,6 +67,19 @@ function assert(condition, message) {
 
 async function readJson(relativePath) {
   return JSON.parse(await readFile(join(rootDir, relativePath), "utf8"));
+}
+
+function inspectPng(buffer, relativePath) {
+  assert(
+    buffer.subarray(0, 8).toString("hex") === "89504e470d0a1a0a",
+    `${relativePath}: expected a PNG file`
+  );
+
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20),
+    colorType: buffer[25]
+  };
 }
 
 function validateHolidayRecord(record, expectedCategory, filePath, { requireYear = false } = {}) {
@@ -129,10 +163,30 @@ async function checkManifest() {
 
   for (const iconPath of Object.values(manifest.icons || {})) {
     assert(existsSync(join(rootDir, iconPath)), `manifest: missing icon ${iconPath}`);
+    const icon = inspectPng(await readFile(join(rootDir, iconPath)), iconPath);
+    const expectedSize = expectedIconSizes[iconPath];
+    assert(expectedSize, `manifest: unexpected icon path ${iconPath}`);
+    assert(
+      icon.width === expectedSize && icon.height === expectedSize,
+      `${iconPath}: expected ${expectedSize}x${expectedSize}`
+    );
+    assert(icon.colorType === 6, `${iconPath}: expected an RGBA alpha channel`);
   }
 
   assert(existsSync(join(rootDir, "assets/fonts/Vazirmatn.woff2")), "manifest: bundled font missing");
   assert(existsSync(join(rootDir, "assets/fonts/OFL-Vazirmatn.txt")), "manifest: font license missing");
+}
+
+async function checkStoreAssets() {
+  for (const [relativePath, [expectedWidth, expectedHeight]] of Object.entries(
+    expectedStoreAssets
+  )) {
+    const png = inspectPng(await readFile(join(rootDir, relativePath)), relativePath);
+    assert(
+      png.width === expectedWidth && png.height === expectedHeight,
+      `${relativePath}: expected ${expectedWidth}x${expectedHeight}`
+    );
+  }
 }
 
 function checkImportantJsParses() {
@@ -149,6 +203,7 @@ function checkImportantJsParses() {
 await checkHolidayData();
 checkJalaliConversions();
 await checkManifest();
+await checkStoreAssets();
 await checkPopupDomReferences();
 checkImportantJsParses();
 

@@ -48,6 +48,6 @@ test("Tehran clock snapshot uses the Tehran day phase and Persian clock digits",
   assert.equal(snapshot.timeText, "۱۲:۱۵:۰۰");
   assert.equal(snapshot.meridiemLabel, "ق.ظ");
   assert.equal(snapshot.isMorning, true);
-  assert.equal(snapshot.phaseIcon, "☀");
+  assert.equal(snapshot.phaseIcon, "sun");
   assert.match(snapshot.dateText, /Fri, Jul 17 · Asia\/Tehran/);
 });

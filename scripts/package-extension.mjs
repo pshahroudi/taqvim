@@ -44,6 +44,19 @@ function toZipPath(absolutePath) {
   return relative(rootDir, absolutePath).split(sep).join("/");
 }
 
+function inspectPng(buffer, path) {
+  assert(
+    buffer.subarray(0, 8).toString("hex") === "89504e470d0a1a0a",
+    `${path} is not a PNG file.`
+  );
+
+  return {
+    width: buffer.readUInt32BE(16),
+    height: buffer.readUInt32BE(20),
+    colorType: buffer[25]
+  };
+}
+
 function makeCrc32Table() {
   return Array.from({ length: 256 }, (_item, index) => {
     let value = index;
@@ -143,8 +156,15 @@ async function validateRelease(files, manifest, packageJson) {
   assert(paths.has("assets/fonts/Vazirmatn.woff2"), "Bundled Vazirmatn font is missing.");
   assert(paths.has("assets/fonts/OFL-Vazirmatn.txt"), "Vazirmatn license is missing.");
 
-  for (const iconPath of Object.values(manifest.icons || {})) {
+  for (const [sizeText, iconPath] of Object.entries(manifest.icons || {})) {
     assert(paths.has(iconPath), `Manifest icon is missing from release: ${iconPath}`);
+    const expectedSize = Number(sizeText);
+    const icon = inspectPng(await readFile(join(rootDir, iconPath)), iconPath);
+    assert(
+      icon.width === expectedSize && icon.height === expectedSize,
+      `${iconPath} must be ${expectedSize}x${expectedSize}.`
+    );
+    assert(icon.colorType === 6, `${iconPath} must include an alpha channel.`);
   }
 
   for (const file of files.filter((path) => path.endsWith(".css"))) {

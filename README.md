@@ -37,7 +37,7 @@ If Node.js is available:
 npm run smoke
 ```
 
-The smoke test checks holiday JSON shape and duplicate IDs, manifest/icon references, important JavaScript syntax, and Jalali conversion sanity cases.
+The smoke test checks holiday JSON shape and duplicate IDs, manifest/icon dimensions and alpha channels, store-asset dimensions, important JavaScript syntax, and Jalali conversion sanity cases.
 
 Run the complete test suite with:
 
@@ -64,6 +64,24 @@ npm run package
 The release script verifies manifest/package version consistency, required icons and fonts, and the absence of remote runtime CSS or CSP origins. It writes `dist/taqvim-<version>.zip` from an explicit production allowlist, excluding development scripts, tests, repository metadata, and OS-generated files.
 
 The GitHub Actions quality workflow runs the complete checks, builds the same archive, and uploads it as a workflow artifact on every push and pull request.
+
+## Visual Assets
+
+Taqvim uses a vector-first icon system with separate large and toolbar artwork. The 128px icon keeps the Chrome Web Store's recommended 16px transparent padding, while the 16px and 32px exports use a simplified optical variant. Popup controls use inline SVG instead of platform-dependent Unicode symbols.
+
+Regenerate the extension icons, store icon, and promotional tiles with:
+
+```powershell
+npm run assets:render
+```
+
+Regenerate the five Chrome Web Store screenshots from the real popup and options interfaces with:
+
+```powershell
+npm run assets:capture
+```
+
+Run both steps with `npm run assets`. Chrome can be supplied with the `CHROME_PATH` environment variable when it is not installed in a standard location. Editable sources live in `design/`; upload-ready listing media lives in `store-assets/`. Neither folder is included in the extension ZIP.
 
 ## Current Limitations
 

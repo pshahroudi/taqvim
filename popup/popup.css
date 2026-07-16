@@ -322,6 +322,34 @@ button {
   text-align: center;
 }
 
+.ui-icon-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.utility-icon .ui-icon-svg {
+  width: 18px;
+  height: 18px;
+}
+
+.nav-btn .ui-icon-svg,
+.mini-close-btn .ui-icon-svg {
+  width: 18px;
+  height: 18px;
+  margin: auto;
+}
+
+.tehran-phase-icon .ui-icon-svg {
+  width: 17px;
+  height: 17px;
+}
+
 .utility-label {
   position: absolute;
   width: 1px;

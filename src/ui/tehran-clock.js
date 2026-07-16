@@ -1,5 +1,6 @@
 import { TEHRAN_TIME_ZONE } from "../utils/dates.js";
 import { padNumber, toPersianDigits } from "../utils/format.js";
+import { getIconSvg } from "./icons.js";
 
 const timeFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: TEHRAN_TIME_ZONE,
@@ -36,7 +37,7 @@ export function getTehranClockSnapshot(date = new Date()) {
     meridiemLabel: isMorning ? "ق.ظ" : "ب.ظ",
     dateText: `${dateFormatter.format(date)} · ${TEHRAN_TIME_ZONE}`,
     isMorning,
-    phaseIcon: isMorning ? "☀" : "☾",
+    phaseIcon: isMorning ? "sun" : "moon",
     phaseLabel: isMorning ? "صبح در تهران" : "بعدازظهر در تهران"
   };
 }
@@ -55,7 +56,7 @@ export function renderTehranClock(
   persianDateElement.textContent = formatPersianDate(date);
 
   if (phaseIconElement) {
-    phaseIconElement.textContent = snapshot.phaseIcon;
+    phaseIconElement.innerHTML = getIconSvg(snapshot.phaseIcon);
     phaseIconElement.setAttribute("aria-label", snapshot.phaseLabel);
     phaseIconElement.title = snapshot.phaseLabel;
   }

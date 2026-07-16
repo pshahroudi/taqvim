@@ -19,7 +19,7 @@ export async function updateBadge() {
     settings.usePersianNumerals ?? DEFAULT_SETTINGS.usePersianNumerals;
   const now = new Date();
 
-  await chrome.action.setBadgeBackgroundColor({ color: "#000000" });
+  await chrome.action.setBadgeBackgroundColor({ color: "#173A70" });
 
   if (typeof chrome.action.setBadgeTextColor === "function") {
     await chrome.action.setBadgeTextColor({ color: "#ffffff" });
