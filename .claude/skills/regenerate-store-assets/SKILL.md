@@ -59,8 +59,7 @@ exactly 1280x800.
   (`expectedStoreAssets` in `scripts/smoke-test.mjs`). `npm run package`
   re-checks the icons. Run `npm run smoke` after regenerating.
 - `design/` and `store-assets/` are **never in the zip**; the four
-  `assets/icons/*.png` are. `.gitignore` lists `design/previews/`, but no
-  script writes there (grep 2026-09-13) — it is a leftover, not a step.
+  `assets/icons/*.png` are.
 
 ## After regenerating
 

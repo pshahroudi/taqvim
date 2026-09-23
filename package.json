@@ -8,7 +8,7 @@
     "assets:render": "node scripts/render-brand-assets.mjs",
     "assets:capture": "node scripts/capture-store-assets.mjs",
     "smoke": "node scripts/smoke-test.mjs",
-    "test": "node --test tests",
+    "test": "node --test tests/*.test.mjs",
     "check": "npm run smoke && npm test",
     "package": "node scripts/package-extension.mjs"
   },

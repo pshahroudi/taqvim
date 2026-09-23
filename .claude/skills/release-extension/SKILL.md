@@ -1,6 +1,6 @@
 ---
 name: release-extension
-description: Cut a Taqvim release — bump the version in manifest.json AND package.json, write RELEASE-NOTES-<version>.md, run the gate, build dist/taqvim-<version>.zip with npm run package, open the PR, and know exactly what to check before uploading to the Chrome Web Store. Use whenever a version bump, release, packaging, zip, store upload, or "ship it" comes up, and when npm test or npm run check fails on this Mac (Node 22) even though CI is green.
+description: Cut a Taqvim release — bump the version in manifest.json AND package.json, write RELEASE-NOTES-<version>.md, run the gate, build dist/taqvim-<version>.zip with npm run package, open the PR, and know exactly what to check before uploading to the Chrome Web Store. Use whenever a version bump, release, packaging, zip, store upload, or "ship it" comes up, and when npm test or npm run check passes on one Node version but fails on the other (this Mac runs Node 22, CI runs Node 20).
 ---
 
 # Release Taqvim
@@ -59,26 +59,32 @@ a proposal, not an existing practice — say so.
 9. After Pourya merges: build the zip from `main` (or download the CI
    artifact of the merge commit — same bytes, same allowlist) and upload.
 
-## The gate, and the Node 22 trap
+## The gate
 
 ```bash
 npm run check          # = npm run smoke && npm test
 ```
 
-**`npm test` fails on this Mac.** `package.json` defines it as
-`node --test tests`; Node 20 (CI) accepts a bare directory, Node 21+ treats
-positional args as globs, and this Mac runs Node 22.23.1 — so it dies with
-`Cannot find module .../tests` and `npm run check` reports failure even when
-everything passes. Verified 2026-09-13. Run the pieces yourself:
+It passes on this Mac (Node 22.23.1) and in CI (Node 20): "Smoke checks
+passed.", then 15 tests in about 200 ms. A green CI run is the authoritative
+gate; the local run is to fail fast.
 
-```bash
-npm run smoke                        # scripts/smoke-test.mjs — "Smoke checks passed."
-node --test 'tests/*.test.mjs'       # 15 tests, ~200 ms
-```
+**Keep the `npm test` glob unquoted.** `package.json` runs
+`node --test tests/*.test.mjs`, and npm's shell (`sh`) expands the glob into
+a list of files before Node starts. The two tempting edits each break one
+version (checked 2026-09-14 on Node 20.18.0 and 22.23.1):
 
-(`node --test` with no argument also works and picks up 16 files because
-`scripts/smoke-test.mjs` matches the default `*-test.mjs` pattern.) A green
-CI run is the authoritative gate; the local run is to fail fast.
+- Quoting it, as the Node docs suggest, leaves the glob to Node, and Node 20
+  does not expand globs: `Could not find '.../tests/*.test.mjs'`, exit 1.
+- A bare directory, `node --test tests` (the old script), works on Node 20,
+  but Node 22 reads the argument as a glob that matches the folder itself and
+  fails with `Cannot find module '.../tests'`.
+
+On Windows npm runs scripts through cmd.exe, which does not expand globs, so
+Node gets the pattern as typed, the quoted case above: fine on Node 22, fails
+on Node 20 (inferred, not run on Windows). Bare `node --test` with no
+argument runs 16 tests, not 15, because its default `*-test.mjs` pattern
+also picks up `scripts/smoke-test.mjs`.
 
 What the smoke test proves (`scripts/smoke-test.mjs`): holiday JSON contract
 and no duplicate ids across all four data files; three Jalali conversion

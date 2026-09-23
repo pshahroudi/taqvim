@@ -9,7 +9,7 @@ no accounts. Current version 0.1.4 (manifest and package.json must agree).
 Load the matching skill before starting; each is grounded in this tree and
 carries the line numbers, commands and traps:
 
-- `release-extension` — version bump, release notes, `npm run package`, CI, PR, Chrome Web Store checklist. Also explains why `npm test` fails on this Mac's Node 22.
+- `release-extension` — version bump, release notes, `npm run package`, CI, PR, Chrome Web Store checklist. Also explains why the `npm test` glob must stay unquoted.
 - `holiday-data-update` — the four `src/data` files, the record contract, verified-year precedence, the yearly 1406 refresh. Script: `list-holidays.mjs`.
 - `jalali-date-math` — `src/calendar`, supported range, leap years, noon pinning, Hijri asymmetry, badge vs Tehran time. Script: `convert-date.mjs`.
 - `regenerate-store-assets` — icons, promo tiles and the five screenshots via headless Chrome.
@@ -19,7 +19,7 @@ carries the line numbers, commands and traps:
 
 ```bash
 npm run smoke                      # scripts/smoke-test.mjs: data contract, manifest, icons, DOM ids, syntax
-node --test 'tests/*.test.mjs'     # 15 node:test cases; `npm test` (node --test tests) breaks on Node 21+
+npm test                           # node --test tests/*.test.mjs: 15 node:test cases, passes on Node 20 and 22
 npm run package                    # validated dist/taqvim-<version>.zip from an allowlist
 npm run assets                     # regenerate icons + store screenshots (needs local Chrome)
 ```

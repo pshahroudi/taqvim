@@ -84,7 +84,7 @@ Then the suite:
 
 ```bash
 npm run smoke
-node --test 'tests/*.test.mjs'     # `npm test` breaks on Node 22 — release-extension explains
+npm test                           # all 15 tests, including tests/calendar.test.mjs
 ```
 
 `tests/calendar.test.mjs` round-trips **every day from 1900 to 2100**

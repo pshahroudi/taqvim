@@ -57,7 +57,7 @@ which added `showTehranTime`: 6 files, 104 insertions. Follow it.
 
 ```bash
 npm run smoke                      # popup getElementById ids vs popup.html, JS parses
-node --test 'tests/*.test.mjs'     # settings + holidays tests (npm test is broken on Node 22)
+npm test                           # all 15 tests, including the settings + holidays tests
 ```
 
 Then load unpacked, open options, toggle the control (expect "Saved"), open
