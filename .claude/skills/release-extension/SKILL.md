@@ -129,6 +129,10 @@ no remote origin in the CSP. `dist/` is gitignored.
   manifest's `homepage_url` does not fill it; that key only sets the website
   link on `chrome://extensions`.
 
+## Microsoft Edge Add-ons
+
+The same zip ships to Edge (Partner Center), which runs Chrome MV3 extensions unchanged. The listing text, field values, permission justifications, search terms and certification notes are in `store-assets/LISTING.md`; keep it in step with the code. Edge's extension logo is `store-assets/taqvim-store-logo-300.png`. The store also rejects a version that is not greater than the published one.
+
 ## Dashboard access
 
 Nothing in the repo records the developer-dashboard item id or account; ask
