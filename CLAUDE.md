@@ -2,7 +2,7 @@
 
 Guidance for Claude Code in this repository. Taqvim is a Manifest V3 Chrome
 extension: a Persian/Jalali calendar with bundled holiday JSON, no network,
-no accounts. Current version 0.1.5 (manifest and package.json must agree).
+no accounts. Current version 0.1.6 (manifest and package.json must agree).
 
 ## Skills
 
@@ -19,7 +19,8 @@ carries the line numbers, commands and traps:
 
 ```bash
 npm run smoke                      # scripts/smoke-test.mjs: data contract, manifest, icons, DOM ids, syntax
-npm test                           # node --test tests/*.test.mjs: 15 node:test cases, passes on Node 20 and 22
+npm test                           # node --test tests/*.test.mjs: 18 node:test cases, passes on Node 20 and 22
+npm run test:browser               # scripts/browser-test.mjs: loads the extension in headless Chrome over CDP
 npm run package                    # validated dist/taqvim-<version>.zip from an allowlist
 npm run assets                     # regenerate icons + store screenshots (needs local Chrome)
 ```
@@ -28,7 +29,10 @@ No bundler, no dependencies, no `node_modules`: Chrome loads the ES modules
 in `src/`, `popup/`, `options/` and `background/` directly. Edit, then reload
 in `chrome://extensions` (Developer mode → Load unpacked → this folder).
 CI (`.github/workflows/quality.yml`) runs smoke + tests + package on Node 20
-for every push and PR.
+for every push and PR, rebuilds the zip to prove it is reproducible, and runs
+the browser test on the unzipped package. Pushing tag `v<version>` runs
+`.github/workflows/release.yml`, which publishes the CI-built zip and its
+sha256 as a GitHub Release (first used for v0.1.6).
 
 ## Architecture
 

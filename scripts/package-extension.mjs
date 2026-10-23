@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { deflateRawSync } from "node:zlib";
 import { mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
@@ -77,13 +78,10 @@ function crc32(buffer) {
   return (value ^ 0xffffffff) >>> 0;
 }
 
-function toDosDateTime(date) {
-  const year = Math.max(date.getFullYear(), 1980);
-  return {
-    time: (date.getHours() << 11) | (date.getMinutes() << 5) | Math.floor(date.getSeconds() / 2),
-    date: ((year - 1980) << 9) | ((date.getMonth() + 1) << 5) | date.getDate()
-  };
-}
+// Every entry carries the same timestamp, 1980-01-01 00:00 (the DOS epoch),
+// so the archive depends only on file contents and paths, never on mtimes or
+// the build machine's time zone. Same tree, same Node zlib: same bytes.
+const FIXED_DOS_TIME = { time: 0, date: (1 << 5) | 1 };
 
 function createZip(entries) {
   const localParts = [];
@@ -94,7 +92,7 @@ function createZip(entries) {
     const name = Buffer.from(entry.path, "utf8");
     const compressed = deflateRawSync(entry.data, { level: 9 });
     const checksum = crc32(entry.data);
-    const dos = toDosDateTime(entry.modifiedAt);
+    const dos = FIXED_DOS_TIME;
     const localHeader = Buffer.alloc(30);
 
     localHeader.writeUInt32LE(0x04034b50, 0);
@@ -187,8 +185,7 @@ await validateRelease(files, manifest, packageJson);
 const entries = await Promise.all(
   files.map(async (file) => ({
     path: toZipPath(file),
-    data: await readFile(file),
-    modifiedAt: (await stat(file)).mtime
+    data: await readFile(file)
   }))
 );
 const archive = createZip(entries);
@@ -198,4 +195,8 @@ await rm(distDir, { recursive: true, force: true });
 await mkdir(distDir, { recursive: true });
 await writeFile(join(distDir, archiveName), archive);
 
+const sha256 = createHash("sha256").update(archive).digest("hex");
+await writeFile(join(distDir, `${archiveName}.sha256`), `${sha256}  ${archiveName}\n`);
+
 console.log(`Created dist/${archiveName} (${entries.length} files, ${archive.length} bytes).`);
+console.log(`sha256 ${sha256}`);

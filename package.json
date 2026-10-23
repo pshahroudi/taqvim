@@ -1,6 +1,6 @@
 {
   "name": "taqvim",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "license": "MIT",
   "homepage": "https://shahroudi.us/work/taqvim/",
@@ -13,6 +13,7 @@
     "smoke": "node scripts/smoke-test.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "npm run smoke && npm test",
+    "test:browser": "node scripts/browser-test.mjs",
     "package": "node scripts/package-extension.mjs"
   },
   "engines": {

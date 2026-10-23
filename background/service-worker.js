@@ -1,22 +1,12 @@
 import { updateBadge } from "../src/ui/badge.js";
-import { DEFAULT_SETTINGS, normalizeSettings, setSettings } from "../src/ui/storage.js";
+import { getSettings } from "../src/ui/storage.js";
 
 const MIDNIGHT_ALARM = "taqvim-midnight-refresh";
 
+// getSettings() writes defaults for any missing key and migrates the legacy
+// nested shape, so reading once is enough.
 async function ensureDefaultSettings() {
-  const keys = Object.keys(DEFAULT_SETTINGS);
-  const current = await chrome.storage.sync.get(null);
-  const normalized = normalizeSettings(current);
-  const holidayTypeKeys = Object.keys(DEFAULT_SETTINGS.holidayTypes);
-  const holidayTypes = current.holidayTypes || {};
-  const shouldWriteDefaults =
-    Boolean(current.settings) ||
-    keys.some((key) => current[key] === undefined) ||
-    holidayTypeKeys.some((key) => holidayTypes[key] === undefined);
-
-  if (shouldWriteDefaults) {
-    await setSettings(normalized);
-  }
+  await getSettings();
 }
 
 function getNextMidnightTimestamp() {

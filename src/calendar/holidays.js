@@ -197,16 +197,20 @@ export function getHolidayCategoryLabel(category) {
 
 export function getHolidayStatus(
   records,
-  { showHolidays = true, forToday = false, isWeeklyHoliday = false } = {}
+  {
+    showHolidays = true,
+    isWeeklyHoliday = false,
+    weeklyHolidayLabel = "تعطیل رسمی هفتگی"
+  } = {}
 ) {
-  if (!showHolidays) return "Holiday layer hidden";
+  if (!showHolidays) return "نمایش تعطیلات خاموش است";
   if (!records.length) {
-    if (isWeeklyHoliday) return "تعطیل رسمی هفتگی";
-    return forToday ? "No holiday today" : "این روز تعطیل رسمی نیست";
+    if (isWeeklyHoliday) return weeklyHolidayLabel;
+    return "این روز تعطیل رسمی نیست";
   }
   if (hasPublicHoliday(records) && hasObservance(records)) return "تعطیل رسمی و مناسبت";
   if (hasPublicHoliday(records)) return "تعطیل رسمی";
-  if (isWeeklyHoliday) return "تعطیل رسمی هفتگی";
+  if (isWeeklyHoliday) return weeklyHolidayLabel;
   return "مناسبت فرهنگی";
 }
 

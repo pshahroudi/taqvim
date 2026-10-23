@@ -12,10 +12,11 @@ Plain JavaScript ES modules, Manifest V3, no bundler and no dependencies. It mak
 - Shows the current Jalali month with Persian dates as the primary view.
 - Shows Gregorian dates as secondary labels and optional Hijri dates in details.
 - Uses bundled holiday data and fonts only. It makes no runtime requests to external APIs and does not require a Taqvim account.
-- Lets you choose theme, numerals, week start, holiday layers, weekend highlighting, and whether the popup opens to today or restores the last viewed date.
+- Lets you choose theme, numerals, week start, weekend days (Friday, or Saturday and Sunday), holiday layers, weekend highlighting, and whether the popup opens to today or restores the last viewed date.
 - Shows the current Tehran time and date in a dedicated popup card.
 - Uses the computer's local date for Today, calendar highlighting, and the toolbar badge.
 - Shows selected-day details and conversions for the date selected in the calendar.
+- Opens with Alt+Shift+J (change it at `chrome://extensions/shortcuts`).
 
 ## Load Unpacked In Chrome
 
@@ -50,6 +51,14 @@ Run the complete test suite with:
 npm test
 ```
 
+Load the extension in headless Chrome and check the popup, the options page and the badge end to end (needs a local Chrome; `CHROME_PATH` overrides the location):
+
+```bash
+npm run test:browser
+```
+
+It loads this folder by default, or the folder given as an argument. CI runs it on the unzipped release archive.
+
 ## Holiday Data
 
 Taqvim includes a year-specific official holiday calendar for Solar Hijri year 1405. It is sourced from the Calendar Council of the Institute of Geophysics, University of Tehran:
@@ -68,7 +77,9 @@ npm run package
 
 The release script verifies manifest/package version consistency, required icons and fonts, and the absence of remote runtime CSS or CSP origins. It writes `dist/taqvim-<version>.zip` from an explicit production allowlist, excluding development scripts, tests, repository metadata, and OS-generated files.
 
-The GitHub Actions quality workflow runs the complete checks, builds the same archive, and uploads it as a workflow artifact on every push and pull request.
+The archive is reproducible: every entry carries the same fixed timestamp, so the same tree gives the same bytes, and the script writes `dist/taqvim-<version>.zip.sha256` beside it.
+
+The GitHub Actions quality workflow runs the complete checks, builds the archive, rebuilds it to prove the hash does not move, loads it in headless Chrome, and uploads the zip and its sha256 as a workflow artifact on every push and pull request. Pushing a `v<version>` tag publishes the CI-built zip and its sha256 as a GitHub Release, with `RELEASE-NOTES-<version>.md` as the notes.
 
 ## Visual Assets
 

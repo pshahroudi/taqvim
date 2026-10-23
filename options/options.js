@@ -13,65 +13,22 @@ const appVersionEl = document.getElementById("appVersion");
 const resetDefaultsBtn = document.getElementById("resetDefaultsBtn");
 
 const controls = {
-  theme: findControl(["#theme", "#themeSelect", "select[name='theme']"]),
-  fontSize: findControl(["#fontSize", "select[name='fontSize']"]),
-  showHijri: findControl([
-    "#showHijri",
-    "#showHijriDate",
-    "input[name='showHijri']",
-  ]),
-  showTehranTime: findControl([
-    "#showTehranTime",
-    "input[name='showTehranTime']",
-  ]),
-  usePersianNumerals: findControl([
-    "#usePersianNumerals",
-    "input[name='usePersianNumerals']",
-  ]),
-  weekStart: findControl([
-    "#weekStart",
-    "#weekStartsOn",
-    "select[name='weekStart']",
-  ]),
-  showHolidays: findControl(["#showHolidays", "input[name='showHolidays']"]),
-  highlightWeekends: findControl([
-    "#highlightWeekends",
-    "input[name='highlightWeekends']",
-  ]),
-  autoJumpToTodayOnOpen: findControl([
-    "#autoJumpToTodayOnOpen",
-    "#autoJumpToToday",
-    "input[name='autoJumpToTodayOnOpen']",
-  ]),
-  holidayOfficialIran: findControl([
-    "#holidayOfficialIran",
-    "#officialIran",
-    "input[name='holidayOfficialIran']",
-    "input[name='officialIran']",
-  ]),
-  holidayCultural: findControl([
-    "#holidayCultural",
-    "#cultural",
-    "input[name='holidayCultural']",
-    "input[name='cultural']",
-  ]),
-  holidayIslamic: findControl([
-    "#holidayIslamic",
-    "#islamic",
-    "input[name='holidayIslamic']",
-    "input[name='islamic']",
-  ]),
+  theme: document.getElementById("theme"),
+  fontSize: document.getElementById("fontSize"),
+  showHijri: document.getElementById("showHijri"),
+  showTehranTime: document.getElementById("showTehranTime"),
+  usePersianNumerals: document.getElementById("usePersianNumerals"),
+  weekStart: document.getElementById("weekStart"),
+  weekendDays: document.getElementById("weekendDays"),
+  showHolidays: document.getElementById("showHolidays"),
+  highlightWeekends: document.getElementById("highlightWeekends"),
+  autoJumpToTodayOnOpen: document.getElementById("autoJumpToToday"),
+  holidayOfficialIran: document.getElementById("holidayOfficialIran"),
+  holidayCultural: document.getElementById("holidayCultural"),
+  holidayIslamic: document.getElementById("holidayIslamic"),
 };
 
 let statusTimer = null;
-
-function findControl(selectors) {
-  for (const selector of selectors) {
-    const element = document.querySelector(selector);
-    if (element) return element;
-  }
-  return null;
-}
 
 function setValueIfPresent(element, value) {
   if (!element) return;
@@ -123,6 +80,7 @@ function applyControls(settings) {
   setValueIfPresent(controls.showTehranTime, settings.showTehranTime);
   setValueIfPresent(controls.usePersianNumerals, settings.usePersianNumerals);
   setValueIfPresent(controls.weekStart, settings.weekStart);
+  setValueIfPresent(controls.weekendDays, settings.weekendDays);
   setValueIfPresent(controls.showHolidays, settings.showHolidays);
   setValueIfPresent(controls.highlightWeekends, settings.highlightWeekends);
   setValueIfPresent(
@@ -195,6 +153,10 @@ async function init() {
 
   bindSelect(controls.weekStart, async (value) => {
     await savePatch({ weekStart: value });
+  });
+
+  bindSelect(controls.weekendDays, async (value) => {
+    await savePatch({ weekendDays: value });
   });
 
   bindCheckbox(controls.showHolidays, async (checked) => {

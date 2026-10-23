@@ -25,9 +25,13 @@ releases "1.1", "2.0", "1.3" — those are Pourya's marketing numbers, not the
 manifest. When he says "1.3 was just released" the manifest says `0.1.3`.
 Bump the manifest form; ask only if the jump is bigger than a patch.
 
-**No git tags exist** (`git tag -l` is empty as of 2026-09-13). Tagging
-`v<version>` on the merge commit is a sensible convention to start, but it is
-a proposal, not an existing practice — say so.
+**Tags start at v0.1.6.** After Pourya merges the release PR, tag the merge
+commit `v<version>` and push the tag (with his approval): that runs
+`.github/workflows/release.yml`, which checks the tag matches the manifest,
+runs the gate, builds the zip and publishes it with its `.sha256` as a GitHub
+Release whose notes are `RELEASE-NOTES-<version>.md`. Upload that release's
+zip to the stores, so the store package and the published hash are the same
+bytes. Earlier releases (0.1.0 to 0.1.5) have no tags.
 
 ## Steps
 
@@ -62,7 +66,9 @@ npm run check          # = npm run smoke && npm test
 ```
 
 It passes on this Mac (Node 22.23.1) and in CI (Node 20): "Smoke checks
-passed.", then 15 tests in about 200 ms. A green CI run is the authoritative
+passed.", then 18 tests in about 300 ms. `npm run test:browser` loads the
+extension in headless Chrome (local Chrome needed); CI runs it on the unzipped
+package. A green CI run is the authoritative
 gate; the local run is to fail fast.
 
 **Keep the `npm test` glob unquoted.** `package.json` runs
@@ -79,8 +85,8 @@ version (checked 2026-09-14 on Node 20.18.0 and 22.23.1):
 On Windows npm runs scripts through cmd.exe, which does not expand globs, so
 Node gets the pattern as typed, the quoted case above: fine on Node 22, fails
 on Node 20 (inferred, not run on Windows). Bare `node --test` with no
-argument runs 16 tests, not 15, because its default `*-test.mjs` pattern
-also picks up `scripts/smoke-test.mjs`.
+argument also picks up `scripts/smoke-test.mjs` and `scripts/browser-test.mjs`
+through its default `*-test.mjs` pattern, so do not use it.
 
 What the smoke test proves (`scripts/smoke-test.mjs`): holiday JSON contract
 and no duplicate ids across all four data files; three Jalali conversion
@@ -96,7 +102,9 @@ with an alpha channel; the eight store PNGs have the right dimensions; every
 — it **deletes `dist/` first**, so anything else there is gone. It zips an
 explicit allowlist and nothing else: `manifest.json`, `README.md`, `assets/`,
 `background/`, `options/`, `popup/`, `src/`, skipping any dotfile. At 0.1.4
-that is 33 files, 169,198 bytes. `scripts/`, `tests/`, `design/`,
+that was 33 files, 169,198 bytes. Every entry is stamped 1980-01-01 00:00, so
+the archive is reproducible, and `dist/taqvim-<version>.zip.sha256` is written
+beside it; CI rebuilds after touching every file and fails if the hash moves. `scripts/`, `tests/`, `design/`,
 `store-assets/`, `package.json`, release notes and `.github/` never enter.
 
 Before writing it re-validates: MV3, version match, `assets/fonts/Vazirmatn.woff2`

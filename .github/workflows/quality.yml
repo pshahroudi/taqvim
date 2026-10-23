@@ -27,9 +27,25 @@ jobs:
       - name: Build Chrome Web Store archive
         run: npm run package
 
+      - name: Rebuild with new mtimes; the archive must not change
+        run: |
+          cp dist/*.zip.sha256 "$RUNNER_TEMP/first.sha256"
+          find . -path ./.git -prune -o -type f -exec touch {} +
+          npm run package
+          cmp "$RUNNER_TEMP/first.sha256" dist/*.zip.sha256
+          cat dist/*.zip.sha256
+
+      - name: Load the packaged zip in headless Chrome
+        run: |
+          unzip -q dist/*.zip -d "$RUNNER_TEMP/unpacked"
+          google-chrome --version
+          CHROME_PATH="$(command -v google-chrome)" npm run test:browser -- "$RUNNER_TEMP/unpacked"
+
       - name: Upload release archive
         uses: actions/upload-artifact@v7
         with:
           name: taqvim-${{ github.sha }}
-          path: dist/*.zip
+          path: |
+            dist/*.zip
+            dist/*.zip.sha256
           if-no-files-found: error

@@ -816,6 +816,10 @@ button {
   background: var(--calendar-board);
 }
 
+.calendar-row {
+  display: contents;
+}
+
 .day-cell {
   min-width: 0;
   min-height: 0;

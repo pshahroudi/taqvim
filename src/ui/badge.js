@@ -1,6 +1,6 @@
 import { toJalali } from "../calendar/jalali.js";
 import { formatNumber, formatPersianOrderedDate } from "../utils/format.js";
-import { DEFAULT_SETTINGS } from "./storage.js";
+import { getSettings } from "./storage.js";
 
 function getBadgeText(jalaliDate, usePersianNumerals) {
   return formatNumber(jalaliDate.jd, usePersianNumerals);
@@ -13,10 +13,7 @@ function formatTitle(now, usePersianNumerals) {
 }
 
 export async function updateBadge() {
-  const settings = await chrome.storage.sync.get(["usePersianNumerals"]);
-
-  const usePersianNumerals =
-    settings.usePersianNumerals ?? DEFAULT_SETTINGS.usePersianNumerals;
+  const { usePersianNumerals } = await getSettings();
   const now = new Date();
 
   await chrome.action.setBadgeBackgroundColor({ color: "#173A70" });

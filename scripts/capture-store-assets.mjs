@@ -1,4 +1,3 @@
-import { spawn } from "node:child_process";
 import {
   mkdir,
   mkdtemp,
@@ -6,10 +5,10 @@ import {
   rm,
   writeFile,
 } from "node:fs/promises";
-import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { delay, launchChrome } from "./cdp.mjs";
 
 const rootDir = dirname(dirname(fileURLToPath(import.meta.url)));
 const outputDir = resolve(rootDir, "store-assets/screenshots");
@@ -137,115 +136,6 @@ const OPTIONS_CAPTURE_CSS = `
   }
 `;
 
-function findChrome() {
-  const candidates = [
-    process.env.CHROME_PATH,
-    process.platform === "win32"
-      ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-      : null,
-    process.platform === "win32"
-      ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
-      : null,
-    process.platform === "darwin"
-      ? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-      : null,
-    process.platform === "linux" ? "/usr/bin/google-chrome" : null,
-    process.platform === "linux" ? "/usr/bin/google-chrome-stable" : null,
-    process.platform === "linux" ? "/usr/bin/chromium" : null,
-  ].filter(Boolean);
-
-  const chromePath = candidates.find(existsSync);
-  if (!chromePath) {
-    throw new Error("Google Chrome was not found. Set CHROME_PATH and retry.");
-  }
-
-  return chromePath;
-}
-
-function delay(milliseconds) {
-  return new Promise((resolvePromise) => setTimeout(resolvePromise, milliseconds));
-}
-
-class PipeCdpClient {
-  constructor(child) {
-    this.child = child;
-    this.commandPipe = child.stdio[3];
-    this.eventPipe = child.stdio[4];
-    this.nextId = 1;
-    this.pending = new Map();
-    this.buffer = Buffer.alloc(0);
-
-    this.eventPipe.on("data", (chunk) => this.handleData(chunk));
-    this.eventPipe.on("error", (error) => this.rejectAll(error));
-    child.on("exit", (code) => {
-      if (this.pending.size > 0) {
-        this.rejectAll(new Error(`Chrome exited early with code ${code}.`));
-      }
-    });
-  }
-
-  handleData(chunk) {
-    this.buffer = Buffer.concat([this.buffer, chunk]);
-
-    while (true) {
-      const separatorIndex = this.buffer.indexOf(0);
-      if (separatorIndex === -1) return;
-
-      const messageBuffer = this.buffer.subarray(0, separatorIndex);
-      this.buffer = this.buffer.subarray(separatorIndex + 1);
-      if (messageBuffer.length === 0) continue;
-
-      const message = JSON.parse(messageBuffer.toString("utf8"));
-      if (!message.id) continue;
-
-      const pending = this.pending.get(message.id);
-      if (!pending) continue;
-
-      clearTimeout(pending.timeout);
-      this.pending.delete(message.id);
-
-      if (message.error) {
-        pending.reject(
-          new Error(`${pending.method}: ${message.error.message || "CDP command failed"}`),
-        );
-      } else {
-        pending.resolve(message.result || {});
-      }
-    }
-  }
-
-  rejectAll(error) {
-    for (const pending of this.pending.values()) {
-      clearTimeout(pending.timeout);
-      pending.reject(error);
-    }
-    this.pending.clear();
-  }
-
-  send(method, params = {}, sessionId) {
-    const id = this.nextId;
-    this.nextId += 1;
-
-    const payload = { id, method, params };
-    if (sessionId) payload.sessionId = sessionId;
-
-    return new Promise((resolvePromise, reject) => {
-      const timeout = setTimeout(() => {
-        this.pending.delete(id);
-        reject(new Error(`${method} timed out.`));
-      }, 15_000);
-
-      this.pending.set(id, {
-        method,
-        resolve: resolvePromise,
-        reject,
-        timeout,
-      });
-      this.commandPipe.write(`${JSON.stringify(payload)}\0`);
-    });
-  }
-}
-
 function inspectPng(buffer) {
   const signature = buffer.subarray(0, 8).toString("hex");
   if (signature !== "89504e470d0a1a0a") {
@@ -286,6 +176,13 @@ async function createPage(client, url, initScript = "") {
       screenWidth: 1280,
       screenHeight: 800,
     },
+    sessionId,
+  );
+  // The "system" theme follows the OS; pin it so a Mac in dark mode still
+  // captures the light screenshots.
+  await client.send(
+    "Emulation.setEmulatedMedia",
+    { features: [{ name: "prefers-color-scheme", value: "light" }] },
     sessionId,
   );
   await client.send("Page.navigate", { url }, sessionId);
@@ -405,27 +302,11 @@ async function capture(client, sessionId, filename) {
   console.log(`Captured store-assets/screenshots/${filename}.`);
 }
 
-const chromePath = findChrome();
-const child = spawn(
-  chromePath,
-  [
-    "--headless=new",
-    "--disable-gpu",
-    "--disable-default-apps",
-    "--allow-file-access-from-files",
-    "--disable-web-security",
-    "--no-first-run",
-    "--remote-debugging-pipe",
-    `--user-data-dir=${profileDir}`,
-    "--window-size=1280,800",
-    "about:blank",
-  ],
-  {
-    stdio: ["ignore", "ignore", "inherit", "pipe", "pipe"],
-    windowsHide: true,
-  },
-);
-const client = new PipeCdpClient(child);
+const { client, close } = await launchChrome(profileDir, [
+  "--allow-file-access-from-files",
+  "--disable-web-security",
+  "--window-size=1280,800",
+]);
 
 try {
   await mkdir(outputDir, { recursive: true });
@@ -537,18 +418,7 @@ try {
     throw new Error("Store icon must be 128x128.");
   }
 } finally {
-  await client.send("Browser.close").catch(() => child.kill());
-  await new Promise((resolvePromise) => {
-    if (child.exitCode !== null) {
-      resolvePromise();
-      return;
-    }
-    child.once("exit", resolvePromise);
-    setTimeout(() => {
-      child.kill();
-      resolvePromise();
-    }, 5_000);
-  });
+  await close();
   await rm(profileDir, {
     recursive: true,
     force: true,

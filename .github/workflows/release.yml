@@ -1,0 +1,53 @@
+name: GitHub Release
+
+# Pushing a v<version> tag on main builds the zip in CI and publishes it, with
+# its sha256, as a GitHub Release. The tag must match manifest.json, and the
+# notes come from RELEASE-NOTES-<version>.md.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          package-manager-cache: false
+
+      - name: Tag matches the manifest version
+        run: |
+          version="$(node -p 'require("./manifest.json").version')"
+          test "$GITHUB_REF_NAME" = "v$version" || {
+            echo "Tag $GITHUB_REF_NAME does not match manifest version $version"
+            exit 1
+          }
+          test -f "RELEASE-NOTES-$version.md"
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Run smoke and unit tests
+        run: npm run check
+
+      - name: Build the archive
+        run: npm run package
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/taqvim-$VERSION.zip" \
+            "dist/taqvim-$VERSION.zip.sha256" \
+            --title "Taqvim $VERSION" \
+            --notes-file "RELEASE-NOTES-$VERSION.md" \
+            --verify-tag

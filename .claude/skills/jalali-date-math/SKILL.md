@@ -49,7 +49,10 @@ is small, and most "bugs" reported here are one of the known behaviours.
   dates by a day at times (1405/01/01 renders as Shawwal 2; officially it was
   Eid al-Fitr, Shawwal 1). That is data, not a math bug — the verified
   holiday file exists for it. `validateHijriDate` accepts day 1-30 in every
-  month and the converter reports every Hijri month as 30 days long.
+  month; since 0.1.6 `getHijriMonthLength` finds day 1 by the same scan and
+  checks whether day 30 is still in the month, so the converter caps the day
+  field at 29 or 30 and day 30 of a 29-day month returns "This Hijri month
+  has 29 days, so day 30 does not exist." (1447 months 1, 3, 7, 10, 11).
 - **The badge is local time; only the Tehran card is Tehran.** The service
   worker sets the badge from `new Date()` and re-arms the one-shot
   `taqvim-midnight-refresh` alarm with `setHours(24, 0, 5, 0)` — local
@@ -84,7 +87,7 @@ Then the suite:
 
 ```bash
 npm run smoke
-npm test                           # all 15 tests, including tests/calendar.test.mjs
+npm test                           # all 18 tests, including tests/calendar.test.mjs
 ```
 
 `tests/calendar.test.mjs` round-trips **every day from 1900 to 2100**

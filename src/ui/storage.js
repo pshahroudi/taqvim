@@ -5,6 +5,7 @@ const DEFAULT_SETTINGS = {
   showTehranTime: true,
   usePersianNumerals: true,
   weekStart: "saturday",
+  weekendDays: "friday",
   showHolidays: true,
   holidayTypes: {
     officialIran: true,
@@ -72,6 +73,9 @@ export function normalizeSettings(input = {}) {
     weekStart: ["saturday", "sunday", "monday"].includes(source.weekStart)
       ? source.weekStart
       : DEFAULT_SETTINGS.weekStart,
+    weekendDays: ["friday", "saturday-sunday"].includes(source.weekendDays)
+      ? source.weekendDays
+      : DEFAULT_SETTINGS.weekendDays,
     showHolidays: toBooleanSetting(
       source.showHolidays,
       DEFAULT_SETTINGS.showHolidays
@@ -104,38 +108,16 @@ function mergeSettings(base, patch = {}) {
 
 function toStoragePayload(settings) {
   const normalized = normalizeSettings(settings);
-  return {
-    theme: normalized.theme,
-    fontSize: normalized.fontSize,
-    showHijri: normalized.showHijri,
-    showTehranTime: normalized.showTehranTime,
-    usePersianNumerals: normalized.usePersianNumerals,
-    weekStart: normalized.weekStart,
-    showHolidays: normalized.showHolidays,
-    holidayTypes: normalized.holidayTypes,
-    highlightWeekends: normalized.highlightWeekends,
-    autoJumpToTodayOnOpen: normalized.autoJumpToTodayOnOpen
-  };
+  return Object.fromEntries(
+    Object.keys(DEFAULT_SETTINGS).map((key) => [key, normalized[key]])
+  );
 }
 
 function needsMigration(raw) {
   if (!isPlainObject(raw)) return false;
   if (isPlainObject(raw.settings)) return true;
 
-  const requiredKeys = [
-    "theme",
-    "fontSize",
-    "showHijri",
-    "showTehranTime",
-    "usePersianNumerals",
-    "weekStart",
-    "showHolidays",
-    "holidayTypes",
-    "highlightWeekends",
-    "autoJumpToTodayOnOpen"
-  ];
-
-  if (requiredKeys.some((key) => !(key in raw))) return true;
+  if (Object.keys(DEFAULT_SETTINGS).some((key) => !(key in raw))) return true;
 
   const holidayTypes = isPlainObject(raw.holidayTypes) ? raw.holidayTypes : {};
   return Object.keys(DEFAULT_SETTINGS.holidayTypes).some((key) => !(key in holidayTypes));

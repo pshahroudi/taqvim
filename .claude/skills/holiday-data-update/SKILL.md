@@ -99,7 +99,7 @@ day — chips and the status line come from the same function.
 
 ```bash
 npm run smoke                      # contract, duplicate ids, source url
-npm test                           # all 15 tests, including tests/holidays.test.mjs
+npm test                           # all 18 tests, including tests/holidays.test.mjs
 ```
 
 `tests/holidays.test.mjs` hard-codes: 29 verified records, 1405 verified,
