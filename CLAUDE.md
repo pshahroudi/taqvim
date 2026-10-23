@@ -82,8 +82,10 @@ move the badge to Tehran time.
 - Work arrives as a branch and a PR, never a commit on `main`. The
   screenshots in `store-assets/` are committed outputs — regenerate them when
   the UI changes, and expect binary diffs.
-- The repo is public. Every commit must carry the GitHub noreply address,
-  never a personal email: the local `user.email` is set to it, and a squash
-  merge must pass it explicitly, or GitHub uses the account's Gmail:
-  `gh pr merge N --squash --delete-branch --author-email 5138993+pshahroudi@users.noreply.github.com`.
-  Check with `git log --format='%ae %ce' -1` after every merge.
+- The repo is public. Every commit must carry the GitHub noreply address
+  (`5138993+pshahroudi@users.noreply.github.com`), never a personal email.
+  The local `user.email` is set to it, and GitHub merges use it because the
+  account's "Keep my email addresses private" is on (since 2026-10-22; with
+  it off, a merge stamps the account's Gmail). Merge with
+  `gh pr merge N --squash --delete-branch`, then check
+  `git log --format='%ae %ce' -1`.
