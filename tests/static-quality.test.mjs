@@ -17,6 +17,7 @@ test("runtime styles and CSP are self-contained", async () => {
   assert.doesNotMatch(popupCss, /@import|https?:\/\//i);
   assert.doesNotMatch(optionsCss, /@import|https?:\/\//i);
   assert.doesNotMatch(manifest.content_security_policy.extension_pages, /https?:\/\//i);
+  assert.match(manifest.content_security_policy.extension_pages, /default-src 'self';/);
   assert.match(manifest.content_security_policy.extension_pages, /connect-src 'self';/);
   assert.match(popupCss, /Vazirmatn\.woff2/);
   assert.match(optionsCss, /Vazirmatn\.woff2/);
