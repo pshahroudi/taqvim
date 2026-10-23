@@ -10,40 +10,40 @@ Settings are **flat keys in `chrome.storage.sync`** (not nested), and
 `normalizeSettings()`, which coerces each field against its allowed values
 and falls back to `DEFAULT_SETTINGS`. A legacy nested `{settings: {...}}`
 shape is detected by `needsMigration` and rewritten flat on the next read.
-Nothing else may read `chrome.storage.sync` for settings — the one exception
-is `badge.js`, which reads only `usePersianNumerals`.
+Nothing else may read `chrome.storage.sync` for settings; since 0.1.6 the
+badge and the service worker go through `getSettings()` too, so there is no
+exception left.
 
-The reference change is commit `5aa87d7` ("show/hide tehran time now"),
-which added `showTehranTime`: 6 files, 104 insertions. Follow it.
+The reference change is the 0.1.6 `weekendDays` setting (commit `a5fe6d0`,
+a select with two allowed values). It touches storage.js, options.html,
+options.js, the popup renderer and tests/settings.test.mjs.
 
 ## The places (all must change, in this order)
 
-1. **`src/ui/storage.js`** — four spots:
-   - `DEFAULT_SETTINGS` (line 1-16): the default value.
+1. **`src/ui/storage.js`** — two spots:
+   - `DEFAULT_SETTINGS` (top of the file): the default value.
    - `normalizeSettings()`: coercion — `toBooleanSetting(source.x, DEFAULT_SETTINGS.x)`
-     for booleans, or an allow-list ternary like `theme`/`fontSize`/`weekStart`.
-   - `toStoragePayload()`: the explicit list of keys written; a key missing
-     here is normalized on read but **never persisted**.
-   - `needsMigration()` `requiredKeys`: a key missing here means an old
-     install keeps the old shape until something else triggers migration.
+     for booleans, or an allow-list ternary like `theme`/`weekStart`/`weekendDays`.
+   `toStoragePayload()` and `needsMigration()` derive their key lists from
+   `Object.keys(DEFAULT_SETTINGS)` (since 0.1.6), so a new key is persisted,
+   and written for existing installs on their next read, with no further edit.
    Nested objects (like `holidayTypes`) also need `mergeSettings` to deep-merge
    the patch, or `saveSettingsPatch({holidayTypes: {cultural: false}})` wipes
    the siblings — `tests/settings.test.mjs` asserts this for holidayTypes.
-2. **`popup/popup.js:163-178`** — the `state.settings` literal duplicates
-   `DEFAULT_SETTINGS` on purpose so the popup renders before storage
-   resolves; add the key there too. Then use it in the renderer:
-   `showTehranTime` toggles `.hidden` on the card at line 281.
-3. **`options/options.html`** — the control, with matching `id` and `name`
-   (`#showTehranTime` / `input[name='showTehranTime']`, lines 57-58).
-4. **`options/options.js`** — three spots: `controls` via `findControl([...])`
-   (line 23), `setValueIfPresent(controls.x, settings.x)` in the fill step
-   (line 123), and a `bindCheckbox`/select binding that calls
-   `savePatch({x: value})` (line 188). `savePatch` shows "Saved"; the
-   `chrome.storage.onChanged` listener (line 235) re-fills every control, so
+2. **`popup/popup.js`** — the initial `state.settings` is
+   `normalizeSettings()`, so the popup renders defaults before storage
+   resolves with no edit. Use the key in the renderer: `showTehranTime`
+   toggles `.hidden` in `updateTehranTimeVisibility`, `weekendDays` feeds
+   `isWeeklyHoliday`.
+3. **`options/options.html`** — the control, with matching `id` and `name`.
+4. **`options/options.js`** — three spots: `controls` (one
+   `document.getElementById` per key), `setValueIfPresent(controls.x, settings.x)`
+   in `applyControls`, and a `bindCheckbox`/`bindSelect` binding in `init`
+   that calls `savePatch({x: value})`. `savePatch` shows "Saved"; the
+   `chrome.storage.onChanged` listener re-fills every control, so
    an open popup and the options page stay in sync without extra code.
-5. **`background/service-worker.js`** `ensureDefaultSettings` derives its key
-   list from `Object.keys(DEFAULT_SETTINGS)` and writes defaults when any is
-   `undefined`, so it needs no edit — but if the badge should react to the
+5. **`background/service-worker.js`** `ensureDefaultSettings` is a
+   `getSettings()` call, so it needs no edit — but if the badge should react to the
    new key, add it to the `relevant` array in the `onChanged` handler (only
    `usePersianNumerals` today).
 6. **Tests** — `tests/settings.test.mjs`: the first test feeds invalid values
@@ -57,7 +57,8 @@ which added `showTehranTime`: 6 files, 104 insertions. Follow it.
 
 ```bash
 npm run smoke                      # popup getElementById ids vs popup.html, JS parses
-npm test                           # all 15 tests, including the settings + holidays tests
+npm test                           # all 18 tests, including the settings + holidays tests
+npm run test:browser               # the real extension in headless Chrome
 ```
 
 Then load unpacked, open options, toggle the control (expect "Saved"), open

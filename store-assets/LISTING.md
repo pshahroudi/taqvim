@@ -24,7 +24,9 @@ Tehran time: a card with the current time and date in Tehran, which you can hide
 
 Toolbar badge: shows today's Jalali day, using your computer's local date, and refreshes at midnight.
 
-Settings: light, dark or system theme; small, medium or large text; Persian or Latin numerals; a week that starts on Saturday, Sunday or Monday; weekend highlighting; and whether the popup opens on today or on the last month you viewed.
+Settings: light, dark or system theme; small, medium or large text; Persian or Latin numerals; a week that starts on Saturday, Sunday or Monday; a Friday weekend or a Saturday and Sunday one, with optional highlighting; and whether the popup opens on today or on the last month you viewed.
+
+Keyboard: Alt+Shift+J opens the calendar.
 
 Private by design: no account, no analytics and no network requests. The holiday data and the font ship inside the extension, and its content security policy refuses requests to any server. It asks for two permissions only: storage, for your settings, and alarms, to refresh the badge at midnight.
 
@@ -47,7 +49,7 @@ Source code (MIT): https://github.com/pshahroudi/taqvim
 | Field | Value |
 |---|---|
 | Single purpose | Shows the Persian (Jalali) calendar in a toolbar popup, with Iranian holidays and conversion between Jalali, Gregorian and Hijri dates. |
-| `storage` | Saves the user's settings (theme, text size, numerals, week start, holiday layers, Tehran card, opening behaviour) and the last month viewed. Nothing leaves the browser except through the browser's own settings sync. |
+| `storage` | Saves the user's settings (theme, text size, numerals, week start, weekend days, holiday layers, Tehran card, opening behaviour) and the last month viewed. Nothing leaves the browser except through the browser's own settings sync. |
 | `alarms` | One alarm at local midnight refreshes the toolbar badge to the new day. |
 | Remote code | No. Manifest V3; every script ships in the package, and the policy is `script-src 'self'`. |
 | Data collected | None. |

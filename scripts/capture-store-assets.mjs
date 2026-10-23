@@ -178,6 +178,13 @@ async function createPage(client, url, initScript = "") {
     },
     sessionId,
   );
+  // The "system" theme follows the OS; pin it so a Mac in dark mode still
+  // captures the light screenshots.
+  await client.send(
+    "Emulation.setEmulatedMedia",
+    { features: [{ name: "prefers-color-scheme", value: "light" }] },
+    sessionId,
+  );
   await client.send("Page.navigate", { url }, sessionId);
 
   return { targetId, sessionId };
