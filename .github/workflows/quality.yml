@@ -35,6 +35,12 @@ jobs:
           cmp "$RUNNER_TEMP/first.sha256" dist/*.zip.sha256
           cat dist/*.zip.sha256
 
+      - name: Load the packaged zip in headless Chrome
+        run: |
+          unzip -q dist/*.zip -d "$RUNNER_TEMP/unpacked"
+          google-chrome --version
+          CHROME_PATH="$(command -v google-chrome)" npm run test:browser -- "$RUNNER_TEMP/unpacked"
+
       - name: Upload release archive
         uses: actions/upload-artifact@v7
         with:
