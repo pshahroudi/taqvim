@@ -2,6 +2,7 @@
   "name": "taqvim",
   "version": "0.1.4",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "assets": "npm run assets:render && npm run assets:capture",

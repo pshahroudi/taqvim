@@ -2,6 +2,11 @@
 
 Taqvim is a lightweight Persian/Jalali calendar Chrome extension. It is built as a fast daily reference: a compact month grid, selected-day details, Tehran time/date, local holiday markers, a date converter, theme settings, and a toolbar badge.
 
+- **Install:** [Taqvim on the Chrome Web Store](https://chromewebstore.google.com/detail/taqvim/chfmbjcjehmdkcgfmfpdhmipgfaljlbi)
+- **How it was built:** [the case study on shahroudi.us](https://shahroudi.us/work/taqvim/)
+
+Plain JavaScript ES modules, Manifest V3, no bundler and no dependencies. It makes no network requests and asks for two permissions, `storage` and `alarms`. Tests, a smoke check and the release package run in GitHub Actions on every push.
+
 ## What It Does
 
 - Shows the current Jalali month with Persian dates as the primary view.
@@ -33,7 +38,7 @@ Taqvim is a lightweight Persian/Jalali calendar Chrome extension. It is built as
 
 If Node.js is available:
 
-```powershell
+```bash
 npm run smoke
 ```
 
@@ -41,7 +46,7 @@ The smoke test checks holiday JSON shape and duplicate IDs, manifest/icon dimens
 
 Run the complete test suite with:
 
-```powershell
+```bash
 npm test
 ```
 
@@ -57,7 +62,7 @@ When a selected year does not have a bundled verified calendar, Taqvim falls bac
 
 Create a validated Chrome Web Store archive with:
 
-```powershell
+```bash
 npm run package
 ```
 
@@ -71,13 +76,13 @@ Taqvim uses a vector-first icon system with separate large and toolbar artwork. 
 
 Regenerate the extension icons, store icon, and promotional tiles with:
 
-```powershell
+```bash
 npm run assets:render
 ```
 
 Regenerate the five Chrome Web Store screenshots from the real popup and options interfaces with:
 
-```powershell
+```bash
 npm run assets:capture
 ```
 
@@ -88,3 +93,7 @@ Run both steps with `npm run assets`. Chrome can be supplied with the `CHROME_PA
 - The verified official dataset currently covers Solar Hijri year 1405; other years use recurring and calculated fallback data.
 - Calculated Islamic dates can shift based on official moon sighting announcements.
 - Taqvim does not include Google Calendar sync, Google login, reminders, or scheduling features.
+
+## License
+
+The code is under the [MIT License](LICENSE). The bundled Vazirmatn font is under the SIL Open Font License; see [`assets/fonts/OFL-Vazirmatn.txt`](assets/fonts/OFL-Vazirmatn.txt).

@@ -31,14 +31,10 @@ a proposal, not an existing practice — say so.
 
 ## Steps
 
-1. **Start from a fresh `origin/main`.** On 2026-09-13 the working checkout
-   at `~/workspace/taqvim` sat five commits behind `origin/main` (still at
-   0.1.3, with an untracked `CLAUDE.md` and a modified README that would
-   conflict on pull). Check `git status` and `git log --oneline -1 origin/main`
-   before touching a version.
-2. **Branch.** Never commit to `main`; taqvim is not a trading repo, so the
-   standing merge authority does not apply — stop at the PR URL. (The one
-   grant here, 2026-09-13, covered only the `.claude/settings.json` PR.)
+1. **Start from a fresh `origin/main`.** Check `git status` and
+   `git log --oneline -1 origin/main` before touching a version; a stale
+   checkout has happened here before.
+2. **Branch.** Never commit to `main`. Stop at the PR URL; Pourya merges.
 3. **Bump** `manifest.json` and `package.json` to the same string.
 4. **Write `RELEASE-NOTES-<version>.md`** at the repo root, following
    `RELEASE-NOTES-0.1.4.md`: Highlights, Permissions and privacy (it is a
@@ -127,6 +123,11 @@ no remote origin in the CSP. `dist/` is gitignored.
 - The manifest `description` ends with "By Pourya Shahroudi"; the store name
   is "Taqvim". No account, no analytics, no network calls: say so in the
   privacy section, it is true and tested (`tests/static-quality.test.mjs`).
+
+- The listing's **Homepage URL** (Store listing, Additional fields) is set
+  in the dashboard and should be `https://shahroudi.us/work/taqvim/`. The
+  manifest's `homepage_url` does not fill it; that key only sets the website
+  link on `chrome://extensions`.
 
 ## Dashboard access
 
