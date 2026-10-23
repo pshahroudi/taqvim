@@ -15,6 +15,7 @@
     "service_worker": "background/service-worker.js",
     "type": "module"
   },
+  "homepage_url": "https://shahroudi.us/work/taqvim/",
   "permissions": ["storage", "alarms"],
   "options_page": "options/options.html",
   "icons": {
