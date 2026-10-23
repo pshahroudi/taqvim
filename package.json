@@ -3,6 +3,8 @@
   "version": "0.1.4",
   "private": true,
   "license": "MIT",
+  "homepage": "https://shahroudi.us/work/taqvim/",
+  "repository": "github:pshahroudi/taqvim",
   "type": "module",
   "scripts": {
     "assets": "npm run assets:render && npm run assets:capture",
