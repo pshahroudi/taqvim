@@ -160,22 +160,8 @@ const state = {
       hijri: "",
     },
   },
-  settings: {
-    theme: "system",
-    fontSize: "medium",
-    showHijri: false,
-    showTehranTime: true,
-    usePersianNumerals: true,
-    weekStart: "saturday",
-    showHolidays: true,
-    holidayTypes: {
-      officialIran: true,
-      cultural: true,
-      islamic: true,
-    },
-    highlightWeekends: true,
-    autoJumpToTodayOnOpen: true,
-  },
+  // Defaults, so the popup can render before storage resolves.
+  settings: normalizeSettings(),
   holidayData: {
     officialIran: [],
     officialVerified: [],
@@ -228,12 +214,18 @@ function getWeekIndex(jsDay) {
   }
 }
 
-function isIranWeeklyHoliday(date) {
-  return date.getDay() === 5;
+const WEEKEND_DAYS = {
+  friday: [5],
+  "saturday-sunday": [6, 0],
+};
+
+function isWeeklyHoliday(date) {
+  const days = WEEKEND_DAYS[state.settings.weekendDays] || WEEKEND_DAYS.friday;
+  return days.includes(date.getDay());
 }
 
 function isWeekend(date) {
-  return state.settings.highlightWeekends && isIranWeeklyHoliday(date);
+  return state.settings.highlightWeekends && isWeeklyHoliday(date);
 }
 
 function updateThemeToggleIcon() {
@@ -388,7 +380,7 @@ function renderWeekdayLabels(target) {
   target.innerHTML = labels
     .map(
       (label) =>
-        `<div class="rtl-text" dir="rtl" role="columnheader">${label}</div>`,
+        `<div class="rtl-text" dir="rtl">${label}</div>`,
     )
     .join("");
 }
@@ -463,6 +455,13 @@ function buildDayCell(jy, jm, jd, isMuted, cellIndex) {
   }
 
   const ariaCurrent = isToday ? ' aria-current="date"' : "";
+  const ariaLabel = [
+    formatPersianOrderedDate(date),
+    hasPublicHoliday(records) ? "تعطیل رسمی" : "",
+    hasObservance(records) ? "مناسبت" : "",
+  ]
+    .filter(Boolean)
+    .join("، ");
 
   return `
     <div
@@ -478,7 +477,7 @@ function buildDayCell(jy, jm, jd, isMuted, cellIndex) {
         data-jy="${jy}"
         data-jm="${jm}"
         data-jd="${jd}"
-        aria-label="Jalali ${jy}/${jm}/${jd}"
+        aria-label="${escapeHtml(ariaLabel)}"
         tabindex="${isSelected ? "0" : "-1"}"
         ${ariaCurrent}
       >
@@ -513,7 +512,7 @@ function renderSelectedDetails() {
     state.selected,
   );
   const uniqueRecords = dedupeHolidayRecords(selectedRecords);
-  const isSelectedWeeklyHoliday = isIranWeeklyHoliday(selectedDate);
+  const isSelectedWeeklyHoliday = isWeeklyHoliday(selectedDate);
 
   selectedJalaliEl.textContent = formatPersianOrderedDate(selectedDate);
   selectedGregorianEl.textContent = gregorianFullFormatter.format(selectedDate);
@@ -527,6 +526,10 @@ function renderSelectedDetails() {
   selectedHolidayStatusEl.textContent = getHolidayStatus(uniqueRecords, {
     showHolidays: state.settings.showHolidays,
     isWeeklyHoliday: isSelectedWeeklyHoliday,
+    // Only Iran's Friday is an official weekly holiday.
+    ...(state.settings.weekendDays === "friday"
+      ? {}
+      : { weeklyHolidayLabel: "تعطیل آخر هفته" }),
   });
   selectedHolidayStatusEl.dataset.tone = getHolidayStatusTone(uniqueRecords, {
     showHolidays: state.settings.showHolidays,
@@ -868,31 +871,40 @@ function renderMonth() {
   // Always render six calendar rows so day cells keep the same visual size
   // when switching between Jalali months.
   const totalCells = 42;
-  let html = "";
+  const cells = [];
 
   for (let cellIndex = 0; cellIndex < totalCells; cellIndex += 1) {
     if (cellIndex < firstWeekdayIndex) {
       if (!canRenderPrevious) {
-        html += buildEmptyDayCell(cellIndex);
+        cells.push(buildEmptyDayCell(cellIndex));
         continue;
       }
       const jd = prevMonthLength - firstWeekdayIndex + cellIndex + 1;
-      html += buildDayCell(prev.jy, prev.jm, jd, true, cellIndex);
+      cells.push(buildDayCell(prev.jy, prev.jm, jd, true, cellIndex));
       continue;
     }
 
     const currentIndex = cellIndex - firstWeekdayIndex + 1;
     if (currentIndex <= daysInMonth) {
-      html += buildDayCell(jy, jm, currentIndex, false, cellIndex);
+      cells.push(buildDayCell(jy, jm, currentIndex, false, cellIndex));
       continue;
     }
 
     if (!canRenderNext) {
-      html += buildEmptyDayCell(cellIndex);
+      cells.push(buildEmptyDayCell(cellIndex));
       continue;
     }
     const jd = currentIndex - daysInMonth;
-    html += buildDayCell(next.jy, next.jm, jd, true, cellIndex);
+    cells.push(buildDayCell(next.jy, next.jm, jd, true, cellIndex));
+  }
+
+  // Each week is a role="row" wrapper with display: contents, so the CSS
+  // grid still lays out the cells directly.
+  let html = "";
+  for (let rowStart = 0; rowStart < totalCells; rowStart += 7) {
+    html += `<div class="calendar-row" role="row" aria-rowindex="${rowStart / 7 + 1}">${cells
+      .slice(rowStart, rowStart + 7)
+      .join("")}</div>`;
   }
 
   calendarGridEl.innerHTML = html;
@@ -1348,8 +1360,8 @@ chrome.storage.onChanged.addListener(async (_changes, areaName) => {
 });
 
 async function init() {
-  state.settings = await getSettings();
-  await loadHolidayData();
+  const [settings] = await Promise.all([getSettings(), loadHolidayData()]);
+  state.settings = settings;
 
   if (state.settings.autoJumpToTodayOnOpen) {
     state.view = { jy: todayJalali.jy, jm: todayJalali.jm };

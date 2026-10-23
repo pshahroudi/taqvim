@@ -166,8 +166,19 @@ async function checkManifest() {
   assert(manifest.manifest_version === 3, "manifest: manifest_version must be 3");
   assert(Array.isArray(manifest.permissions), "manifest: permissions must be an array");
   assert(!manifest.host_permissions, "manifest: host_permissions should not be present");
-  assert(manifest.permissions.includes("storage"), "manifest: missing storage permission");
-  assert(manifest.permissions.includes("alarms"), "manifest: missing alarms permission");
+  assert(
+    JSON.stringify([...manifest.permissions].sort()) === JSON.stringify(["alarms", "storage"]),
+    "manifest: permissions must be exactly storage and alarms"
+  );
+  assert(
+    manifest.content_security_policy?.extension_pages ===
+      "default-src 'self'; script-src 'self'; object-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self';",
+    "manifest: CSP changed; it must stay the 0.1.5 policy"
+  );
+  assert(
+    Object.keys(manifest.commands || {}).join() === "_execute_action",
+    "manifest: the only command is _execute_action (opens the popup)"
+  );
   assert(manifest.version === packageJson.version, "manifest/package version mismatch");
   assert(!/https?:\/\//.test(manifest.content_security_policy?.extension_pages || ""), "manifest: CSP should be self-contained");
 

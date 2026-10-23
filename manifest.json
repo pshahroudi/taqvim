@@ -18,6 +18,14 @@
   "homepage_url": "https://shahroudi.us/work/taqvim/",
   "permissions": ["storage", "alarms"],
   "options_page": "options/options.html",
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+J"
+      },
+      "description": "Open Taqvim"
+    }
+  },
   "icons": {
     "16": "assets/icons/icon16.png",
     "32": "assets/icons/icon32.png",

@@ -34,7 +34,9 @@ test("popup exposes grid, tab, dialog, and reduced-motion accessibility hooks", 
   assert.match(html, /aria-rowcount="6"/);
   assert.match(html, /aria-colcount="7"/);
   assert.match(html, /aria-labelledby="jumpDatePickerTitle"/);
+  assert.match(javascript, /role="row"/);
   assert.match(javascript, /role="gridcell"/);
+  assert.doesNotMatch(javascript, /aria-label="Jalali /);
   assert.match(javascript, /class="day-cell"/);
   assert.match(javascript, /tabindex="\$\{isSelected/);
   assert.match(javascript, /ArrowRight/);
