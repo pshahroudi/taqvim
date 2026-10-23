@@ -292,6 +292,7 @@ function updateTehranClock() {
     {
       formatPersianDate: (date) =>
         formatPersianOrderedDate(date, { timeZone: TEHRAN_TIME_ZONE }),
+      usePersianNumerals: state.settings.usePersianNumerals,
     },
   );
 }

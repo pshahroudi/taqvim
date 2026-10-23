@@ -80,12 +80,7 @@ export function validateHijriDate(year, month, day) {
   return "";
 }
 
-export function hijriToGregorian(year, month, day) {
-  const baseError = validateHijriDate(year, month, day);
-  if (baseError) {
-    return { error: baseError };
-  }
-
+function findHijriDate(year, month, day) {
   const approximate = getApproximateGregorianDateFromHijri(year, month, day);
   const approximateDate = createDateAtNoon(approximate.gy, approximate.gm, approximate.gd);
 
@@ -94,12 +89,45 @@ export function hijriToGregorian(year, month, day) {
     candidate.setDate(approximateDate.getDate() + delta);
 
     if (sameHijriDate(getHijriParts(candidate), { hy: year, hm: month, hd: day })) {
-      return {
-        gy: candidate.getFullYear(),
-        gm: candidate.getMonth() + 1,
-        gd: candidate.getDate()
-      };
+      return candidate;
     }
+  }
+
+  return null;
+}
+
+// Month length as Intl's islamic calendar draws it: 29 or 30, or 0 when the
+// month itself is not found.
+export function getHijriMonthLength(year, month) {
+  if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
+    return 0;
+  }
+
+  const firstDay = findHijriDate(year, month, 1);
+  if (!firstDay) return 0;
+
+  const dayThirty = new Date(firstDay);
+  dayThirty.setDate(firstDay.getDate() + 29);
+  return getHijriParts(dayThirty).hm === month ? 30 : 29;
+}
+
+export function hijriToGregorian(year, month, day) {
+  const baseError = validateHijriDate(year, month, day);
+  if (baseError) {
+    return { error: baseError };
+  }
+
+  if (day === 30 && getHijriMonthLength(year, month) === 29) {
+    return { error: "This Hijri month has 29 days, so day 30 does not exist." };
+  }
+
+  const date = findHijriDate(year, month, day);
+  if (date) {
+    return {
+      gy: date.getFullYear(),
+      gm: date.getMonth() + 1,
+      gd: date.getDate()
+    };
   }
 
   return {

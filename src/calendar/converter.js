@@ -10,7 +10,7 @@ import {
   toGregorianDate,
   validateGregorianDate
 } from "./gregorian.js";
-import { getHijriParts, hijriToGregorian } from "./hijri.js";
+import { getHijriMonthLength, getHijriParts, hijriToGregorian } from "./hijri.js";
 
 function validateJalaliDate(year, month, day) {
   if (!Number.isInteger(year)) return "Enter a whole Jalali year.";
@@ -36,7 +36,7 @@ export function getCalendarMonthLength(calendar, year, month) {
   if (calendar === "jalali" && !isSupportedJalaliYear(year)) return 0;
   if (calendar === "jalali") return month >= 1 && month <= 12 ? getJalaliMonthLength(year, month) : 0;
   if (calendar === "gregorian") return getGregorianMonthLength(year, month);
-  if (calendar === "hijri") return month >= 1 && month <= 12 ? 30 : 0;
+  if (calendar === "hijri") return getHijriMonthLength(year, month);
   return 0;
 }
 

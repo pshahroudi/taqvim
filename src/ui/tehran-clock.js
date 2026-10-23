@@ -23,14 +23,13 @@ const hourFormatter = new Intl.DateTimeFormat("en-GB", {
   hour12: false
 });
 
-export function getTehranClockSnapshot(date = new Date()) {
+export function getTehranClockSnapshot(date = new Date(), { usePersianNumerals = true } = {}) {
   const [hourText, minuteText, secondText] = timeFormatter.format(date).split(":");
   const hour24 = Number(hourText) === 24 ? 0 : Number(hourText);
   const hour12 = hour24 % 12 || 12;
   const isMorning = hour24 < 12;
-  const timeText = `${toPersianDigits(padNumber(hour12))}:${toPersianDigits(
-    minuteText
-  )}:${toPersianDigits(secondText)}`;
+  const digits = usePersianNumerals ? toPersianDigits : String;
+  const timeText = `${digits(padNumber(hour12))}:${digits(minuteText)}:${digits(secondText)}`;
 
   return {
     timeText,
@@ -44,11 +43,11 @@ export function getTehranClockSnapshot(date = new Date()) {
 
 export function renderTehranClock(
   { timeElement, dateElement, persianDateElement, phaseIconElement },
-  { date = new Date(), formatPersianDate }
+  { date = new Date(), formatPersianDate, usePersianNumerals = true }
 ) {
   if (!timeElement || !dateElement || !persianDateElement) return;
 
-  const snapshot = getTehranClockSnapshot(date);
+  const snapshot = getTehranClockSnapshot(date, { usePersianNumerals });
   timeElement.innerHTML =
     `<span class="tehran-time-number">${snapshot.timeText}</span>` +
     `<span class="tehran-time-meridiem">${snapshot.meridiemLabel}</span>`;

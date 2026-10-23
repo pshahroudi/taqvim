@@ -51,3 +51,11 @@ test("Tehran clock snapshot uses the Tehran day phase and Persian clock digits",
   assert.equal(snapshot.phaseIcon, "sun");
   assert.match(snapshot.dateText, /Fri, Jul 17 · Asia\/Tehran/);
 });
+
+test("Tehran clock follows the Latin numerals setting", () => {
+  const snapshot = getTehranClockSnapshot(new Date("2026-07-16T20:45:00.000Z"), {
+    usePersianNumerals: false
+  });
+
+  assert.equal(snapshot.timeText, "12:15:00");
+});
