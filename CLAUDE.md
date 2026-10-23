@@ -2,7 +2,7 @@
 
 Guidance for Claude Code in this repository. Taqvim is a Manifest V3 Chrome
 extension: a Persian/Jalali calendar with bundled holiday JSON, no network,
-no accounts. Current version 0.1.4 (manifest and package.json must agree).
+no accounts. Current version 0.1.5 (manifest and package.json must agree).
 
 ## Skills
 

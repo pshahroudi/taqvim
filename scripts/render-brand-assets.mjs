@@ -43,6 +43,13 @@ const renders = [
     transparent: true,
   },
   {
+    source: "design/icons/render-store-logo.html",
+    output: "store-assets/taqvim-store-logo-300.png",
+    width: 300,
+    height: 300,
+    transparent: true,
+  },
+  {
     source: "design/store/promo-small.svg",
     output: "store-assets/taqvim-small-promo-440x280.png",
     width: 440,

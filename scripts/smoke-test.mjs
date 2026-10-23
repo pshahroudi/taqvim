@@ -50,6 +50,7 @@ const expectedIconSizes = {
 
 const expectedStoreAssets = {
   "store-assets/taqvim-store-icon-128.png": [128, 128],
+  "store-assets/taqvim-store-logo-300.png": [300, 300],
   "store-assets/taqvim-small-promo-440x280.png": [440, 280],
   "store-assets/taqvim-marquee-1400x560.png": [1400, 560],
   "store-assets/screenshots/01-calendar-light-1280x800.png": [1280, 800],
