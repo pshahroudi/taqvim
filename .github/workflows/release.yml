@@ -2,7 +2,10 @@ name: GitHub Release
 
 # Pushing a v<version> tag on main builds the zip in CI and publishes it, with
 # its sha256, as a GitHub Release. The tag must match manifest.json, and the
-# notes come from RELEASE-NOTES-<version>.md.
+# notes come from RELEASE-NOTES-<version>.md. The chrome-web-store job then
+# uploads that same release zip to the Chrome Web Store and submits it for
+# review, signing in to Google through Workload Identity Federation (no stored
+# key). It is skipped until the CWS_* repository variables are set.
 on:
   push:
     tags:
@@ -51,3 +54,46 @@ jobs:
             --title "Taqvim $VERSION" \
             --notes-file "RELEASE-NOTES-$VERSION.md" \
             --verify-tag
+
+  chrome-web-store:
+    needs: release
+    if: vars.CWS_SERVICE_ACCOUNT != ''
+    runs-on: ubuntu-latest
+    environment: chrome-web-store
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          package-manager-cache: false
+
+      - name: Download the release zip and check its sha256
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dist
+          gh release download "$GITHUB_REF_NAME" --dir dist --pattern "taqvim-*.zip*"
+          cd dist && sha256sum -c taqvim-*.zip.sha256
+
+      - name: Get a Chrome Web Store access token
+        id: google
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.CWS_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.CWS_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/chromewebstore
+          create_credentials_file: false
+
+      - name: Upload and submit for review
+        env:
+          CWS_ACCESS_TOKEN: ${{ steps.google.outputs.access_token }}
+          CWS_PUBLISHER_ID: ${{ vars.CWS_PUBLISHER_ID }}
+        run: node scripts/chrome-web-store.mjs publish dist/taqvim-*.zip

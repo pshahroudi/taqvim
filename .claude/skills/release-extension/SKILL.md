@@ -29,9 +29,12 @@ Bump the manifest form; ask only if the jump is bigger than a patch.
 commit `v<version>` and push the tag (with his approval): that runs
 `.github/workflows/release.yml`, which checks the tag matches the manifest,
 runs the gate, builds the zip and publishes it with its `.sha256` as a GitHub
-Release whose notes are `RELEASE-NOTES-<version>.md`. Upload that release's
-zip to the stores, so the store package and the published hash are the same
-bytes. Earlier releases (0.1.0 to 0.1.5) have no tags.
+Release whose notes are `RELEASE-NOTES-<version>.md`. Its second job,
+`chrome-web-store`, downloads that release's zip, checks the sha256, uploads
+it to the Chrome Web Store and submits it for review, so the store package
+and the published hash are the same bytes (see "Chrome Web Store API" below).
+Edge is still uploaded by hand from the same release zip. Earlier releases
+(0.1.0 to 0.1.5) have no tags; 0.1.6 went to the store by hand.
 
 ## Steps
 
@@ -56,8 +59,10 @@ bytes. Earlier releases (0.1.0 to 0.1.5) have no tags.
    runs `npm run check` and `npm run package` on `ubuntu-latest` with Node 20
    and uploads the zip as workflow artifact `taqvim-<sha>`. It runs on every
    push and PR; it was green on `main` on 2026-09-13 (run 34781505511, 21 s).
-9. After Pourya merges: build the zip from `main` (or download the CI
-   artifact of the merge commit — same bytes, same allowlist) and upload.
+9. After Pourya merges: tag the merge commit and push the tag. The release
+   workflow does the GitHub Release and the Chrome Web Store submission; check
+   both jobs are green, then `npm run store -- status` shows the new version
+   as `PENDING_REVIEW`. Upload the release zip to Edge by hand.
 
 ## The gate
 
@@ -94,7 +99,7 @@ anchors; manifest is MV3 with `storage`+`alarms` and **no `host_permissions`**;
 versions match; CSP has no `http(s)://`; the four icons exist at 16/32/48/128
 with an alpha channel; the eight store PNGs have the right dimensions; every
 `getElementById` in `popup.js` has a matching id in `popup.html`; and
-`node --check` parses the 19 important JS files.
+`node --check` parses the 20 important JS files.
 
 ## What `npm run package` does
 
@@ -141,7 +146,69 @@ no remote origin in the CSP. `dist/` is gitignored.
 
 The same zip ships to Edge (Partner Center), which runs Chrome MV3 extensions unchanged. The listing text, field values, permission justifications, search terms and certification notes are in `store-assets/LISTING.md`; keep it in step with the code. Edge's extension logo is `store-assets/taqvim-store-logo-300.png`. The store also rejects a version that is not greater than the published one.
 
+## Chrome Web Store API
+
+`scripts/chrome-web-store.mjs` talks to API v2
+(`chromewebstore.googleapis.com`, scope
+`https://www.googleapis.com/auth/chromewebstore`). `status` prints the
+published and submitted revisions; `publish <zip>` refuses while a submission
+is `PENDING_REVIEW`, uploads, polls `fetchStatus` while the upload is
+`IN_PROGRESS`, checks the store read the manifest version, then calls
+`:publish` with `DEFAULT_PUBLISH` (goes live as soon as review passes). The
+enum values are the discovery document's (`SUCCEEDED`, `IN_PROGRESS`, not the
+`UPLOAD_`-prefixed names the prose docs use). Item id
+`chfmbjcjehmdkcgfmfpdhmipgfaljlbi` is the default; `CWS_PUBLISHER_ID` and
+`CWS_ACCESS_TOKEN` come from the environment.
+
+**Auth is a service account, reached keylessly.** The dashboard lets one
+service account act for the publisher (Account section). GitHub Actions gets
+an OIDC token, `google-github-actions/auth@v3` trades it through a Workload
+Identity pool for a short-lived access token of that service account, and
+nothing long-lived exists to leak or expire. Do not switch to the OAuth
+client + refresh token route: with the consent screen in "Testing", Google
+expires refresh tokens after 7 days and the release job dies a week later.
+
+The release job runs only when the repository variable `CWS_SERVICE_ACCOUNT`
+is set, in the `chrome-web-store` environment, and needs three repository
+variables (not secrets; none of them is a credential):
+
+| Variable | Value |
+|---|---|
+| `CWS_PUBLISHER_ID` | Developer Dashboard → Publisher → Settings |
+| `CWS_SERVICE_ACCOUNT` | `<name>@<project>.iam.gserviceaccount.com` |
+| `CWS_WORKLOAD_IDENTITY_PROVIDER` | `projects/<number>/locations/global/workloadIdentityPools/github/providers/taqvim` |
+
+One-time Google setup (`gcloud` signed in as the Cloud project owner):
+
+```bash
+gcloud services enable chromewebstore.googleapis.com iamcredentials.googleapis.com sts.googleapis.com
+gcloud iam service-accounts create taqvim-publisher --display-name="Taqvim Chrome Web Store publisher"
+gcloud iam workload-identity-pools create github --location=global --display-name="GitHub Actions"
+gcloud iam workload-identity-pools providers create-oidc taqvim --location=global \
+  --workload-identity-pool=github --issuer-uri=https://token.actions.githubusercontent.com \
+  --attribute-mapping=google.subject=assertion.sub,attribute.repository_id=assertion.repository_id,attribute.ref=assertion.ref \
+  --attribute-condition="assertion.repository_id=='1430585695' && assertion.ref.startsWith('refs/tags/v')"
+gcloud iam service-accounts add-iam-policy-binding taqvim-publisher@<project>.iam.gserviceaccount.com \
+  --role=roles/iam.workloadIdentityUser \
+  --member="principalSet://iam.googleapis.com/projects/<number>/locations/global/workloadIdentityPools/github/attribute.repository_id/1430585695"
+```
+
+The condition admits only this repository (by id, so a rename or a fork
+cannot pass) on a `v*` tag. Then add the service account's email in the
+Developer Dashboard's Account section (Chrome blocks every extension,
+Claude in Chrome included, on Web Store pages, so Pourya does that click),
+and set the three variables with `gh variable set`.
+
+Local status check, as the project owner:
+
+```bash
+CWS_PUBLISHER_ID=<id> CWS_ACCESS_TOKEN="$(gcloud auth print-access-token \
+  --impersonate-service-account=taqvim-publisher@<project>.iam.gserviceaccount.com \
+  --scopes=https://www.googleapis.com/auth/chromewebstore)" npm run store -- status
+```
+
 ## Dashboard access
 
-Nothing in the repo records the developer-dashboard item id or account; ask
-Pourya, do not guess a URL.
+The dashboard is Pourya's personal Chrome profile ("Browser 1" in Claude in
+Chrome), not the La Bouchée profile. Claude cannot read or click it: Chrome
+blocks extensions on `chrome.google.com/webstore`, so dashboard steps are his.

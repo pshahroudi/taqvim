@@ -22,6 +22,7 @@ npm run smoke                      # scripts/smoke-test.mjs: data contract, mani
 npm test                           # node --test tests/*.test.mjs: 18 node:test cases, passes on Node 20 and 22
 npm run test:browser               # scripts/browser-test.mjs: loads the extension in headless Chrome over CDP
 npm run package                    # validated dist/taqvim-<version>.zip from an allowlist
+npm run store -- status            # Chrome Web Store API: published and submitted versions (needs a token)
 npm run assets                     # regenerate icons + store screenshots (needs local Chrome)
 ```
 
@@ -32,7 +33,11 @@ CI (`.github/workflows/quality.yml`) runs smoke + tests + package on Node 20
 for every push and PR, rebuilds the zip to prove it is reproducible, and runs
 the browser test on the unzipped package. Pushing tag `v<version>` runs
 `.github/workflows/release.yml`, which publishes the CI-built zip and its
-sha256 as a GitHub Release (first used for v0.1.6).
+sha256 as a GitHub Release (first used for v0.1.6), then uploads that same
+zip to the Chrome Web Store and submits it for review
+(`scripts/chrome-web-store.mjs`, API v2, keyless sign-in through Workload
+Identity Federation; setup in the `release-extension` skill). Edge is still
+a manual upload.
 
 ## Architecture
 

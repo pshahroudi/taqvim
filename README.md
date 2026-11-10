@@ -79,7 +79,7 @@ The release script verifies manifest/package version consistency, required icons
 
 The archive is reproducible: every entry carries the same fixed timestamp, so the same tree gives the same bytes, and the script writes `dist/taqvim-<version>.zip.sha256` beside it.
 
-The GitHub Actions quality workflow runs the complete checks, builds the archive, rebuilds it to prove the hash does not move, loads it in headless Chrome, and uploads the zip and its sha256 as a workflow artifact on every push and pull request. Pushing a `v<version>` tag publishes the CI-built zip and its sha256 as a GitHub Release, with `RELEASE-NOTES-<version>.md` as the notes.
+The GitHub Actions quality workflow runs the complete checks, builds the archive, rebuilds it to prove the hash does not move, loads it in headless Chrome, and uploads the zip and its sha256 as a workflow artifact on every push and pull request. Pushing a `v<version>` tag publishes the CI-built zip and its sha256 as a GitHub Release, with `RELEASE-NOTES-<version>.md` as the notes, then uploads that same zip to the Chrome Web Store through its API and submits it for review. The workflow signs in to Google with Workload Identity Federation, so no key or token is stored in the repository or its secrets.
 
 ## Visual Assets
 
