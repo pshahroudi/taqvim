@@ -179,10 +179,10 @@ variables (not secrets; none of them is a credential):
 | `CWS_WORKLOAD_IDENTITY_PROVIDER` | `projects/666712701118/locations/global/workloadIdentityPools/github/providers/taqvim` |
 
 All set on 2026-11-09. The Cloud project is `taqvim-publisher` (number
-666712701118), owned by pshahroudi@gmail.com, no billing account; the
+666712701118), owned by Pourya's personal Google account, no billing account; the
 GitHub environment `chrome-web-store` accepts `v*` tags only.
 
-How it was set up (`gcloud` signed in as pshahroudi@gmail.com; rerun only to
+How it was set up (`gcloud` signed in as that account; rerun only to
 rebuild it):
 
 ```bash
@@ -204,7 +204,7 @@ project the pool create returns `IAM_PERMISSION_DENIED` for a minute or two
 even for the owner (retry, it is propagation); and owner does NOT include
 `iam.serviceAccounts.getAccessToken`, despite the Chrome docs, so the local
 status check needed `roles/iam.serviceAccountTokenCreator` on the service
-account for user:pshahroudi@gmail.com (granted), which also takes minutes to
+account for that personal account (granted), which also takes minutes to
 apply. Then add the service account's email in the
 Developer Dashboard's Account section (Chrome blocks every extension,
 Claude in Chrome included, on Web Store pages, so Pourya does that click),
