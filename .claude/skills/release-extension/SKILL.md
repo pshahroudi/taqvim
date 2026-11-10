@@ -192,14 +192,15 @@ gcloud iam workload-identity-pools create github --location=global --display-nam
 gcloud iam workload-identity-pools providers create-oidc taqvim --location=global \
   --workload-identity-pool=github --issuer-uri=https://token.actions.githubusercontent.com \
   --attribute-mapping=google.subject=assertion.sub,attribute.repository_id=assertion.repository_id,attribute.ref=assertion.ref \
-  --attribute-condition="assertion.repository_id=='1430585695' && assertion.ref.startsWith('refs/tags/v')"
+  --attribute-condition="assertion.repository_id=='1430585695' && assertion.ref.startsWith('refs/tags/v') && assertion.workflow_ref.startsWith('pshahroudi/taqvim/.github/workflows/release.yml@refs/tags/v')"
 gcloud iam service-accounts add-iam-policy-binding taqvim-publisher@taqvim-publisher.iam.gserviceaccount.com \
   --role=roles/iam.workloadIdentityUser \
   --member="principalSet://iam.googleapis.com/projects/666712701118/locations/global/workloadIdentityPools/github/attribute.repository_id/1430585695"
 ```
 
-The condition admits only this repository (by id, so a rename or a fork
-cannot pass) on a `v*` tag. Two traps from the first setup: on a brand-new
+The condition admits only `release.yml` in this repository (matched by id
+too, so a fork cannot pass) on a `v*` tag; renaming the repo or the workflow
+file breaks the `workflow_ref` clause, so update the provider with it. Two traps from the first setup: on a brand-new
 project the pool create returns `IAM_PERMISSION_DENIED` for a minute or two
 even for the owner (retry, it is propagation); and owner does NOT include
 `iam.serviceAccounts.getAccessToken`, despite the Chrome docs, so the local
