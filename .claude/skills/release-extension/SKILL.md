@@ -174,11 +174,16 @@ variables (not secrets; none of them is a credential):
 
 | Variable | Value |
 |---|---|
-| `CWS_PUBLISHER_ID` | Developer Dashboard → Publisher → Settings |
-| `CWS_SERVICE_ACCOUNT` | `<name>@<project>.iam.gserviceaccount.com` |
-| `CWS_WORKLOAD_IDENTITY_PROVIDER` | `projects/<number>/locations/global/workloadIdentityPools/github/providers/taqvim` |
+| `CWS_PUBLISHER_ID` | `54dbdafc-c7b2-40b5-a5c8-2d75f6377699` (the id in the dashboard URL) |
+| `CWS_SERVICE_ACCOUNT` | `taqvim-publisher@taqvim-publisher.iam.gserviceaccount.com` |
+| `CWS_WORKLOAD_IDENTITY_PROVIDER` | `projects/666712701118/locations/global/workloadIdentityPools/github/providers/taqvim` |
 
-One-time Google setup (`gcloud` signed in as the Cloud project owner):
+All set on 2026-11-09. The Cloud project is `taqvim-publisher` (number
+666712701118), owned by pshahroudi@gmail.com, no billing account; the
+GitHub environment `chrome-web-store` accepts `v*` tags only.
+
+How it was set up (`gcloud` signed in as pshahroudi@gmail.com; rerun only to
+rebuild it):
 
 ```bash
 gcloud services enable chromewebstore.googleapis.com iamcredentials.googleapis.com sts.googleapis.com
@@ -188,13 +193,19 @@ gcloud iam workload-identity-pools providers create-oidc taqvim --location=globa
   --workload-identity-pool=github --issuer-uri=https://token.actions.githubusercontent.com \
   --attribute-mapping=google.subject=assertion.sub,attribute.repository_id=assertion.repository_id,attribute.ref=assertion.ref \
   --attribute-condition="assertion.repository_id=='1430585695' && assertion.ref.startsWith('refs/tags/v')"
-gcloud iam service-accounts add-iam-policy-binding taqvim-publisher@<project>.iam.gserviceaccount.com \
+gcloud iam service-accounts add-iam-policy-binding taqvim-publisher@taqvim-publisher.iam.gserviceaccount.com \
   --role=roles/iam.workloadIdentityUser \
-  --member="principalSet://iam.googleapis.com/projects/<number>/locations/global/workloadIdentityPools/github/attribute.repository_id/1430585695"
+  --member="principalSet://iam.googleapis.com/projects/666712701118/locations/global/workloadIdentityPools/github/attribute.repository_id/1430585695"
 ```
 
 The condition admits only this repository (by id, so a rename or a fork
-cannot pass) on a `v*` tag. Then add the service account's email in the
+cannot pass) on a `v*` tag. Two traps from the first setup: on a brand-new
+project the pool create returns `IAM_PERMISSION_DENIED` for a minute or two
+even for the owner (retry, it is propagation); and owner does NOT include
+`iam.serviceAccounts.getAccessToken`, despite the Chrome docs, so the local
+status check needed `roles/iam.serviceAccountTokenCreator` on the service
+account for user:pshahroudi@gmail.com (granted), which also takes minutes to
+apply. Then add the service account's email in the
 Developer Dashboard's Account section (Chrome blocks every extension,
 Claude in Chrome included, on Web Store pages, so Pourya does that click),
 and set the three variables with `gh variable set`.
@@ -202,8 +213,8 @@ and set the three variables with `gh variable set`.
 Local status check, as the project owner:
 
 ```bash
-CWS_PUBLISHER_ID=<id> CWS_ACCESS_TOKEN="$(gcloud auth print-access-token \
-  --impersonate-service-account=taqvim-publisher@<project>.iam.gserviceaccount.com \
+CWS_PUBLISHER_ID=54dbdafc-c7b2-40b5-a5c8-2d75f6377699 CWS_ACCESS_TOKEN="$(gcloud auth print-access-token \
+  --impersonate-service-account=taqvim-publisher@taqvim-publisher.iam.gserviceaccount.com \
   --scopes=https://www.googleapis.com/auth/chromewebstore)" npm run store -- status
 ```
 
