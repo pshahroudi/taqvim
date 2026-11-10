@@ -38,7 +38,8 @@ const importantJsFiles = [
   "src/utils/numerals.js",
   "scripts/package-extension.mjs",
   "scripts/render-brand-assets.mjs",
-  "scripts/capture-store-assets.mjs"
+  "scripts/capture-store-assets.mjs",
+  "scripts/chrome-web-store.mjs"
 ];
 
 const expectedIconSizes = {
